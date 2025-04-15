@@ -1,0 +1,34 @@
+2c2
+< def get_suggestions(self,
+---
+> def get_suggestions_with_any_stop_token(self,
+4,5c4,5
+<                     number_of_suggestions=1, 
+<                     max_tokens=100, temperature=0, frequency_penalty=0):
+---
+>                     stop_token,
+>                     number_of_suggestions=1, max_tokens=1000, temperature=0, frequency_penalty=0):
+19c19
+<         stop=STOP_STR,
+---
+>         stop=stop_token,
+34,48c34,36
+<     # response_completion_tokens = response["usage"]["completion_tokens"]
+<     if "completion_tokens" in response["usage"]:
+<         response_completion_tokens = response["usage"]["completion_tokens"]
+<     else:
+<         response_completion_tokens = "N/A"
+< 
+<     if "prompt_tokens" in response["usage"]:
+<         response_prompt_tokens = response["usage"]["prompt_tokens"]
+<     else:
+<         response_prompt_tokens = "N/A"
+< 
+<     if "total_tokens" in response["usage"]:
+<         response_total_tokens = response["usage"]["total_tokens"]
+<     else:
+<         response_total_tokens = "N/A"
+---
+>     response_completion_tokens = response["usage"]["completion_tokens"]
+>     response_prompt_tokens = response["usage"]["prompt_tokens"]
+>     response_total_tokens = response["usage"]["total_tokens"]

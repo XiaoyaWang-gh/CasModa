@@ -1,0 +1,28 @@
+一共回避了0条被测方法相同的demo
+****************************************************************************************************
+第1个被测方法是: TypeInfoFactory getTypeInfoForArray(Type type) 
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25: 0.01264047622680664 s
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为53
+number of prefix candidate demonstrations:  20
+python.exe : Traceback (most recent call last):
+所在位置 行:1 字符: 1
++ & C:/Users/Grit/.conda/envs/sophia39/python.exe c:/codes/CodeX/CodeX/ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "c:\codes\CodeX\CodeX\main_icl_bm25.py", line 209, in <module>
+    main1()
+  File "c:\codes\CodeX\CodeX\main_icl_bm25.py", line 169, in main1
+    invoke(prompt)
+  File "c:\codes\CodeX\CodeX\main_icl_bm25.py", line 122, in invoke
+    return codex.get_suggestions(prompt,number_of_suggestions=5,max_tokens=100,temperature=0.25,frequency_penalty=0)
+  File "C:\Users\Grit\.conda\envs\sophia39\lib\site-packages\backoff\_sync.py", line 105, in retry
+    ret = target(*args, **kwargs)
+  File "c:\codes\CodeX\CodeX\codex_api\codex_api.py", line 53, in get_suggestions
+    print(f"{i}\u2728{result}")
+UnicodeEncodeError: 'gbk' codec can't encode character '\u2728' in position 1: illegal multibyte sequence

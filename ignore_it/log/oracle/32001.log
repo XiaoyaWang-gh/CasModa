@@ -1,0 +1,143 @@
+how_many_md5hash_conflicts:  14
+load_bm_25: 0.020425796508789062 s
+The size of the bm25 cache is 9312 bytes
+total entries: 210
+GPT2TokenizerFast编码后的长度为73
+number of oracle candidate demonstrations:  20
+The final oracle prompt looks like: 
+ generate oracle in the following java code:  
+
+### METHOD_UNDER_TEST
+public final TypeAdapterFactory createAdapterFactory(String datePattern) { return createFactory(new DefaultDateTypeAdapter<>(this, datePattern)); }
+
+### UNIT_TEST
+public void testInvalidDatePattern() { "<OraclePlaceHolder>"; DateType.DATE.createAdapterFactory("I am a bad Date pattern...."); }
+
+[METHOD_UNDER_TEST]: createAdapterFactory(String datePattern)
+[UNIT_TEST]: testInvalidDatePattern()
+
+### generate oracle
+thrown.expect(IllegalArgumentException.class);
+END_OF_DEMO
+
+### METHOD_UNDER_TEST
+public String toJson(Object src) { if (src == null) { return toJson(JsonNull.INSTANCE); } return toJson(src, src.getClass()); }
+
+### UNIT_TEST
+public void testTypeAdapterThrowsException() throws Exception { "<OraclePlaceHolder>"; gson.toJson(new AtomicLong(0)); }\
+
+[METHOD_UNDER_TEST]: toJson(Object src)
+[UNIT_TEST]: testTypeAdapterThrowsException()
+
+### generate oracle
+thrown.expect(IllegalStateException.class);
+END_OF_DEMO
+
+### METHOD_UNDER_TEST
+public JsonReader(Reader in) { this.in = Objects.requireNonNull(in, "in == null"); }
+
+### UNIT_TEST
+public void testNulls() { "<OraclePlaceHolder>"; new JsonReader(null); }
+
+[METHOD_UNDER_TEST]: JsonReader(Reader in)
+[UNIT_TEST]: testNulls()
+
+### generate oracle
+thrown.expect(NullPointerException.class);
+END_OF_DEMO
+
+### METHOD_UNDER_TEST
+public long nextLong() throws IOException { int p = peeked; if (p == PEEKED_NONE) { p = doPeek(); } if (p == PEEKED_LONG) { peeked = PEEKED_NONE; pathIndices[stackSize - 1]++; return peekedLong; } if (p == PEEKED_NUMBER) { peekedString = new String(buffer, pos, peekedNumberLength); pos += peekedNumberLength; } else if (p == PEEKED_SINGLE_QUOTED || p == PEEKED_DOUBLE_QUOTED || p == PEEKED_UNQUOTED) { if (p == PEEKED_UNQUOTED) { peekedString = nextUnquotedValue(); } else { peekedString = nextQuotedValue(p == PEEKED_SINGLE_QUOTED ? '\'' : '"'); } try { long result = Long.parseLong(peekedString); peeked = PEEKED_NONE; pathIndices[stackSize - 1]++; return result; } catch (NumberFormatException ignored) { // Fall back to parse as a double below. } } else { throw new IllegalStateException("Expected a long but was " + peek() + locationString()); } peeked = PEEKED_BUFFERED; double 
+asDouble = Double.parseDouble(peekedString); // don't catch this NumberFormatException. long result = (long) asDouble; if (result != asDouble) { // Make sure no precision was lost casting to 'long'. throw new NumberFormatException("Expected a long but was " + peekedString + locationString()); } peekedString = null; peeked = PEEKED_NONE; pathIndices[stackSize - 1]++; return result; }
+
+### UNIT_TEST
+public void testLongs() throws IOException { String json = "[0,0,0," + "1,1,1," + "-1,-1,-1," + "-9223372036854775808," + "9223372036854775807]"; JsonReader reader = new JsonReader(reader(json)); reader.beginArray(); assertThat(reader.nextLong()).isEqualTo(0L); assertThat(reader.nextInt()).isEqualTo(0); assertThat(reader.nextDouble()).isEqualTo(0.0); assertThat(reader.nextLong()).isEqualTo(1L); assertThat(reader.nextInt()).isEqualTo(1); assertThat(reader.nextDouble()).isEqualTo(1.0); assertThat(reader.nextLong()).isEqualTo(-1L); assertThat(reader.nextInt()).isEqualTo(-1); assertThat(reader.nextDouble()).isEqualTo(-1.0); "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; reader.endArray(); }
+
+[METHOD_UNDER_TEST]: nextLong()
+[UNIT_TEST]: testLongs()
+
+### generate oracle
+assertThat(reader.nextLong()).isEqualTo(Long.MIN_VALUE); assertThat(reader.nextLong()).isEqualTo(Long.MAX_VALUE);
+END_OF_DEMO
+
+### METHOD_UNDER_TEST
+public GsonBuilder registerTypeAdapter(Type type, Object typeAdapter) { Objects.requireNonNull(type); $Gson$Preconditions.checkArgument(typeAdapter instanceof JsonSerializer<?> 
+|| typeAdapter instanceof JsonDeserializer<?> || typeAdapter instanceof InstanceCreator<?> || typeAdapter instanceof TypeAdapter<?>); if (typeAdapter instanceof InstanceCreator<?>) { instanceCreators.put(type, (InstanceCreator<?>) typeAdapter); } if (typeAdapter instanceof JsonSerializer<?> || typeAdapter instanceof JsonDeserializer<?>) { TypeToken<?> 
+typeToken = TypeToken.get(type); factories.add(TreeTypeAdapter.newFactoryWithMatchRawType(typeToken, typeAdapter)); } if (typeAdapter instanceof TypeAdapter<?>) { @SuppressWarnings({"unchecked", "rawtypes"}) TypeAdapterFactory factory = TypeAdapters.newFactory(TypeToken.get(type), (TypeAdapter)typeAdapter); factories.add(factory); } return this; }     
+
+### UNIT_TEST
+public void testClonedTypeAdapterFactoryListsAreIndependent() { Gson original = new Gson(CUSTOM_EXCLUDER, CUSTOM_FIELD_NAMING_STRATEGY, new HashMap<Type, InstanceCreator<?>>(), 
+true, false, true, false, FormattingStyle.DEFAULT, true, false, true, LongSerializationPolicy.DEFAULT, null, DateFormat.DEFAULT, DateFormat.DEFAULT, new ArrayList<TypeAdapterFactory>(), new ArrayList<TypeAdapterFactory>(), new ArrayList<TypeAdapterFactory>(), CUSTOM_OBJECT_TO_NUMBER_STRATEGY, CUSTOM_NUMBER_TO_NUMBER_STRATEGY, Collections.<ReflectionAccessFilter>emptyList()); Gson clone = original.newBuilder() .registerTypeAdapter(Object.class, new TestTypeAdapter()) .create(); "<OraclePlaceHolder>"; }
+
+[METHOD_UNDER_TEST]: registerTypeAdapter(Type type, Object typeAdapter)
+[UNIT_TEST]: testClonedTypeAdapterFactoryListsAreIndependent()
+
+### generate oracle
+assertThat(clone.factories).hasSize(original.factories.size() + 1);
+END_OF_DEMO
+
+### METHOD_UNDER_TEST
+public <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException { T object = fromJson(json, TypeToken.get(classOfT)); return Primitives.wrap(classOfT).cast(object); }
+
+### UNIT_TEST
+public void testDefaultTypeAdapterThrowsParseException() throws Exception { thrown.expect(JsonParseException.class); gson.fromJson("{\"abc\":123}", BigInteger.class); }
+
+[METHOD_UNDER_TEST]: fromJson(String json, Class<T> classOfT)
+[UNIT_TEST]: testDefaultTypeAdapterThrowsParseException()
+
+### generate oracle
+thrown.expect(JsonParseException.class);
+END_OF_DEMO
+
+### METHOD_UNDER_TEST
+public String nextString() throws IOException { int p = peeked; if (p == PEEKED_NONE) { p = doPeek(); } String result; if (p == PEEKED_UNQUOTED) { result = nextUnquotedValue(); 
+} else if (p == PEEKED_SINGLE_QUOTED) { result = nextQuotedValue('\''); } else if (p == PEEKED_DOUBLE_QUOTED) { result = nextQuotedValue('"'); } else if (p == PEEKED_BUFFERED) { result = peekedString; peekedString = null; } else if (p == PEEKED_LONG) { result = Long.toString(peekedLong); } else if (p == PEEKED_NUMBER) { result = new String(buffer, pos, peekedNumberLength); pos += peekedNumberLength; } else { throw new IllegalStateException("Expected a string but was " + peek() + locationString()); } peeked = PEEKED_NONE; pathIndices[stackSize - 1]++; return result; }
+
+### UNIT_TEST
+public void testCharacterUnescaping() throws IOException { String json = "[\"a\"," + "\"a\\\"\"," + "\"\\\"\"," + "\":\"," + "\",\"," + "\"\\b\"," + "\"\\f\"," + "\"\\n\"," + "\"\\r\"," + "\"\\t\"," + "\" \"," + "\"\\\\\"," + "\"{\"," + "\"}\"," + "\"[\"," + "\"]\"," + "\"\\u0000\"," + "\"\\u0019\"," + "\"\\u20AC\"" + "]"; JsonReader reader = new JsonReader(reader(json)); reader.beginArray(); "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; reader.endArray(); assertThat(reader.peek()).isEqualTo(JsonToken.END_DOCUMENT); }
+
+[METHOD_UNDER_TEST]: nextString()
+[UNIT_TEST]: testCharacterUnescaping()
+
+### generate oracle
+assertThat(reader.nextString()).isEqualTo("a"); assertThat(reader.nextString()).isEqualTo("a\""); assertThat(reader.nextString()).isEqualTo("\""); assertThat(reader.nextString()).isEqualTo(":"); assertThat(reader.nextString()).isEqualTo(","); assertThat(reader.nextString()).isEqualTo("\b"); assertThat(reader.nextString()).isEqualTo("\f"); assertThat(reader.nextString()).isEqualTo("\n"); assertThat(reader.nextString()).isEqualTo("\r"); assertThat(reader.nextString()).isEqualTo("\t"); assertThat(reader.nextString()).isEqualTo(" "); assertThat(reader.nextString()).isEqualTo("\\"); assertThat(reader.nextString()).isEqualTo("{"); assertThat(reader.nextString()).isEqualTo("}"); assertThat(reader.nextString()).isEqualTo("["); assertThat(reader.nextString()).isEqualTo("]"); assertThat(reader.nextString()).isEqualTo("\0"); assertThat(reader.nextString()).isEqualTo("\u0019"); assertThat(reader.nextString()).isEqualTo("\u20AC");
+END_OF_DEMO
+
+### METHOD_UNDER_TEST
+public final void setLenient(boolean lenient) { this.lenient = lenient; }
+
+### UNIT_TEST
+public void testLenientNansAndInfinities() throws IOException { JsonTreeWriter writer = new JsonTreeWriter(); writer.setLenient(true); writer.beginArray(); writer.value(Float.NaN); writer.value(Float.NEGATIVE_INFINITY); writer.value(Float.POSITIVE_INFINITY); writer.value(Double.NaN); writer.value(Double.NEGATIVE_INFINITY); writer.value(Double.POSITIVE_INFINITY); writer.endArray(); "<OraclePlaceHolder>"; }
+
+[METHOD_UNDER_TEST]: setLenient(boolean lenient)
+[UNIT_TEST]: testLenientNansAndInfinities()
+
+### generate oracle
+assertThat(writer.get().toString()).isEqualTo("[NaN,-Infinity,Infinity,NaN,-Infinity,Infinity]");
+END_OF_DEMO
+
+### METHOD_UNDER_TEST
+public boolean nextBoolean() throws IOException { int p = peeked; if (p == PEEKED_NONE) { p = doPeek(); } if (p == PEEKED_TRUE) { peeked = PEEKED_NONE; pathIndices[stackSize - 1]++; return true; } else if (p == PEEKED_FALSE) { peeked = PEEKED_NONE; pathIndices[stackSize - 1]++; return false; } throw new IllegalStateException("Expected a boolean but was " + peek() + locationString()); }
+
+### UNIT_TEST
+public void testMixedCaseLiterals() throws IOException { JsonReader reader = new JsonReader(reader("[True,TruE,False,FALSE,NULL,nulL]")); reader.beginArray(); "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; "<OraclePlaceHolder>"; reader.nextNull(); reader.nextNull(); reader.endArray(); assertThat(reader.peek()).isEqualTo(JsonToken.END_DOCUMENT); }
+
+[METHOD_UNDER_TEST]: nextBoolean()
+[UNIT_TEST]: testMixedCaseLiterals()
+
+### generate oracle
+assertThat(reader.nextBoolean()).isTrue(); assertThat(reader.nextBoolean()).isTrue(); assertThat(reader.nextBoolean()).isFalse(); assertThat(reader.nextBoolean()).isFalse();    
+END_OF_DEMO
+
+### METHOD_UNDER_TEST
+@Override public JsonWriter value(float value) throws IOException { if (!isLenient() && (Float.isNaN(value) || Float.isInfinite(value))) { throw new IllegalArgumentException("JSON forbids NaN and infinities: " + value); } put(new JsonPrimitive(value)); return this; }
+
+### UNIT_TEST
+public void testFloats() throws IOException { StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(
+0✨assertThat(ko1.getKey()).isEqualTo("Test"); assertThat(ko2.getKey()).isEqualTo("Test"); assertThat(ko1.getObject()).isEqualTo("Object"); assertThat(ko2.getObject()).isEqualTo(
+"Object");
+
+1✨assertThat(ko1.getKey()).isEqualTo(ko2.getKey()); assertThat(ko1.getObject()).isEqualTo(ko2.getObject()); assertThat(ko1.getObject()).isNotSameAs(ko2.getObject());
+
+2✨assertThat(ko1.getKey()).isEqualTo("Test"); assertThat(ko1.getObject()).isEqualTo("Object"); assertThat(ko2.getKey()).isEqualTo("Test"); assertThat(ko2.getObject()).isEqualTo(
+"Object");

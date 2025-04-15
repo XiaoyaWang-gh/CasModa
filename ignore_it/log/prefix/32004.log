@@ -1,0 +1,373 @@
+一共回避了0条被测方法相同的demo
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第1个被测方法是: TypeInfoFactory getTypeInfoForArray(Type type)
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.02959132194519043
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为53
+length so far has been 90
+length so far has been 220
+length so far has been 356
+length so far has been 477
+length so far has been 595
+length so far has been 725
+length so far has been 893
+length so far has been 1092
+length so far has been 1224
+length so far has been 1354
+length so far has been 1534
+length so far has been 1673
+length so far has been 1793
+length so far has been 1937
+length so far has been 2099
+length so far has been 2202
+length so far has been 2351
+length so far has been 2516
+length so far has been 2690
+length so far has been 2958
+number of prefix candidate demonstrations:  20
+0✨TypeInfoFactory.getTypeInfoForArray(int[].class);
+
+1✨TypeInfoFactory.getTypeInfoForArray(int[].class);
+
+2✨TypeInfoFactory.getTypeInfoForArray(int[].class);
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第2个被测方法是: TypeInfoFactory getTypeInfoForField(Field f, Type typeDefiningF)
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.03389453887939453
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为92
+length so far has been 90
+length so far has been 220
+length so far has been 358
+length so far has been 505
+length so far has been 626
+length so far has been 762
+length so far has been 892
+length so far has been 1010
+length so far has been 1209
+length so far has been 1341
+length so far has been 1485
+length so far has been 1653
+length so far has been 1833
+length so far has been 1972
+length so far has been 2134
+length so far has been 2308
+length so far has been 2411
+length so far has been 2514
+length so far has been 2644
+length so far has been 2830
+number of prefix candidate demonstrations:  20
+0✨TypeInfo typeInfo = TypeInfoFactory.getTypeInfoForField(getField(ClassWithFields.class, "field"), ClassWithFields.class);
+
+1✨Field field = ClassWithTypeVariables.class.getDeclaredField("field"); TypeInfo typeInfo = TypeInfoFactory.getTypeInfoForField(field, ClassWithTypeVariables.class);
+
+2✨TypeInfoFactory.getTypeInfoForField(new Field() { @Override public Type getGenericType() { return null; } }, new Type() { @Override public Type getTypeName() { return null; } });  2✨TypeInfoFactory.getTypeInfoForField(new Field() { @Override public Type getGenericType() { return null; } }, new Type() { @Override public Type getTypeName() { return null; } });   
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第3个被测方法是: TypeAdapters newFactory( final Class<TT> unboxed, final Class<TT> boxed, final TypeAdapter<? super TT> typeAdapter)
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.02508091926574707
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为174
+length so far has been 138
+length so far has been 285
+length so far has been 486
+length so far has been 962
+length so far has been 1098
+length so far has been 1242
+length so far has been 1410
+length so far has been 1609
+length so far has been 1727
+length so far has been 1864
+length so far has been 2025
+length so far has been 2199
+length so far has been 2658
+length so far has been 2779
+length so far has been 2933
+length so far has been 3300
+length so far has been 3414
+length so far has been 3518
+length so far has been 3648
+length so far has been 3763
+number of prefix candidate demonstrations:  20
+0✨TypeAdapterFactory factory = TypeAdapters.newFactory(Number.class, Integer.class, new TypeAdapter<Integer>() { @Override public Integer read(JsonReader in) throws IOException { retu
+rn in.nextInt(); } @Override public void write(JsonWriter out, Integer value) throws IOException { out.value(value); } });
+
+1✨TypeAdapterFactory factory = TypeAdapters.newFactory(String.class, String.class, new TypeAdapter<String>() { @Override public void write(JsonWriter out, String value) throws IOExcep
+tion { out.value(value); } @Override public String read(JsonReader in) throws IOException { return in.nextString(); } });
+
+2✨TypeAdapters.newFactory(int.class, Integer.class, new TypeAdapter<Integer>() { @Override public void write(JsonWriter out, Integer value) throws IOException { out.value(value); } @O
+verride public Integer read(JsonReader in) throws IOException { return in.nextInt(); } });
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第4个被测方法是: TypeAdapters newTypeHierarchyFactory( final Class<T1> clazz, final TypeAdapter<T1> typeAdapter)
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.027691125869750977
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为293
+length so far has been 138
+length so far has been 285
+length so far has been 421
+length so far has been 622
+length so far has been 740
+length so far has been 908
+length so far has been 1107
+length so far has been 1197
+length so far has been 1318
+length so far has been 1448
+length so far has been 1589
+length so far has been 1733
+length so far has been 1885
+length so far has been 2015
+length so far has been 2177
+length so far has been 2358
+length so far has been 2512
+length so far has been 3681
+length so far has been 4901
+length so far has been 6121
+number of prefix candidate demonstrations:  20
+0✨TypeAdapter<Number> numberTypeAdapter = new TypeAdapter<Number>() {@Override public void write(JsonWriter out, Number value) throws IOException {out.value(value);}@Override public N
+umber read(JsonReader in) throws IOException {return in.nextLong();}};TypeAdapter<Integer> integerTypeAdapter = TypeAdapters.newTypeHierarchyFactory(Number.class, numberTypeAdapter).create(new Gson(),
+1✨TypeAdapter<Number> numberAdapter = new TypeAdapter<Number>() {@Override public void write(JsonWriter out, Number value) throws IOException {out.value(value);}@Override public Numbe
+r read(JsonReader in) throws IOException {return in.nextInt();}}; TypeAdapter<Integer> intAdapter = TypeAdapters.newTypeHierarchyFactory(Number.class, numberAdapter).create(null, TypeToken.get(
+2✨TypeAdapter<Number> numberTypeAdapter = new TypeAdapter<Number>() {@Override public void write(JsonWriter out, Number value) throws IOException {out.value(value);}@Override public N
+umber read(JsonReader in) throws IOException {return in.nextInt();}}; TypeAdapterFactory factory = TypeAdapters.newTypeHierarchyFactory(Number.class, numberTypeAdapter); TypeAdapter<Integer> integerTypeAdapter = factory
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第5个被测方法是: TypeAdapters newFactory( final TypeToken<TT> type, final TypeAdapter<TT> typeAdapter)
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.02843332290649414
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为104
+length so far has been 138
+length so far has been 285
+length so far has been 486
+length so far has been 622
+length so far has been 766
+length so far has been 903
+length so far has been 1077
+length so far has been 1167
+length so far has been 1643
+length so far has been 2010
+length so far has been 2209
+length so far has been 2668
+length so far has been 2836
+length so far has been 2954
+length so far has been 3084
+length so far has been 3205
+length so far has been 3349
+length so far has been 3479
+length so far has been 3653
+length so far has been 3833
+number of prefix candidate demonstrations:  20
+0✨TypeAdapterFactory factory = TypeAdapters.newFactory(String.class, new TestTypeAdapter()); TypeAdapter<String> adapter = factory.create(new Gson(), TypeToken.get(String.class));
+
+1✨TypeAdapterFactory factory = TypeAdapters.newFactory(String.class, new TestTypeAdapter()); TypeAdapter<String> adapter = factory.create(new Gson(), TypeToken.get(String.class));    
+
+2✨TypeAdapterFactory factory = TypeAdapters.newFactory(String.class, new TestTypeAdapter()); TypeAdapter<String> adapter = factory.create(new Gson(), TypeToken.get(String.class));    
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第6个被测方法是: TypeAdapters newFactoryForMultipleTypes(final Class<TT> base, final Class<? extends TT> sub, final TypeAdapter<? super TT> typeAdapter)
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.025957822799682617
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为176
+length so far has been 138
+length so far has been 285
+length so far has been 486
+length so far has been 962
+length so far has been 1098
+length so far has been 1242
+length so far has been 1360
+length so far has been 1559
+length so far has been 1727
+length so far has been 1871
+length so far has been 2045
+length so far has been 2182
+length so far has been 2303
+length so far has been 2762
+length so far has been 2892
+length so far has been 2982
+length so far has been 3143
+length so far has been 3510
+length so far has been 3664
+length so far has been 3794
+number of prefix candidate demonstrations:  20
+0✨TypeAdapterFactory factory = TypeAdapters.newFactoryForMultipleTypes(Number.class, Integer.class, new TypeAdapter<Number>() {@Override public void write(JsonWriter out, Number value
+) throws IOException {out.value(value);}@Override public Number read(JsonReader in) throws IOException {return in.nextInt();}});
+
+1✨TypeAdapterFactory factory = TypeAdapters.newFactoryForMultipleTypes(Number.class, Integer.class, new TypeAdapter<Number>() {@Override public void write(JsonWriter out, Number value
+) throws IOException {}@Override public Number read(JsonReader in) throws IOException {return null;}});
+
+2✨TypeAdapterFactory factory = TypeAdapters.newFactoryForMultipleTypes(Number.class, Integer.class, new TypeAdapter<Number>() {@Override public void write(JsonWriter out, Number value
+) throws IOException {}@Override public Number read(JsonReader in) throws IOException {return null;}});
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第7个被测方法是: TypeAdapters newFactory(final Class<TT> type, final TypeAdapter<TT> typeAdapter)
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.026223182678222656
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为135
+length so far has been 138
+length so far has been 285
+length so far has been 421
+length so far has been 622
+length so far has been 740
+length so far has been 939
+length so far has been 1107
+length so far has been 1251
+length so far has been 1381
+length so far has been 1471
+length so far has been 1608
+length so far has been 1738
+length so far has been 1912
+length so far has been 2033
+length so far has been 2213
+length so far has been 2357
+length so far has been 2724
+length so far has been 2905
+length so far has been 3066
+length so far has been 3180
+number of prefix candidate demonstrations:  20
+0✨TypeAdapterFactory factory = TypeAdapters.newFactory(String.class, new TypeAdapter<String>() { @Override public void write(JsonWriter out, String value) throws IOException { out.val
+ue(value); } @Override public String read(JsonReader in) throws IOException { return in.nextString(); } });
+
+1✨TypeAdapterFactory factory = TypeAdapters.newFactory(String.class, new TypeAdapter<String>() {@Override public String read(JsonReader in) throws IOException {return in.nextString();
+}@Override public void write(JsonWriter out, String value) throws IOException {out.value(value);}});
+
+2✨TypeAdapterFactory factory = TypeAdapters.newFactory(String.class, new TypeAdapter<String>() { @Override public void write(JsonWriter out, String value) throws IOException { out.val
+ue(value); } @Override public String read(JsonReader in) throws IOException { return in.nextString(); } });
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第8个被测方法是: ConstructorConstructor get(TypeToken<T> typeToken)
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.026498079299926758
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为470
+length so far has been 138
+length so far has been 285
+length so far has been 486
+length so far has been 962
+length so far has been 1421
+length so far has been 1558
+length so far has been 1732
+length so far has been 2099
+length so far has been 2253
+length so far has been 2414
+length so far has been 2544
+length so far has been 2658
+length so far has been 2762
+length so far has been 2898
+length so far has been 2988
+length so far has been 3109
+length so far has been 3359
+length so far has been 3474
+length so far has been 3639
+length so far has been 4469
+number of prefix candidate demonstrations:  20
+0✨ObjectConstructor<String> constructor = constructorConstructor.get(TypeToken.get(String.class)); constructor.construct();
+
+1✨ObjectConstructor<String> constructor = constructorConstructor.get(TypeToken.get(String.class)); assertThat(constructor.construct()).isEqualTo("");
+
+2✨ConstructorConstructor constructorConstructor = new ConstructorConstructor(Collections.<Type, InstanceCreator<?>>emptyMap()); ObjectConstructor<String> stringConstructor = construct
+orConstructor.get(TypeToken.get(String.class));
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第9个被测方法是: ConstructorConstructor toString()
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.026016950607299805
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为57
+length so far has been 138
+length so far has been 285
+length so far has been 761
+length so far has been 962
+length so far has been 1421
+length so far has been 1535
+length so far has been 1672
+length so far has been 1846
+length so far has been 2007
+length so far has been 2161
+length so far has been 2528
+length so far has been 2632
+length so far has been 2747
+length so far has been 3577
+length so far has been 4400
+length so far has been 4530
+length so far has been 4711
+length so far has been 4801
+length so far has been 4931
+length so far has been 5067
+number of prefix candidate demonstrations:  20
+0✨ConstructorConstructor constructorConstructor = new ConstructorConstructor(new HashMap<Type, InstanceCreator<?>>(), false, Collections.<ReflectionAccessFilter>emptyList()); construc
+torConstructor.toString();
+
+1✨ConstructorConstructor constructorConstructor = new ConstructorConstructor(new HashMap<Type, InstanceCreator<?>>(), false, Collections.<ReflectionAccessFilter>emptyList()); construc
+torConstructor.toString();
+
+2✨ConstructorConstructor constructorConstructor = new ConstructorConstructor(new HashMap<Type, InstanceCreator<?>>(), false, Collections.<ReflectionAccessFilter>emptyList()); construc
+torConstructor.toString();
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第10个被测方法是: JsonWriter isLenient()
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.028327226638793945
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为25
+length so far has been 121
+length so far has been 289
+length so far has been 454
+length so far has been 616
+length so far has been 770
+length so far has been 888
+length so far has been 992
+length so far has been 1242
+length so far has been 1403
+length so far has been 1552
+length so far has been 1753
+length so far has been 1867
+length so far has been 2041
+length so far has been 2193
+length so far has been 2283
+length so far has been 2443
+length so far has been 2581
+length so far has been 2728
+length so far has been 2906
+length so far has been 3050
+number of prefix candidate demonstrations:  20
+0✨JsonWriter writer = new JsonWriter(new StringWriter()); writer.setLenient(true);
+
+1✨JsonWriter writer = new JsonWriter(new StringWriter()); writer.setLenient(true);
+
+2✨JsonWriter writer = new JsonWriter(new StringWriter()); writer.setLenient(true); assertThat(writer.isLenient()).isTrue();

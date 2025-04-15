@@ -1,0 +1,162 @@
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第10个被测方法是: JsonWriter isLenient()
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.06262922286987305
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为25
+number of prefix candidate demonstrations:  20
+0✨JsonWriter writer = new JsonWriter(new StringWriter());
+
+1✨JsonWriter writer = new JsonWriter(new StringWriter()); writer.setLenient(true);
+
+2✨JsonWriter writer = new JsonWriter(new StringWriter());
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第11个被测方法是: JsonWriter value(long value)
+一共回避了2条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.03558802604675293
+The size of the bm25 cache is 9312 bytes
+total entries: 218
+GPT2TokenizerFast编码后的长度为47
+number of prefix candidate demonstrations:  20
+0✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.value(123);
+
+1✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.value(1L);       
+
+2✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.value(123456789);
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第12个被测方法是: JsonWriter beginObject() 
+一共回避了5条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.03087139129638672
+The size of the bm25 cache is 9312 bytes
+total entries: 215
+GPT2TokenizerFast编码后的长度为210
+number of prefix candidate demonstrations:  20
+0✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginObject(); jsonWriter.endObject();
+
+1✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginObject();
+
+2✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginObject();
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第13个被测方法是: JsonWriter value(double value)
+一共回避了5条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.051044464111328125
+The size of the bm25 cache is 9312 bytes
+total entries: 215
+GPT2TokenizerFast编码后的长度为88
+number of prefix candidate demonstrations:  20
+0✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.value(1.0d);
+
+1✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.value(1.0); jsonWriter.value(2.0); jsonWriter.value(3.0);
+
+2✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.value(true); jsonWriter.value(false); jsonWriter.value(1); jsonWrite
+r.value(1.1); jsonWriter.value(1.1f); jsonWriter.value(1.1d); jsonWriter.value(1L); jsonWriter.value(1.0); jsonWriter.value(1.0f
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第14个被测方法是: JsonWriter jsonValue(String value)
+一共回避了1条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.046141624450683594
+The size of the bm25 cache is 9312 bytes
+total entries: 219
+GPT2TokenizerFast编码后的长度为57
+number of prefix candidate demonstrations:  20
+0✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.jsonValue("{\"a\":1}");
+
+1✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.jsonValue("{\"a\":1}");
+
+2✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.jsonValue("{}");
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第15个被测方法是: JsonWriter setIndent(String indent)
+一共回避了2条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.045122623443603516
+The size of the bm25 cache is 9312 bytes
+total entries: 218
+GPT2TokenizerFast编码后的长度为70
+number of prefix candidate demonstrations:  20
+0✨String lineSeparator = "\r\n"; StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.setIndent(" \t "); jsonWriter.setNewl
+ine(lineSeparator);
+
+1✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.setIndent("\t");
+
+2✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.setIndent("\t");
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第16个被测方法是: JsonWriter close()
+一共回避了1条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.04197978973388672
+The size of the bm25 cache is 9312 bytes
+total entries: 219
+GPT2TokenizerFast编码后的长度为71
+number of prefix candidate demonstrations:  20
+0✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginArray(); jsonWriter.endArray(); jsonWriter.close();
+
+1✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginArray(); jsonWriter.beginObject(); jsonWriter.name("a"); jsonWr
+iter.value(1); jsonWriter.endObject(); jsonWriter.endArray(); jsonWriter.close();
+
+2✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginArray(); jsonWriter.endArray(); jsonWriter.close();
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第17个被测方法是: JsonWriter isHtmlSafe()
+一共回避了0条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.027077198028564453
+The size of the bm25 cache is 9312 bytes
+total entries: 220
+GPT2TokenizerFast编码后的长度为28
+number of prefix candidate demonstrations:  20
+0✨JsonWriter writer = new JsonWriter(new StringWriter());
+
+1✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.setHtmlSafe(true);
+
+2✨StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.setHtmlSafe(true);
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第18个被测方法是: JsonWriter name(String name)
+一共回避了6条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.04408097267150879
+The size of the bm25 cache is 9312 bytes
+total entries: 214
+GPT2TokenizerFast编码后的长度为84
+number of prefix candidate demonstrations:  20
+0✨JsonWriter writer = new JsonWriter(new StringWriter()); writer.beginObject(); writer.name("a"); writer.value(1); writer.name("b"); writer.value(2); writer.endObject();
+
+1✨StringWriter stringWriter = new StringWriter(); JsonWriter writer = new JsonWriter(stringWriter); writer.beginObject(); writer.name("A"); writer.value(1); writer.name("B"); writer.v
+alue(2); writer.endObject();
+
+2✨JsonWriter writer = new JsonWriter(new StringWriter()); writer.beginObject(); writer.name("a"); writer.value("b"); writer.endObject();
+
+
+🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩
+第19个被测方法是: JsonWriter flush()
+一共回避了1条被测方法相同的demo
+how_many_md5hash_conflicts:  4
+load_bm_25:  0.02818155288696289
+The size of the bm25 cache is 9312 bytes
+total entries: 219
+GPT2TokenizerFast编码后的长度为47
+number of prefix candidate demonstrations:  20
+0✨StringWriter stringWriter = new StringWriter(); JsonWriter writer = new JsonWriter(stringWriter); writer.flush();
+
+1✨StringWriter stringWriter = new StringWriter(); JsonWriter writer = new JsonWriter(stringWriter); writer.flush();
+
+2✨StringWriter stringWriter = new StringWriter(); JsonWriter writer = new JsonWriter(stringWriter); writer.beginArray(); writer.flush();

@@ -1,0 +1,229 @@
+一共回避了0条被测方法相同的demo
+一共回避了0条被测方法相同的demo
+Token indices sequence length is longer than the specified maximum sequence length for this model (1512 > 1024). Running this sequence through the model will result in indexing errors
+Token indices sequence length is longer than the specified maximum sequence length for this model (1462 > 1024). Running this sequence through the model will result in indexing errors
+Token indices sequence length is longer than the specified maximum sequence length for this model (1486 > 1024). Running this sequence through the model will result in indexing errors
+Token indices sequence length is longer than the specified maximum sequence length for this model (1462 > 1024). Running this sequence through the model will result in indexing errors
+Token indices sequence length is longer than the specified maximum sequence length for this model (1512 > 1024). Running this sequence through the model will result in indexing errors
+Token indices sequence length is longer than the specified maximum sequence length for this model (1472 > 1024). Running this sequence through the model will result in indexing errors
+how_many_md5hash_conflicts:  143
+load_bm_25:  0.02690887451171875
+The size of the bm25 cache is 2272 bytes
+total entries: 81
+number of prefix candidate demonstrations:  20
+The final prefix prompt looks like:
+ generate test input in the following java code:
+
+### CLASS_CONSTRUCTORN:
+public JsonWriter(Writer out)
+
+### METHOD_UNDER_TEST
+public final FormattingStyle getFormattingStyle() { return formattingStyle; }
+
+### generate test input
+String lineSeparator = "\r\n"; StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.setFormattingStyle(FormattingStyle.DEFAULT.withIndent(" \t ").withNewline(lineSeparator));
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public Excluder()
+
+### METHOD_UNDER_TEST
+public boolean excludeClass(Class<?> clazz, boolean serialize) { return excludeClassChecks(clazz) || excludeClassInStrategy(clazz, serialize); }
+
+### generate test input
+Excluder excluder = Excluder.DEFAULT.disableInnerClassSerialization(); StaticNestedClass staticNestedClass = new StaticNestedClass(); Class<?> clazz = staticNestedClass.getClass(); 
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public Excluder()
+
+### METHOD_UNDER_TEST
+public boolean excludeClass(Class<?> clazz, boolean serialize) { return excludeClassChecks(clazz) || excludeClassInStrategy(clazz, serialize); }
+
+### generate test input
+Excluder excluder = Excluder.DEFAULT.disableInnerClassSerialization(); StaticNestedClass staticNestedClass = new StaticNestedClass(); Class<?> clazz = staticNestedClass.getClass(); 
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public Gson()
+
+### METHOD_UNDER_TEST
+public JsonElement toJsonTree(Object src, Type typeOfSrc) { JsonTreeWriter writer = new JsonTreeWriter(); toJson(src, typeOfSrc, writer); return writer.get(); }
+
+### generate test input
+Type mapType = new TypeToken<Map<String, String>>() { }.getType(); Map<String, String> myMap = new HashMap<>(); String key = "key1"; myMap.put(key, "value1"); Gson gson = new Gson(); JsonElement element = gson.toJsonTree(myMap, mapType);
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public Gson()
+
+### METHOD_UNDER_TEST
+public JsonElement toJsonTree(Object src, Type typeOfSrc) { JsonTreeWriter writer = new JsonTreeWriter(); toJson(src, typeOfSrc, writer); return writer.get(); }
+
+### generate test input
+Type mapType = new TypeToken<Map<String, String>>() { }.getType(); Map<String, String> myMap = new HashMap<>(); String key = "key1"; myMap.put(key, "value1"); Gson gson = new Gson(); JsonElement element = gson.toJsonTree(myMap, mapType);
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public Gson()
+
+### METHOD_UNDER_TEST
+public JsonElement toJsonTree(Object src, Type typeOfSrc) { JsonTreeWriter writer = new JsonTreeWriter(); toJson(src, typeOfSrc, writer); return writer.get(); }
+
+### generate test input
+Type mapType = new TypeToken<Map<String, String>>() { }.getType(); Map<String, String> myMap = new HashMap<>(); String key = "key1"; myMap.put(key, "value1"); Gson gson = new Gson(); JsonElement element = gson.toJsonTree(myMap, mapType);
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public JsonWriter(Writer out)
+
+### METHOD_UNDER_TEST
+public final void setFormattingStyle(FormattingStyle formattingStyle) { this.formattingStyle = formattingStyle; if (formattingStyle == null) { this.separator = ":"; } else { this.separator = ": "; } }
+
+### generate test input
+String lineSeparator = "\r\n"; StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.setFormattingStyle(FormattingStyle.DEFAULT.withIndent(" \t ").withNewline(lineSeparator)); jsonWriter.beginArray(); jsonWriter.value(true); jsonWriter.value("text"); jsonWriter.value(5.0); jsonWriter.nullValue(); jsonWriter.endArray(); String expected = "[\r\n" + " \t true,\r\n" + " \t \"text\",\r\n" + " \t 5.0,\r\n" + " \t null\r\n" + "]";
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public Gson()
+
+### METHOD_UNDER_TEST
+public <T> T fromJson(String json, Type typeOfT) throws JsonSyntaxException { return (T) fromJson(json, TypeToken.get(typeOfT)); }
+
+### generate test input
+String json = "[\n" + "  // this is a comment\n" + "  \"a\",\n" + "  /* this is another comment */\n" + "  \"b\",\n" + "  # this is yet another comment\n" + "  \"c\"\n" + "]"; List<String> abc = new Gson().fromJson(json, new TypeToken<List<String>>() {}.getType());
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public DefaultDateTypeAdapter()
+
+### METHOD_UNDER_TEST
+public final TypeAdapterFactory createAdapterFactory(int style) { return createFactory(new DefaultDateTypeAdapter<>(this, style)); }
+
+### generate test input
+int dateStyle = DateFormat.LONG; TypeAdapter<Date> dateTypeAdapter = dateAdapter(DateType.DATE.createAdapterFactory(dateStyle)); DateFormat formatter = DateFormat.getDateInstance(dateStyle, Locale.US); Date currentDate = new Date(); String dateString = dateTypeAdapter.toJson(currentDate);
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public JsonWriter(Writer out)
+
+### METHOD_UNDER_TEST
+@Override public JsonWriter beginArray() throws IOException { JsonArray array = new JsonArray(); put(array); stack.add(array); return this; }
+
+### generate test input
+StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginArray(); jsonWriter.beginObject(); jsonWriter.name("a").value(5); jsonWriter.name("b").value(false); jsonWriter.endObject(); jsonWriter.beginObject(); jsonWriter.name("c").value(6); jsonWriter.name("d").value(true); jsonWriter.endObject(); jsonWriter.endArray();
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public JsonWriter(Writer out)
+
+### METHOD_UNDER_TEST
+@Override public JsonWriter beginArray() throws IOException { JsonArray array = new JsonArray(); put(array); stack.add(array); return this; }
+
+### generate test input
+StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginArray(); jsonWriter.beginObject(); jsonWriter.name("a").value(5); jsonWriter.name("b").value(false); jsonWriter.endObject(); jsonWriter.beginObject(); jsonWriter.name("c").value(6); jsonWriter.name("d").value(true); jsonWriter.endObject(); jsonWriter.endArray();
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public JsonWriter(Writer out)
+
+### METHOD_UNDER_TEST
+@Override public JsonWriter beginArray() throws IOException { JsonArray array = new JsonArray(); put(array); stack.add(array); return this; }
+
+### generate test input
+StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginArray(); jsonWriter.beginObject(); jsonWriter.name("a").value(5); jsonWriter.name("b").value(false); jsonWriter.endObject(); jsonWriter.beginObject(); jsonWriter.name("c").value(6); jsonWriter.name("d").value(true); jsonWriter.endObject(); jsonWriter.endArray();
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public DefaultDateTypeAdapter()
+
+### METHOD_UNDER_TEST
+public final TypeAdapterFactory createAdapterFactory(String datePattern) { return createFactory(new DefaultDateTypeAdapter<>(this, datePattern)); }
+
+### generate test input
+DateType.DATE.createAdapterFactory("I am a bad Date pattern....");
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public DefaultDateTypeAdapter()
+
+### METHOD_UNDER_TEST
+public final TypeAdapterFactory createAdapterFactory(String datePattern) { return createFactory(new DefaultDateTypeAdapter<>(this, datePattern)); }
+
+### generate test input
+DateType.DATE.createAdapterFactory("I am a bad Date pattern....");
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public JsonReader(Reader in)
+
+### METHOD_UNDER_TEST
+public JsonReader(Reader in) { this.in = Objects.requireNonNull(in, "in == null"); }
+
+### generate test input
+new JsonReader(null);
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public JsonWriter(Writer out)
+
+### METHOD_UNDER_TEST
+public JsonWriter endArray() throws IOException { return close(EMPTY_ARRAY, NONEMPTY_ARRAY, ']'); }
+
+### generate test input
+StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginArray(); jsonWriter.endArray();
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public JsonWriter(Writer out)
+
+### METHOD_UNDER_TEST
+public JsonWriter endArray() throws IOException { return close(EMPTY_ARRAY, NONEMPTY_ARRAY, ']'); }
+
+### generate test input
+StringWriter stringWriter = new StringWriter(); JsonWriter jsonWriter = new JsonWriter(stringWriter); jsonWriter.beginArray(); jsonWriter.endArray();
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public DefaultDateTypeAdapter()
+
+### METHOD_UNDER_TEST
+public final TypeAdapterFactory createDefaultsAdapterFactory() { return createFactory(new DefaultDateTypeAdapter<>(this, DateFormat.DEFAULT, DateFormat.DEFAULT)); }
+
+### generate test input
+TypeAdapterFactory adapterFactory = DateType.DATE.createDefaultsAdapterFactory();
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public DefaultDateTypeAdapter()
+
+### METHOD_UNDER_TEST
+public final TypeAdapterFactory createDefaultsAdapterFactory() { return createFactory(new DefaultDateTypeAdapter<>(this, DateFormat.DEFAULT, DateFormat.DEFAULT)); }
+
+### generate test input
+TypeAdapterFactory adapterFactory = DateType.DATE.createDefaultsAdapterFactory();
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+public GsonBuilder()
+
+### METHOD_UNDER_TEST
+public GsonBuilder excludeFieldsWithModifiers(int... modifiers) { Objects.requireNonNull(modifiers); excluder = excluder.withModifiers(modifiers); return this; }
+
+### generate test input
+Gson gson = new GsonBuilder().excludeFieldsWithModifiers().create();
+END_OF_DEMO
+
+### CLASS_CONSTRUCTORN:
+private TypeInfoFactory()
+
+### METHOD_UNDER_TEST
+public static TypeInfoArray getTypeInfoForArray(Type type) { Preconditions.checkArgument(TypeUtils.isArray(type)); return new TypeInfoArray(type); }
+
+### generate test input
+
+0✨TypeInfoFactory.getTypeInfoForArray(new TypeToken<List<String>[]>() {}.getType());
+
+1✨TypeInfoFactory.getTypeInfoForArray(new TypeToken<List<String>>() {}.getType());
+
+2✨TypeInfoFactory.getTypeInfoForArray(int[].class);
