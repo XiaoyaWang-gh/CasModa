@@ -1,0 +1,1391 @@
+(base) PS C:\dataset\d4j-spec5\1_gson\v-github\gson-master\gson> mvn chatunitest:method -DselectMethod="com.google.gson.stream.JsonWriter"#"flush"
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/C:/Libraries/maven-3.5.0/bin/../lib/evosuite-1.1.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/C:/Libraries/maven-3.5.0/bin/../lib/maven-slf4j-provider-3.5.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]
+[DEBUG] Created new class realm maven.api
+[DEBUG] Importing foreign packages into class realm maven.api
+[DEBUG]   Imported: javax.enterprise.inject.* < plexus.core
+[DEBUG]   Imported: javax.enterprise.util.* < plexus.core
+[DEBUG]   Imported: javax.inject.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.artifact < plexus.core
+[DEBUG]   Imported: org.apache.maven.classrealm < plexus.core
+[DEBUG]   Imported: org.apache.maven.cli < plexus.core
+[DEBUG]   Imported: org.apache.maven.configuration < plexus.core
+[DEBUG]   Imported: org.apache.maven.exception < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution.scope < plexus.core
+[DEBUG]   Imported: org.apache.maven.lifecycle < plexus.core
+[DEBUG]   Imported: org.apache.maven.model < plexus.core
+[DEBUG]   Imported: org.apache.maven.monitor < plexus.core
+[DEBUG]   Imported: org.apache.maven.plugin < plexus.core
+[DEBUG]   Imported: org.apache.maven.profiles < plexus.core
+[DEBUG]   Imported: org.apache.maven.project < plexus.core
+[DEBUG]   Imported: org.apache.maven.reporting < plexus.core
+[DEBUG]   Imported: org.apache.maven.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.rtinfo < plexus.core
+[DEBUG]   Imported: org.apache.maven.settings < plexus.core
+[DEBUG]   Imported: org.apache.maven.toolchain < plexus.core
+[DEBUG]   Imported: org.apache.maven.usability < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authentication < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authorization < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.events < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.observers < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.proxy < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.resource < plexus.core
+[DEBUG]   Imported: org.codehaus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.* < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.component < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.configuration < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.container < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.context < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.lifecycle < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.logging < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.personality < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.Xpp3Dom < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParser < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParserException < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlSerializer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.* < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.artifact < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.collection < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.deployment < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.graph < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.installation < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.internal.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.metadata < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.repository < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.resolution < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.spi < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.transfer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.version < plexus.core
+[DEBUG]   Imported: org.fusesource.jansi.* < plexus.core
+[DEBUG]   Imported: org.slf4j.* < plexus.core
+[DEBUG]   Imported: org.slf4j.helpers.* < plexus.core
+[DEBUG]   Imported: org.slf4j.spi.* < plexus.core
+[DEBUG] Populating class realm maven.api
+[DEBUG] Message scheme: color
+[DEBUG] Message styles: debug info warning error success failure strong mojo project
+[DEBUG] Reading global settings from C:\Libraries\maven-3.5.0\bin\..\conf\settings.xml
+[DEBUG] Reading user settings from C:\Users\Grit\.m2\settings.xml
+[WARN]
+[WARN] Some problems were encountered while building the effective settings
+[WARN] Unrecognised tag: 'snapshotPolicy' (position: START_TAG seen ...</layout>\n          <snapshotPolicy>... @204:27)  @ C:\Libraries\maven-3.5.0\bin\..\conf\settings.xml, line 204, column 27
+[WARN]
+[DEBUG] Reading global toolchains from C:\Libraries\maven-3.5.0\bin\..\conf\toolchains.xml
+[DEBUG] Reading user toolchains from C:\Users\Grit\.m2\toolchains.xml
+[DEBUG] Using local repository at C:\Libraries\maven-3.5.0\maven_repo
+[DEBUG] Using manager EnhancedLocalRepositoryManager with priority 10.0 for C:\Libraries\maven-3.5.0\maven_repo
+[INFO] Scanning for projects...
+[DEBUG] Using mirror alimaven (http://maven.aliyun.com/nexus/content/repositories/central/) for central (https://repo.maven.apache.org/maven2).
+[DEBUG] Extension realms for project com.google.code.gson:gson:jar:2.10.1: (none)
+[DEBUG] Looking up lifecycle mappings for packaging jar from ClassRealm[plexus.core, parent: null]
+[DEBUG] Extension realms for project com.google.code.gson:gson-parent:pom:2.10.1: (none)
+[DEBUG] Looking up lifecycle mappings for packaging pom from ClassRealm[plexus.core, parent: null]
+[INFO] Inspecting build with total of 1 modules...
+[INFO] Installing Nexus Staging features:
+[DEBUG] Resolving plugin prefix chatunitest from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Resolved plugin prefix chatunitest to io.github.ZJU-ACES-ISE:chatunitest-maven-plugin from POM com.google.code.gson:gson:jar:2.10.1
+[DEBUG] === REACTOR BUILD PLAN ================================================
+[DEBUG] Project: com.google.code.gson:gson:jar:2.10.1
+[DEBUG] Tasks:   [chatunitest:method]
+[DEBUG] Style:   Regular
+[DEBUG] =======================================================================
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Gson 2.10.1
+[INFO] ------------------------------------------------------------------------
+[DEBUG] Resolving plugin prefix chatunitest from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Resolved plugin prefix chatunitest to io.github.ZJU-ACES-ISE:chatunitest-maven-plugin from POM com.google.code.gson:gson:jar:2.10.1
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] === PROJECT BUILD PLAN ================================================
+[DEBUG] Project:       com.google.code.gson:gson:2.10.1
+[DEBUG] Dependencies (collect): []
+[DEBUG] Dependencies (resolve): []
+[DEBUG] Repositories (dependencies): [jdk11 (C:\Program Files\Java\jdk-11, default, releases+snapshots), alimaven (http://maven.aliyun.com/nexus/content/repositories/central/, default, releases)]
+[DEBUG] Repositories (plugins)     : [EvoSuite (http://www.evosuite.org/m2, default, releases+snapshots), alimaven (http://maven.aliyun.com/nexus/content/repositories/central/, default, releases)]
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0:method (default-cli)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <apiKeys>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</apiKeys>
+  <enableMultithreading default-value="true">${thread}</enableMultithreading>
+  <frequencyPenalty default-value="0">0</frequencyPenalty>
+  <maxPromptTokens default-value="2600"/>
+  <maxRounds default-value="5">1</maxRounds>
+  <maxThreads default-value="0">${maxThreads}</maxThreads>
+  <minErrorTokens default-value="500">500</minErrorTokens>
+  <model default-value="gpt-3.5-turbo">gpt-3.5-turbo</model>
+  <noExecution default-value="false">${noExecution}</noExecution>
+  <presencePenalty default-value="0">0</presencePenalty>
+  <project default-value="${project}"/>
+  <proxy default-value="null:-1">127.0.0.1:7890</proxy>
+  <selectMethod>${selectMethod}</selectMethod>
+  <session default-value="${session}"/>
+  <stopWhenSuccess default-value="true">${stopWhenSuccess}</stopWhenSuccess>
+  <temperature default-value="0.5">0.5</temperature>
+  <testNumber default-value="5">1</testNumber>
+  <testOutput default-value="chatunitest-tests">${testOutput}</testOutput>
+  <tmpOutput default-value="/tmp/chatunitest-info">${tmpOutput}</tmpOutput>
+  <topP default-value="1">1</topP>
+</configuration>
+[DEBUG] =======================================================================
+[INFO]
+[INFO] --- chatunitest-maven-plugin:1.2.0:method (default-cli) @ gson ---
+[DEBUG] Using mirror alimaven (http://maven.aliyun.com/nexus/content/repositories/central/) for central (http://repo1.maven.org/maven2).
+[DEBUG] Dependency collection stats: {ConflictMarker.analyzeTime=1, ConflictMarker.markTime=1, ConflictMarker.nodeCount=185, ConflictIdSorter.graphTime=0, ConflictIdSorter.topsortTime=1, ConflictIdSorter.conflictIdCount=79, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=8, ConflictResolver.conflictItemCount=144, DefaultDependencyCollector.collectTime=457, DefaultDependencyCollector.transformTime=13}
+[DEBUG] io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:jar:1.2.0:
+[DEBUG]    org.apache.maven.plugin-tools:maven-plugin-annotations:jar:3.8.1:compile
+[DEBUG]    com.github.javaparser:javaparser-core:jar:3.25.3:compile
+[DEBUG]    com.github.javaparser:javaparser-symbol-solver-core:jar:3.25.3:compile
+[DEBUG]       org.javassist:javassist:jar:3.29.2-GA:compile
+[DEBUG]       com.google.guava:guava:jar:31.1-jre:compile
+[DEBUG]          com.google.guava:failureaccess:jar:1.0.1:compile
+[DEBUG]          com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[DEBUG]          com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[DEBUG]          org.checkerframework:checker-qual:jar:3.12.0:compile
+[DEBUG]          com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[DEBUG]    com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[DEBUG]       com.squareup.okio:okio:jar:2.8.0:compile
+[DEBUG]          org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.0:compile
+[DEBUG]       org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.10:compile
+[DEBUG]          org.jetbrains:annotations:jar:13.0:compile
+[DEBUG]    com.google.code.gson:gson:jar:2.10.1:compile
+[DEBUG]       io.github.ZJU-ACES-ISE:chatunitest-starter:pom:1.0.0:compile
+[DEBUG]          org.junit.jupiter:junit-jupiter-api:jar:5.7.0:compile
+[DEBUG]          org.mockito:mockito-core:jar:3.12.4:compile
+[DEBUG]             net.bytebuddy:byte-buddy:jar:1.11.13:compile
+[DEBUG]             net.bytebuddy:byte-buddy-agent:jar:1.11.13:compile
+[DEBUG]             org.objenesis:objenesis:jar:3.2:compile
+[DEBUG]          org.mockito:mockito-junit-jupiter:jar:3.12.4:compile
+[DEBUG]          org.mockito:mockito-inline:jar:3.12.4:compile
+[DEBUG]          org.junit.jupiter:junit-jupiter-engine:jar:5.7.0:runtime
+[DEBUG]       com.google.errorprone:error_prone_annotations:jar:2.18.0:compile
+[DEBUG]       com.github.wvengen:proguard-maven-plugin:jar:2.6.0:compile
+[DEBUG]          org.apache.ant:ant:jar:1.10.12:compile
+[DEBUG]             org.apache.ant:ant-launcher:jar:1.10.12:compile
+[DEBUG]          org.apache.maven:maven-archiver:jar:2.4:compile
+[DEBUG]             org.apache.maven:maven-project:jar:2.0:compile
+[DEBUG]                org.apache.maven:maven-profile:jar:2.0:compile
+[DEBUG]                org.apache.maven:maven-artifact-manager:jar:2.0:compile
+[DEBUG]                org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:compile
+[DEBUG]                   junit:junit:jar:3.8.1:compile
+[DEBUG]                   classworlds:classworlds:jar:1.1-alpha-2:compile
+[DEBUG]             org.codehaus.plexus:plexus-archiver:jar:1.0-alpha-11:compile
+[DEBUG]                org.codehaus.plexus:plexus-component-api:jar:1.0-alpha-15:compile
+[DEBUG]                org.codehaus.plexus:plexus-io:jar:1.0-alpha-3:compile
+[DEBUG]          commons-io:commons-io:jar:2.11.0:compile
+[DEBUG]    org.projectlombok:lombok:jar:1.18.28:compile
+[DEBUG]    com.fasterxml.jackson.core:jackson-databind:jar:2.15.0:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-annotations:jar:2.15.0:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-core:jar:2.15.0:compile
+[DEBUG]    com.knuddels:jtokkit:jar:0.4.0:compile
+[DEBUG]    org.apache.maven.shared:maven-dependency-tree:jar:3.0.1:compile
+[DEBUG]       org.codehaus.plexus:plexus-component-annotations:jar:1.6:compile
+[DEBUG]       org.eclipse.aether:aether-util:jar:0.9.0.M2:compile
+[DEBUG]    org.apache.maven:maven-core:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-model:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-settings:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-settings-builder:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-artifact:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-plugin-api:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-model-builder:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-aether-provider:jar:3.0:runtime
+[DEBUG]       org.sonatype.aether:aether-impl:jar:1.7:compile
+[DEBUG]          org.sonatype.aether:aether-spi:jar:1.7:compile
+[DEBUG]       org.sonatype.aether:aether-api:jar:1.7:compile
+[DEBUG]       org.sonatype.aether:aether-util:jar:1.7:compile
+[DEBUG]       org.sonatype.sisu:sisu-inject-plexus:jar:1.4.2:compile
+[DEBUG]          org.sonatype.sisu:sisu-inject-bean:jar:1.4.2:compile
+[DEBUG]             org.sonatype.sisu:sisu-guice:jar:noaop:2.1.7:compile
+[DEBUG]       org.codehaus.plexus:plexus-interpolation:jar:1.14:compile
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:2.0.4:compile
+[DEBUG]       org.codehaus.plexus:plexus-classworlds:jar:2.2.3:compile
+[DEBUG]       org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3:compile
+[DEBUG]          org.sonatype.plexus:plexus-cipher:jar:1.4:compile
+[DEBUG]    org.junit.platform:junit-platform-launcher:jar:1.9.2:compile
+[DEBUG]       org.junit.platform:junit-platform-engine:jar:1.9.2:compile
+[DEBUG]          org.opentest4j:opentest4j:jar:1.2.0:compile
+[DEBUG]          org.junit.platform:junit-platform-commons:jar:1.9.2:compile
+[DEBUG]       org.apiguardian:apiguardian-api:jar:1.1.2:compile
+[DEBUG] Created new class realm plugin>io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0
+[DEBUG] Importing foreign packages into class realm plugin>io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0
+[DEBUG]   Included: io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:jar:1.2.0
+[DEBUG]   Included: org.apache.maven.plugin-tools:maven-plugin-annotations:jar:3.8.1
+[DEBUG]   Included: com.github.javaparser:javaparser-core:jar:3.25.3
+[DEBUG]   Included: com.github.javaparser:javaparser-symbol-solver-core:jar:3.25.3
+[DEBUG]   Included: org.javassist:javassist:jar:3.29.2-GA
+[DEBUG]   Included: com.google.guava:guava:jar:31.1-jre
+[DEBUG]   Included: com.google.guava:failureaccess:jar:1.0.1
+[DEBUG]   Included: com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava
+[DEBUG]   Included: com.google.code.findbugs:jsr305:jar:3.0.2
+[DEBUG]   Included: org.checkerframework:checker-qual:jar:3.12.0
+[DEBUG]   Included: com.google.j2objc:j2objc-annotations:jar:1.3
+[DEBUG]   Included: com.squareup.okhttp3:okhttp:jar:4.9.3
+[DEBUG]   Included: com.squareup.okio:okio:jar:2.8.0
+[DEBUG]   Included: org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.0
+[DEBUG]   Included: org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.10
+[DEBUG]   Included: org.jetbrains:annotations:jar:13.0
+[DEBUG]   Included: com.google.code.gson:gson:jar:2.10.1
+[DEBUG]   Included: io.github.ZJU-ACES-ISE:chatunitest-starter:pom:1.0.0
+[DEBUG]   Included: org.junit.jupiter:junit-jupiter-api:jar:5.7.0
+[DEBUG]   Included: org.mockito:mockito-core:jar:3.12.4
+[DEBUG]   Included: net.bytebuddy:byte-buddy:jar:1.11.13
+[DEBUG]   Included: net.bytebuddy:byte-buddy-agent:jar:1.11.13
+[DEBUG]   Included: org.objenesis:objenesis:jar:3.2
+[DEBUG]   Included: org.mockito:mockito-junit-jupiter:jar:3.12.4
+[DEBUG]   Included: org.mockito:mockito-inline:jar:3.12.4
+[DEBUG]   Included: org.junit.jupiter:junit-jupiter-engine:jar:5.7.0
+[DEBUG]   Included: com.google.errorprone:error_prone_annotations:jar:2.18.0
+[DEBUG]   Included: com.github.wvengen:proguard-maven-plugin:jar:2.6.0
+[DEBUG]   Included: org.apache.ant:ant:jar:1.10.12
+[DEBUG]   Included: org.apache.ant:ant-launcher:jar:1.10.12
+[DEBUG]   Included: org.apache.maven:maven-archiver:jar:2.4
+[DEBUG]   Included: junit:junit:jar:3.8.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-archiver:jar:1.0-alpha-11
+[DEBUG]   Included: org.codehaus.plexus:plexus-io:jar:1.0-alpha-3
+[DEBUG]   Included: commons-io:commons-io:jar:2.11.0
+[DEBUG]   Included: org.projectlombok:lombok:jar:1.18.28
+[DEBUG]   Included: com.fasterxml.jackson.core:jackson-databind:jar:2.15.0
+[DEBUG]   Included: com.fasterxml.jackson.core:jackson-annotations:jar:2.15.0
+[DEBUG]   Included: com.fasterxml.jackson.core:jackson-core:jar:2.15.0
+[DEBUG]   Included: com.knuddels:jtokkit:jar:0.4.0
+[DEBUG]   Included: org.apache.maven.shared:maven-dependency-tree:jar:3.0.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-component-annotations:jar:1.6
+[DEBUG]   Included: org.eclipse.aether:aether-util:jar:0.9.0.M2
+[DEBUG]   Included: org.apache.maven:maven-aether-provider:jar:3.0
+[DEBUG]   Included: org.sonatype.aether:aether-util:jar:1.7
+[DEBUG]   Included: org.sonatype.sisu:sisu-inject-bean:jar:1.4.2
+[DEBUG]   Included: org.sonatype.sisu:sisu-guice:jar:noaop:2.1.7
+[DEBUG]   Included: org.codehaus.plexus:plexus-interpolation:jar:1.14
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:2.0.4
+[DEBUG]   Included: org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3
+[DEBUG]   Included: org.sonatype.plexus:plexus-cipher:jar:1.4
+[DEBUG]   Included: org.junit.platform:junit-platform-launcher:jar:1.9.2
+[DEBUG]   Included: org.junit.platform:junit-platform-engine:jar:1.9.2
+[DEBUG]   Included: org.opentest4j:opentest4j:jar:1.2.0
+[DEBUG]   Included: org.junit.platform:junit-platform-commons:jar:1.9.2
+[DEBUG]   Included: org.apiguardian:apiguardian-api:jar:1.1.2
+[DEBUG] Configuring mojo io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0:method from plugin realm ClassRealm[plugin>io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@6d5380c2]
+[DEBUG] Configuring mojo 'io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0:method' with basic configurator -->
+[DEBUG]   (f) apiKeys = [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]
+[DEBUG]   (f) enableMultithreading = true
+[DEBUG]   (f) frequencyPenalty = 0
+[DEBUG]   (f) maxPromptTokens = 2600
+[DEBUG]   (f) maxRounds = 1
+[DEBUG]   (f) maxThreads = 0
+[DEBUG]   (f) minErrorTokens = 500
+[DEBUG]   (f) model = gpt-3.5-turbo
+[DEBUG]   (f) noExecution = false
+[DEBUG]   (f) presencePenalty = 0
+[DEBUG]   (f) project = MavenProject: com.google.code.gson:gson:2.10.1 @ C:\dataset\d4j-spec5\1_gson\v-github\gson-master\gson\pom.xml
+[DEBUG]   (f) proxy = 127.0.0.1:7890
+[DEBUG]   (f) selectMethod = com.google.gson.stream.JsonWriter#flush
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@d5af0a5
+[DEBUG]   (f) stopWhenSuccess = true
+[DEBUG]   (f) temperature = 0.5
+[DEBUG]   (f) testNumber = 1
+[DEBUG]   (f) testOutput = C:\dataset\d4j-spec5\1_gson\v-github\gson-master\gson\chatunitest-tests
+[DEBUG]   (f) tmpOutput = C:\tmp\chatunitest-info
+[DEBUG]   (f) topP = 1
+[DEBUG] -- end configuration --
+[DEBUG] building maven31 dependency graph for com.google.code.gson:gson:jar:2.10.1 with Maven31DependencyGraphBuilder
+[DEBUG] Dependency collection stats: {ConflictMarker.analyzeTime=0, ConflictMarker.markTime=0, ConflictMarker.nodeCount=129, ConflictIdSorter.graphTime=0, ConflictIdSorter.topsortTime=0, ConflictIdSorter.conflictIdCount=55, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=2, ConflictResolver.conflictItemCount=100, DefaultDependencyCollector.collectTime=60, DefaultDependencyCollector.transformTime=2}
+[DEBUG] com.google.code.gson:gson:jar:2.10.1
+[DEBUG]    io.github.ZJU-ACES-ISE:chatunitest-starter:pom:1.0.0:compile
+[DEBUG]       org.junit.jupiter:junit-jupiter-api:jar:5.7.0:compile
+[DEBUG]          org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[DEBUG]          org.opentest4j:opentest4j:jar:1.2.0:compile
+[DEBUG]          org.junit.platform:junit-platform-commons:jar:1.7.0:compile
+[DEBUG]       org.mockito:mockito-core:jar:3.12.4:compile
+[DEBUG]          net.bytebuddy:byte-buddy:jar:1.11.13:compile
+[DEBUG]          net.bytebuddy:byte-buddy-agent:jar:1.11.13:compile
+[DEBUG]          org.objenesis:objenesis:jar:3.2:compile
+[DEBUG]       org.mockito:mockito-junit-jupiter:jar:3.12.4:compile
+[DEBUG]       org.mockito:mockito-inline:jar:3.12.4:compile
+[DEBUG]       org.junit.platform:junit-platform-launcher:jar:1.9.2:compile
+[DEBUG]          org.junit.platform:junit-platform-engine:jar:1.9.2:compile
+[DEBUG]       org.junit.jupiter:junit-jupiter-engine:jar:5.7.0:runtime
+[DEBUG]    org.evosuite:evosuite-standalone-runtime:jar:1.0.6:test
+[DEBUG]    junit:junit:jar:4.13.2:test
+[DEBUG]       org.hamcrest:hamcrest-core:jar:1.3:test
+[DEBUG]    com.google.truth:truth:jar:1.1.3:test
+[DEBUG]       com.google.guava:guava:jar:30.1.1-android:test
+[DEBUG]          com.google.guava:failureaccess:jar:1.0.1:test
+[DEBUG]          com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:test
+[DEBUG]          org.checkerframework:checker-compat-qual:jar:2.5.5:test
+[DEBUG]       org.checkerframework:checker-qual:jar:3.13.0:test
+[DEBUG]       com.google.auto.value:auto-value-annotations:jar:1.8.1:test
+[DEBUG]       org.ow2.asm:asm:jar:9.1:test
+[DEBUG]    com.google.guava:guava-testlib:jar:31.1-jre:test
+[DEBUG]       com.google.code.findbugs:jsr305:jar:3.0.2:test
+[DEBUG]       com.google.j2objc:j2objc-annotations:jar:1.3:test
+[DEBUG]    com.google.errorprone:error_prone_annotations:jar:2.18.0:compile
+[DEBUG]    com.github.wvengen:proguard-maven-plugin:jar:2.6.0:compile
+[DEBUG]       org.apache.ant:ant:jar:1.10.12:compile
+[DEBUG]          org.apache.ant:ant-launcher:jar:1.10.12:compile
+[DEBUG]       org.apache.maven:maven-archiver:jar:2.4:compile
+[DEBUG]          org.apache.maven:maven-artifact:jar:2.0:compile
+[DEBUG]          org.apache.maven:maven-model:jar:2.0:compile
+[DEBUG]          org.apache.maven:maven-project:jar:2.0:compile
+[DEBUG]             org.apache.maven:maven-profile:jar:2.0:compile
+[DEBUG]             org.apache.maven:maven-artifact-manager:jar:2.0:compile
+[DEBUG]                org.apache.maven:maven-repository-metadata:jar:2.0:compile
+[DEBUG]                org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5:compile
+[DEBUG]             org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:compile
+[DEBUG]                classworlds:classworlds:jar:1.1-alpha-2:compile
+[DEBUG]          org.codehaus.plexus:plexus-archiver:jar:1.0-alpha-11:compile
+[DEBUG]             org.codehaus.plexus:plexus-component-api:jar:1.0-alpha-15:compile
+[DEBUG]             org.codehaus.plexus:plexus-io:jar:1.0-alpha-3:compile
+[DEBUG]          org.codehaus.plexus:plexus-utils:jar:1.4.9:compile
+[DEBUG]          org.codehaus.plexus:plexus-interpolation:jar:1.6:compile
+[DEBUG]       commons-io:commons-io:jar:2.11.0:compile
+[DEBUG]       org.apache.maven:maven-plugin-api:jar:3.8.6:compile
+[DEBUG]          org.eclipse.sisu:org.eclipse.sisu.plexus:jar:0.3.5:compile
+[DEBUG]             javax.annotation:javax.annotation-api:jar:1.2:compile
+[DEBUG]             org.eclipse.sisu:org.eclipse.sisu.inject:jar:0.3.5:compile
+[DEBUG]             org.codehaus.plexus:plexus-component-annotations:jar:1.5.5:compile
+[DEBUG]          org.codehaus.plexus:plexus-classworlds:jar:2.6.0:compile
+[INFO]
+========================== Configuration ==========================
+
+[INFO]  Multithreading >>>> true
+[INFO]  - Class threads: 4, Method threads: 10
+[INFO]  Stop when success >>>> true
+[INFO]  No execution >>>> false
+[INFO]  ---
+[INFO]  TestOutput Path >>> C:\dataset\d4j-spec5\1_gson\v-github\gson-master\gson\chatunitest-tests
+[INFO]  TmpOutput Path >>> C:\tmp\chatunitest-info\gson
+[INFO]  MaxThreads >>> 40
+[INFO]  TestNumber >>> 1
+[INFO]  MaxRounds >>> 1
+[INFO]  MinErrorTokens >>> 500
+[INFO]  MaxPromptTokens >>> 2600
+[INFO]
+===================================================================
+
+[INFO]
+==========================
+[ChatTester] Generating tests for class: < com.google.gson.stream.JsonWriter> method: < flush > ...
+[INFO]
+==========================
+[ChatTester] Generating test for method < flush > number 1...
+
+[INFO] Generating test for method < flush > round 1 ...
+[DEBUG] [Prompt]:
+[Message(role=system, content=Please help me generate a whole JUnit test for a focal method in a focal class.
+I will provide the following information of the focal method:
+1. Required dependencies to import.
+2. The focal class signature.
+3. Source code of the focal method.
+4. Signatures of other methods and fields in the class.
+I will provide following brief information if the focal method has dependencies:
+1. Signatures of dependent classes.
+2. Signatures of dependent methods and fields in the dependent classes.
+I need you to create a whole unit test using JUnit 5 and Mockito 3, ensuring optimal branch and line coverage. The whole test should include necessary imports for JUnit 5 and Mockito 3, compile without errors, and use reflection to invoke private methods. No additional explanations required.
+, name=null), Message(role=user, content=The focal method is `flush()` in the focal class `JsonWriter`, and their information is
+```package com.google.gson.stream;
+import static com.google.gson.stream.JsonScope.DANGLING_NAME;
+import static com.google.gson.stream.JsonScope.EMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.EMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.EMPTY_OBJECT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.NONEMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_OBJECT;
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Pattern;
+import com.google.gson.FormattingStyle;
+public class JsonWriter {
+public JsonWriter(Writer out);
+
+@Override public void flush() throws IOException {
+    if (stackSize == 0) {
+      throw new IllegalStateException("JsonWriter is closed.");
+    }
+    out.flush();
+  }
+}```, name=null)]
+[INFO] Test for method < flush > compilation failed
+[INFO]
+==========================
+[ChatTester] Generation finished
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 11.154 s
+[INFO] Finished at: 2023-10-18T17:28:19+08:00
+[INFO] Final Memory: 29M/104M
+[INFO] ----------------------------------------------------------mvn chatunitest:method -DselectMethod="com.google.gson.stream.JsonWriter"#"flush"aset\d4j-spec5\1_gson\v-github\gson-master\gson>
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/C:/Libraries/maven-3.5.0/bin/../lib/evosuite-1.1.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/C:/Libraries/maven-3.5.0/bin/../lib/maven-slf4j-provider-3.5.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [ch.qos.logback.classic.util.ContextSelectorStaticBinder]
+[DEBUG] Created new class realm maven.api
+[DEBUG] Importing foreign packages into class realm maven.api
+[DEBUG]   Imported: javax.enterprise.inject.* < plexus.core
+[DEBUG]   Imported: javax.enterprise.util.* < plexus.core
+[DEBUG]   Imported: javax.inject.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.artifact < plexus.core
+[DEBUG]   Imported: org.apache.maven.classrealm < plexus.core
+[DEBUG]   Imported: org.apache.maven.cli < plexus.core
+[DEBUG]   Imported: org.apache.maven.configuration < plexus.core
+[DEBUG]   Imported: org.apache.maven.exception < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution < plexus.core
+[DEBUG]   Imported: org.apache.maven.execution.scope < plexus.core
+[DEBUG]   Imported: org.apache.maven.lifecycle < plexus.core
+[DEBUG]   Imported: org.apache.maven.model < plexus.core
+[DEBUG]   Imported: org.apache.maven.monitor < plexus.core
+[DEBUG]   Imported: org.apache.maven.plugin < plexus.core
+[DEBUG]   Imported: org.apache.maven.profiles < plexus.core
+[DEBUG]   Imported: org.apache.maven.project < plexus.core
+[DEBUG]   Imported: org.apache.maven.reporting < plexus.core
+[DEBUG]   Imported: org.apache.maven.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.rtinfo < plexus.core
+[DEBUG]   Imported: org.apache.maven.settings < plexus.core
+[DEBUG]   Imported: org.apache.maven.toolchain < plexus.core
+[DEBUG]   Imported: org.apache.maven.usability < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.* < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authentication < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.authorization < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.events < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.observers < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.proxy < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.repository < plexus.core
+[DEBUG]   Imported: org.apache.maven.wagon.resource < plexus.core
+[DEBUG]   Imported: org.codehaus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.* < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.classworlds < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.component < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.configuration < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.container < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.context < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.lifecycle < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.logging < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.personality < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.Xpp3Dom < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParser < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlPullParserException < plexus.core
+[DEBUG]   Imported: org.codehaus.plexus.util.xml.pull.XmlSerializer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.* < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.artifact < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.collection < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.deployment < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.graph < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.installation < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.internal.impl < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.metadata < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.repository < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.resolution < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.spi < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.transfer < plexus.core
+[DEBUG]   Imported: org.eclipse.aether.version < plexus.core
+[DEBUG]   Imported: org.fusesource.jansi.* < plexus.core
+[DEBUG]   Imported: org.slf4j.* < plexus.core
+[DEBUG]   Imported: org.slf4j.helpers.* < plexus.core
+[DEBUG]   Imported: org.slf4j.spi.* < plexus.core
+[DEBUG] Populating class realm maven.api
+[DEBUG] Message scheme: color
+[DEBUG] Message styles: debug info warning error success failure strong mojo project
+[DEBUG] Reading global settings from C:\Libraries\maven-3.5.0\bin\..\conf\settings.xml
+[DEBUG] Reading user settings from C:\Users\Grit\.m2\settings.xml
+[WARN]
+[WARN] Some problems were encountered while building the effective settings
+[WARN] Unrecognised tag: 'snapshotPolicy' (position: START_TAG seen ...</layout>\n          <snapshotPolicy>... @204:27)  @ C:\Libraries\maven-3.5.0\bin\..\conf\settings.xml, line 204, column 27
+[WARN]
+[DEBUG] Reading global toolchains from C:\Libraries\maven-3.5.0\bin\..\conf\toolchains.xml
+[DEBUG] Reading user toolchains from C:\Users\Grit\.m2\toolchains.xml
+[DEBUG] Using local repository at C:\Libraries\maven-3.5.0\maven_repo
+[DEBUG] Using manager EnhancedLocalRepositoryManager with priority 10.0 for C:\Libraries\maven-3.5.0\maven_repo
+[INFO] Scanning for projects...
+[DEBUG] Using mirror alimaven (http://maven.aliyun.com/nexus/content/repositories/central/) for central (https://repo.maven.apache.org/maven2).
+[DEBUG] Extension realms for project com.google.code.gson:gson:jar:2.10.1: (none)
+[DEBUG] Looking up lifecycle mappings for packaging jar from ClassRealm[plexus.core, parent: null]
+[DEBUG] Extension realms for project com.google.code.gson:gson-parent:pom:2.10.1: (none)
+[DEBUG] Looking up lifecycle mappings for packaging pom from ClassRealm[plexus.core, parent: null]
+[INFO] Inspecting build with total of 1 modules...
+[INFO] Installing Nexus Staging features:
+[DEBUG] Resolving plugin prefix chatunitest from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Resolved plugin prefix chatunitest to io.github.ZJU-ACES-ISE:chatunitest-maven-plugin from POM com.google.code.gson:gson:jar:2.10.1
+[DEBUG] === REACTOR BUILD PLAN ================================================
+[DEBUG] Project: com.google.code.gson:gson:jar:2.10.1
+[DEBUG] Tasks:   [chatunitest:method]
+[DEBUG] Style:   Regular
+[DEBUG] =======================================================================
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Gson 2.10.1
+[INFO] ------------------------------------------------------------------------
+[DEBUG] Resolving plugin prefix chatunitest from [org.apache.maven.plugins, org.codehaus.mojo]
+[DEBUG] Resolved plugin prefix chatunitest to io.github.ZJU-ACES-ISE:chatunitest-maven-plugin from POM com.google.code.gson:gson:jar:2.10.1
+[DEBUG] Lifecycle default -> [validate, initialize, generate-sources, process-sources, generate-resources, process-resources, compile, process-classes, generate-test-sources, process-test-sources, generate-test-resources, process-test-resources, test-compile, process-test-classes, test, prepare-package, package, pre-integration-test, integration-test, post-integration-test, verify, install, deploy]
+[DEBUG] Lifecycle clean -> [pre-clean, clean, post-clean]
+[DEBUG] Lifecycle site -> [pre-site, site, post-site, site-deploy]
+[DEBUG] === PROJECT BUILD PLAN ================================================
+[DEBUG] Project:       com.google.code.gson:gson:2.10.1
+[DEBUG] Dependencies (collect): []
+[DEBUG] Dependencies (resolve): []
+[DEBUG] Repositories (dependencies): [jdk11 (C:\Program Files\Java\jdk-11, default, releases+snapshots), alimaven (http://maven.aliyun.com/nexus/content/repositories/central/, default, releases)]
+[DEBUG] Repositories (plugins)     : [EvoSuite (http://www.evosuite.org/m2, default, releases+snapshots), alimaven (http://maven.aliyun.com/nexus/content/repositories/central/, default, releases)]
+[DEBUG] -----------------------------------------------------------------------
+[DEBUG] Goal:          io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0:method (default-cli)
+[DEBUG] Style:         Regular
+[DEBUG] Configuration: <?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <apiKeys>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</apiKeys>
+  <enableMultithreading default-value="true">${thread}</enableMultithreading>
+  <frequencyPenalty default-value="0">0</frequencyPenalty>
+  <maxPromptTokens default-value="2600"/>
+  <maxRounds default-value="5">6</maxRounds>
+  <maxThreads default-value="0">${maxThreads}</maxThreads>
+  <minErrorTokens default-value="500">500</minErrorTokens>
+  <model default-value="gpt-3.5-turbo">gpt-3.5-turbo</model>
+  <noExecution default-value="false">${noExecution}</noExecution>
+  <presencePenalty default-value="0">0</presencePenalty>
+  <project default-value="${project}"/>
+  <proxy default-value="null:-1">127.0.0.1:7890</proxy>
+  <selectMethod>${selectMethod}</selectMethod>
+  <session default-value="${session}"/>
+  <stopWhenSuccess default-value="true">${stopWhenSuccess}</stopWhenSuccess>
+  <temperature default-value="0.5">0.5</temperature>
+  <testNumber default-value="5">1</testNumber>
+  <testOutput default-value="chatunitest-tests">${testOutput}</testOutput>
+  <tmpOutput default-value="/tmp/chatunitest-info">${tmpOutput}</tmpOutput>
+  <topP default-value="1">1</topP>
+</configuration>
+[DEBUG] =======================================================================
+[INFO]
+[INFO] --- chatunitest-maven-plugin:1.2.0:method (default-cli) @ gson ---
+[DEBUG] Using mirror alimaven (http://maven.aliyun.com/nexus/content/repositories/central/) for central (http://repo1.maven.org/maven2).
+[DEBUG] Dependency collection stats: {ConflictMarker.analyzeTime=1, ConflictMarker.markTime=1, ConflictMarker.nodeCount=185, ConflictIdSorter.graphTime=1, ConflictIdSorter.topsortTime=1, ConflictIdSorter.conflictIdCount=79, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=10, ConflictResolver.conflictItemCount=144, DefaultDependencyCollector.collectTime=669, DefaultDependencyCollector.transformTime=17}
+[DEBUG] io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:jar:1.2.0:
+[DEBUG]    org.apache.maven.plugin-tools:maven-plugin-annotations:jar:3.8.1:compile
+[DEBUG]    com.github.javaparser:javaparser-core:jar:3.25.3:compile
+[DEBUG]    com.github.javaparser:javaparser-symbol-solver-core:jar:3.25.3:compile
+[DEBUG]       org.javassist:javassist:jar:3.29.2-GA:compile
+[DEBUG]       com.google.guava:guava:jar:31.1-jre:compile
+[DEBUG]          com.google.guava:failureaccess:jar:1.0.1:compile
+[DEBUG]          com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[DEBUG]          com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[DEBUG]          org.checkerframework:checker-qual:jar:3.12.0:compile
+[DEBUG]          com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[DEBUG]    com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[DEBUG]       com.squareup.okio:okio:jar:2.8.0:compile
+[DEBUG]          org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.0:compile
+[DEBUG]       org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.10:compile
+[DEBUG]          org.jetbrains:annotations:jar:13.0:compile
+[DEBUG]    com.google.code.gson:gson:jar:2.10.1:compile
+[DEBUG]       io.github.ZJU-ACES-ISE:chatunitest-starter:pom:1.0.0:compile
+[DEBUG]          org.junit.jupiter:junit-jupiter-api:jar:5.7.0:compile
+[DEBUG]          org.mockito:mockito-core:jar:3.12.4:compile
+[DEBUG]             net.bytebuddy:byte-buddy:jar:1.11.13:compile
+[DEBUG]             net.bytebuddy:byte-buddy-agent:jar:1.11.13:compile
+[DEBUG]             org.objenesis:objenesis:jar:3.2:compile
+[DEBUG]          org.mockito:mockito-junit-jupiter:jar:3.12.4:compile
+[DEBUG]          org.mockito:mockito-inline:jar:3.12.4:compile
+[DEBUG]          org.junit.jupiter:junit-jupiter-engine:jar:5.7.0:runtime
+[DEBUG]       com.google.errorprone:error_prone_annotations:jar:2.18.0:compile
+[DEBUG]       com.github.wvengen:proguard-maven-plugin:jar:2.6.0:compile
+[DEBUG]          org.apache.ant:ant:jar:1.10.12:compile
+[DEBUG]             org.apache.ant:ant-launcher:jar:1.10.12:compile
+[DEBUG]          org.apache.maven:maven-archiver:jar:2.4:compile
+[DEBUG]             org.apache.maven:maven-project:jar:2.0:compile
+[DEBUG]                org.apache.maven:maven-profile:jar:2.0:compile
+[DEBUG]                org.apache.maven:maven-artifact-manager:jar:2.0:compile
+[DEBUG]                org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:compile
+[DEBUG]                   junit:junit:jar:3.8.1:compile
+[DEBUG]                   classworlds:classworlds:jar:1.1-alpha-2:compile
+[DEBUG]             org.codehaus.plexus:plexus-archiver:jar:1.0-alpha-11:compile
+[DEBUG]                org.codehaus.plexus:plexus-component-api:jar:1.0-alpha-15:compile
+[DEBUG]                org.codehaus.plexus:plexus-io:jar:1.0-alpha-3:compile
+[DEBUG]          commons-io:commons-io:jar:2.11.0:compile
+[DEBUG]    org.projectlombok:lombok:jar:1.18.28:compile
+[DEBUG]    com.fasterxml.jackson.core:jackson-databind:jar:2.15.0:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-annotations:jar:2.15.0:compile
+[DEBUG]       com.fasterxml.jackson.core:jackson-core:jar:2.15.0:compile
+[DEBUG]    com.knuddels:jtokkit:jar:0.4.0:compile
+[DEBUG]    org.apache.maven.shared:maven-dependency-tree:jar:3.0.1:compile
+[DEBUG]       org.codehaus.plexus:plexus-component-annotations:jar:1.6:compile
+[DEBUG]       org.eclipse.aether:aether-util:jar:0.9.0.M2:compile
+[DEBUG]    org.apache.maven:maven-core:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-model:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-settings:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-settings-builder:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-repository-metadata:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-artifact:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-plugin-api:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-model-builder:jar:3.0:compile
+[DEBUG]       org.apache.maven:maven-aether-provider:jar:3.0:runtime
+[DEBUG]       org.sonatype.aether:aether-impl:jar:1.7:compile
+[DEBUG]          org.sonatype.aether:aether-spi:jar:1.7:compile
+[DEBUG]       org.sonatype.aether:aether-api:jar:1.7:compile
+[DEBUG]       org.sonatype.aether:aether-util:jar:1.7:compile
+[DEBUG]       org.sonatype.sisu:sisu-inject-plexus:jar:1.4.2:compile
+[DEBUG]          org.sonatype.sisu:sisu-inject-bean:jar:1.4.2:compile
+[DEBUG]             org.sonatype.sisu:sisu-guice:jar:noaop:2.1.7:compile
+[DEBUG]       org.codehaus.plexus:plexus-interpolation:jar:1.14:compile
+[DEBUG]       org.codehaus.plexus:plexus-utils:jar:2.0.4:compile
+[DEBUG]       org.codehaus.plexus:plexus-classworlds:jar:2.2.3:compile
+[DEBUG]       org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3:compile
+[DEBUG]          org.sonatype.plexus:plexus-cipher:jar:1.4:compile
+[DEBUG]    org.junit.platform:junit-platform-launcher:jar:1.9.2:compile
+[DEBUG]       org.junit.platform:junit-platform-engine:jar:1.9.2:compile
+[DEBUG]          org.opentest4j:opentest4j:jar:1.2.0:compile
+[DEBUG]          org.junit.platform:junit-platform-commons:jar:1.9.2:compile
+[DEBUG]       org.apiguardian:apiguardian-api:jar:1.1.2:compile
+[DEBUG] Created new class realm plugin>io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0
+[DEBUG] Importing foreign packages into class realm plugin>io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0
+[DEBUG]   Imported:  < maven.api
+[DEBUG] Populating class realm plugin>io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0
+[DEBUG]   Included: io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:jar:1.2.0
+[DEBUG]   Included: org.apache.maven.plugin-tools:maven-plugin-annotations:jar:3.8.1
+[DEBUG]   Included: com.github.javaparser:javaparser-core:jar:3.25.3
+[DEBUG]   Included: com.github.javaparser:javaparser-symbol-solver-core:jar:3.25.3
+[DEBUG]   Included: org.javassist:javassist:jar:3.29.2-GA
+[DEBUG]   Included: com.google.guava:guava:jar:31.1-jre
+[DEBUG]   Included: com.google.guava:failureaccess:jar:1.0.1
+[DEBUG]   Included: com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava
+[DEBUG]   Included: com.google.code.findbugs:jsr305:jar:3.0.2
+[DEBUG]   Included: org.checkerframework:checker-qual:jar:3.12.0
+[DEBUG]   Included: com.google.j2objc:j2objc-annotations:jar:1.3
+[DEBUG]   Included: com.squareup.okhttp3:okhttp:jar:4.9.3
+[DEBUG]   Included: com.squareup.okio:okio:jar:2.8.0
+[DEBUG]   Included: org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.4.0
+[DEBUG]   Included: org.jetbrains.kotlin:kotlin-stdlib:jar:1.4.10
+[DEBUG]   Included: org.jetbrains:annotations:jar:13.0
+[DEBUG]   Included: com.google.code.gson:gson:jar:2.10.1
+[DEBUG]   Included: io.github.ZJU-ACES-ISE:chatunitest-starter:pom:1.0.0
+[DEBUG]   Included: org.junit.jupiter:junit-jupiter-api:jar:5.7.0
+[DEBUG]   Included: org.mockito:mockito-core:jar:3.12.4
+[DEBUG]   Included: net.bytebuddy:byte-buddy:jar:1.11.13
+[DEBUG]   Included: net.bytebuddy:byte-buddy-agent:jar:1.11.13
+[DEBUG]   Included: org.objenesis:objenesis:jar:3.2
+[DEBUG]   Included: org.mockito:mockito-junit-jupiter:jar:3.12.4
+[DEBUG]   Included: org.mockito:mockito-inline:jar:3.12.4
+[DEBUG]   Included: org.junit.jupiter:junit-jupiter-engine:jar:5.7.0
+[DEBUG]   Included: com.google.errorprone:error_prone_annotations:jar:2.18.0
+[DEBUG]   Included: com.github.wvengen:proguard-maven-plugin:jar:2.6.0
+[DEBUG]   Included: org.apache.ant:ant:jar:1.10.12
+[DEBUG]   Included: org.apache.ant:ant-launcher:jar:1.10.12
+[DEBUG]   Included: org.apache.maven:maven-archiver:jar:2.4
+[DEBUG]   Included: junit:junit:jar:3.8.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-archiver:jar:1.0-alpha-11
+[DEBUG]   Included: org.codehaus.plexus:plexus-io:jar:1.0-alpha-3
+[DEBUG]   Included: commons-io:commons-io:jar:2.11.0
+[DEBUG]   Included: org.projectlombok:lombok:jar:1.18.28
+[DEBUG]   Included: com.fasterxml.jackson.core:jackson-databind:jar:2.15.0
+[DEBUG]   Included: com.fasterxml.jackson.core:jackson-annotations:jar:2.15.0
+[DEBUG]   Included: com.fasterxml.jackson.core:jackson-core:jar:2.15.0
+[DEBUG]   Included: com.knuddels:jtokkit:jar:0.4.0
+[DEBUG]   Included: org.apache.maven.shared:maven-dependency-tree:jar:3.0.1
+[DEBUG]   Included: org.codehaus.plexus:plexus-component-annotations:jar:1.6
+[DEBUG]   Included: org.eclipse.aether:aether-util:jar:0.9.0.M2
+[DEBUG]   Included: org.apache.maven:maven-aether-provider:jar:3.0
+[DEBUG]   Included: org.sonatype.aether:aether-util:jar:1.7
+[DEBUG]   Included: org.sonatype.sisu:sisu-inject-bean:jar:1.4.2
+[DEBUG]   Included: org.sonatype.sisu:sisu-guice:jar:noaop:2.1.7
+[DEBUG]   Included: org.codehaus.plexus:plexus-interpolation:jar:1.14
+[DEBUG]   Included: org.codehaus.plexus:plexus-utils:jar:2.0.4
+[DEBUG]   Included: org.sonatype.plexus:plexus-sec-dispatcher:jar:1.3
+[DEBUG]   Included: org.sonatype.plexus:plexus-cipher:jar:1.4
+[DEBUG]   Included: org.junit.platform:junit-platform-launcher:jar:1.9.2
+[DEBUG]   Included: org.junit.platform:junit-platform-engine:jar:1.9.2
+[DEBUG]   Included: org.opentest4j:opentest4j:jar:1.2.0
+[DEBUG]   Included: org.junit.platform:junit-platform-commons:jar:1.9.2
+[DEBUG]   Included: org.apiguardian:apiguardian-api:jar:1.1.2
+[DEBUG] Configuring mojo io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0:method from plugin realm ClassRealm[plugin>io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0, parent: jdk.internal.loader.ClassLoaders$AppClassLoader@6d5380c2]
+[DEBUG] Configuring mojo 'io.github.ZJU-ACES-ISE:chatunitest-maven-plugin:1.2.0:method' with basic configurator -->
+[DEBUG]   (f) apiKeys = [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]
+[DEBUG]   (f) enableMultithreading = true
+[DEBUG]   (f) frequencyPenalty = 0
+[DEBUG]   (f) maxPromptTokens = 2600
+[DEBUG]   (f) maxRounds = 6
+[DEBUG]   (f) maxThreads = 0
+[DEBUG]   (f) minErrorTokens = 500
+[DEBUG]   (f) model = gpt-3.5-turbo
+[DEBUG]   (f) noExecution = false
+[DEBUG]   (f) presencePenalty = 0
+[DEBUG]   (f) project = MavenProject: com.google.code.gson:gson:2.10.1 @ C:\dataset\d4j-spec5\1_gson\v-github\gson-master\gson\pom.xml
+[DEBUG]   (f) proxy = 127.0.0.1:7890
+[DEBUG]   (f) selectMethod = com.google.gson.stream.JsonWriter#flush
+[DEBUG]   (f) session = org.apache.maven.execution.MavenSession@d5af0a5
+[DEBUG]   (f) stopWhenSuccess = true
+[DEBUG]   (f) temperature = 0.5
+[DEBUG]   (f) testNumber = 1
+[DEBUG]   (f) testOutput = C:\dataset\d4j-spec5\1_gson\v-github\gson-master\gson\chatunitest-tests
+[DEBUG]   (f) tmpOutput = C:\tmp\chatunitest-info
+[DEBUG]   (f) topP = 1
+[DEBUG] -- end configuration --
+[DEBUG] building maven31 dependency graph for com.google.code.gson:gson:jar:2.10.1 with Maven31DependencyGraphBuilder
+[DEBUG] Dependency collection stats: {ConflictMarker.analyzeTime=0, ConflictMarker.markTime=0, ConflictMarker.nodeCount=129, ConflictIdSorter.graphTime=0, ConflictIdSorter.topsortTime=0, ConflictIdSorter.conflictIdCount=55, ConflictIdSorter.conflictIdCycleCount=0, ConflictResolver.totalTime=3, ConflictResolver.conflictItemCount=100, DefaultDependencyCollector.collectTime=63, DefaultDependencyCollector.transformTime=3}
+[DEBUG] com.google.code.gson:gson:jar:2.10.1
+[DEBUG]    io.github.ZJU-ACES-ISE:chatunitest-starter:pom:1.0.0:compile
+[DEBUG]       org.junit.jupiter:junit-jupiter-api:jar:5.7.0:compile
+[DEBUG]          org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[DEBUG]          org.opentest4j:opentest4j:jar:1.2.0:compile
+[DEBUG]          org.junit.platform:junit-platform-commons:jar:1.7.0:compile
+[DEBUG]       org.mockito:mockito-core:jar:3.12.4:compile
+[DEBUG]          net.bytebuddy:byte-buddy:jar:1.11.13:compile
+[DEBUG]          net.bytebuddy:byte-buddy-agent:jar:1.11.13:compile
+[DEBUG]          org.objenesis:objenesis:jar:3.2:compile
+[DEBUG]       org.mockito:mockito-junit-jupiter:jar:3.12.4:compile
+[DEBUG]       org.mockito:mockito-inline:jar:3.12.4:compile
+[DEBUG]       org.junit.platform:junit-platform-launcher:jar:1.9.2:compile
+[DEBUG]          org.junit.platform:junit-platform-engine:jar:1.9.2:compile
+[DEBUG]       org.junit.jupiter:junit-jupiter-engine:jar:5.7.0:runtime
+[DEBUG]    org.evosuite:evosuite-standalone-runtime:jar:1.0.6:test
+[DEBUG]    junit:junit:jar:4.13.2:test
+[DEBUG]       org.hamcrest:hamcrest-core:jar:1.3:test
+[DEBUG]    com.google.truth:truth:jar:1.1.3:test
+[DEBUG]       com.google.guava:guava:jar:30.1.1-android:test
+[DEBUG]          com.google.guava:failureaccess:jar:1.0.1:test
+[DEBUG]          com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:test
+[DEBUG]          org.checkerframework:checker-compat-qual:jar:2.5.5:test
+[DEBUG]       org.checkerframework:checker-qual:jar:3.13.0:test
+[DEBUG]       com.google.auto.value:auto-value-annotations:jar:1.8.1:test
+[DEBUG]       org.ow2.asm:asm:jar:9.1:test
+[DEBUG]    com.google.guava:guava-testlib:jar:31.1-jre:test
+[DEBUG]       com.google.code.findbugs:jsr305:jar:3.0.2:test
+[DEBUG]       com.google.j2objc:j2objc-annotations:jar:1.3:test
+[DEBUG]    com.google.errorprone:error_prone_annotations:jar:2.18.0:compile
+[DEBUG]    com.github.wvengen:proguard-maven-plugin:jar:2.6.0:compile
+[DEBUG]       org.apache.ant:ant:jar:1.10.12:compile
+[DEBUG]          org.apache.ant:ant-launcher:jar:1.10.12:compile
+[DEBUG]       org.apache.maven:maven-archiver:jar:2.4:compile
+[DEBUG]          org.apache.maven:maven-artifact:jar:2.0:compile
+[DEBUG]          org.apache.maven:maven-model:jar:2.0:compile
+[DEBUG]          org.apache.maven:maven-project:jar:2.0:compile
+[DEBUG]             org.apache.maven:maven-profile:jar:2.0:compile
+[DEBUG]             org.apache.maven:maven-artifact-manager:jar:2.0:compile
+[DEBUG]                org.apache.maven:maven-repository-metadata:jar:2.0:compile
+[DEBUG]                org.apache.maven.wagon:wagon-provider-api:jar:1.0-alpha-5:compile
+[DEBUG]             org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-8:compile
+[DEBUG]                classworlds:classworlds:jar:1.1-alpha-2:compile
+[DEBUG]          org.codehaus.plexus:plexus-archiver:jar:1.0-alpha-11:compile
+[DEBUG]             org.codehaus.plexus:plexus-component-api:jar:1.0-alpha-15:compile
+[DEBUG]             org.codehaus.plexus:plexus-io:jar:1.0-alpha-3:compile
+[DEBUG]          org.codehaus.plexus:plexus-utils:jar:1.4.9:compile
+[DEBUG]          org.codehaus.plexus:plexus-interpolation:jar:1.6:compile
+[DEBUG]       commons-io:commons-io:jar:2.11.0:compile
+[DEBUG]       org.apache.maven:maven-plugin-api:jar:3.8.6:compile
+[DEBUG]          org.eclipse.sisu:org.eclipse.sisu.plexus:jar:0.3.5:compile
+[DEBUG]             javax.annotation:javax.annotation-api:jar:1.2:compile
+[DEBUG]             org.eclipse.sisu:org.eclipse.sisu.inject:jar:0.3.5:compile
+[DEBUG]             org.codehaus.plexus:plexus-component-annotations:jar:1.5.5:compile
+[DEBUG]          org.codehaus.plexus:plexus-classworlds:jar:2.6.0:compile
+[INFO]
+========================== Configuration ==========================
+
+[INFO]  Multithreading >>>> true
+[INFO]  - Class threads: 4, Method threads: 10
+[INFO]  Stop when success >>>> true
+[INFO]  No execution >>>> false
+[INFO]  ---
+[INFO]  TestOutput Path >>> C:\dataset\d4j-spec5\1_gson\v-github\gson-master\gson\chatunitest-tests
+[INFO]  TmpOutput Path >>> C:\tmp\chatunitest-info\gson
+[INFO]  MaxThreads >>> 40
+[INFO]  TestNumber >>> 1
+[INFO]  MaxRounds >>> 6
+[INFO]  MinErrorTokens >>> 500
+[INFO]  MaxPromptTokens >>> 2600
+[INFO]
+===================================================================
+
+[INFO]
+==========================
+[ChatTester] Generating tests for class: < com.google.gson.stream.JsonWriter> method: < flush > ...
+[INFO]
+==========================
+[ChatTester] Generating test for method < flush > number 1...
+
+[INFO] Generating test for method < flush > round 1 ...
+[DEBUG] [Prompt]:
+[Message(role=system, content=Please help me generate a whole JUnit test for a focal method in a focal class.
+I will provide the following information of the focal method:
+1. Required dependencies to import.
+2. The focal class signature.
+3. Source code of the focal method.
+4. Signatures of other methods and fields in the class.
+I will provide following brief information if the focal method has dependencies:
+1. Signatures of dependent classes.
+2. Signatures of dependent methods and fields in the dependent classes.
+I need you to create a whole unit test using JUnit 5 and Mockito 3, ensuring optimal branch and line coverage. The whole test should include necessary imports for JUnit 5 and Mockito 3, compile without errors, and use reflection to invoke private methods. No additional explanations required.
+, name=null), Message(role=user, content=The focal method is `flush()` in the focal class `JsonWriter`, and their information is
+```package com.google.gson.stream;
+import static com.google.gson.stream.JsonScope.DANGLING_NAME;
+import static com.google.gson.stream.JsonScope.EMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.EMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.EMPTY_OBJECT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.NONEMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_OBJECT;
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Pattern;
+import com.google.gson.FormattingStyle;
+public class JsonWriter {
+public JsonWriter(Writer out);
+
+@Override public void flush() throws IOException {
+    if (stackSize == 0) {
+      throw new IllegalStateException("JsonWriter is closed.");
+    }
+    out.flush();
+  }
+}```, name=null)]
+[INFO] Test for method < flush > execution failed
+[INFO] Fixing test for method < flush > round 2 ...
+[DEBUG] Allowed tokens: 2156
+[DEBUG] Processed error message:
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+
+[DEBUG] [Prompt]:
+[Message(role=user, content=I need you to fix an error in a unit test, an error occurred while compiling and executing
+The unit test is:
+```
+package com.google.gson.stream;
+import org.junit.jupiter.api.Timeout;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+class JsonWriter_flush_30_1_Test {
+    @Mock
+    private Writer out;
+
+    private JsonWriter jsonWriter;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        jsonWriter = new JsonWriter(out);
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_shouldFlushWriter() throws IOException {
+        // Arrange
+
+        // Act
+        jsonWriter.flush();
+
+        // Assert
+        verify(out).flush();
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_whenStackIsEmpty_shouldThrowIllegalStateException() throws IOException {
+        // Arrange
+        jsonWriter = new JsonWriter(out);
+        jsonWriter.close();
+
+        // Act and Assert
+        assertThrows(IllegalStateException.class, () -> jsonWriter.flush());
+    }
+}```
+The error message is:
+```
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+```
+The unit test is testing the method flush() in the class JsonWriter,
+the source code of the method under test and its class is:
+```
+package com.google.gson.stream;
+import static com.google.gson.stream.JsonScope.DANGLING_NAME;
+import static com.google.gson.stream.JsonScope.EMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.EMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.EMPTY_OBJECT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.NONEMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_OBJECT;
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Pattern;
+import com.google.gson.FormattingStyle;
+public class JsonWriter {
+public JsonWriter(Writer out);
+
+@Override public void flush() throws IOException {
+    if (stackSize == 0) {
+      throw new IllegalStateException("JsonWriter is closed.");
+    }
+    out.flush();
+  }
+}```
+Please fix the error and return the whole fixed unit test. You can use Junit 5, Mockito 3 and reflection. No explanation is needed.
+, name=null)]
+[INFO] Test for method < flush > execution failed
+[INFO] Fixing test for method < flush > round 3 ...
+[DEBUG] Allowed tokens: 2162
+[DEBUG] Processed error message:
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+
+[DEBUG] [Prompt]:
+[Message(role=user, content=I need you to fix an error in a unit test, an error occurred while compiling and executing
+The unit test is:
+```
+package com.google.gson.stream;
+import org.junit.jupiter.api.Timeout;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+
+class JsonWriter_flush_30_1_Test {
+
+    @Mock
+    private Writer out;
+
+    private JsonWriter jsonWriter;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        jsonWriter = new JsonWriter(out);
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_shouldFlushWriter() throws IOException {
+        // Arrange
+
+        // Act
+        jsonWriter.flush();
+
+        // Assert
+        verify(out).flush();
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_whenStackIsEmpty_shouldThrowIllegalStateException() throws IOException {
+        // Arrange
+        jsonWriter.close();
+
+        // Act and Assert
+        assertThrows(IllegalStateException.class, () -> jsonWriter.flush());
+    }
+}```
+The error message is:
+```
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+```
+The unit test is testing the method flush() in the class JsonWriter,
+the source code of the method under test and its class is:
+```
+package com.google.gson.stream;
+import static com.google.gson.stream.JsonScope.DANGLING_NAME;
+import static com.google.gson.stream.JsonScope.EMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.EMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.EMPTY_OBJECT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.NONEMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_OBJECT;
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Pattern;
+import com.google.gson.FormattingStyle;
+public class JsonWriter {
+public JsonWriter(Writer out);
+
+@Override public void flush() throws IOException {
+    if (stackSize == 0) {
+      throw new IllegalStateException("JsonWriter is closed.");
+    }
+    out.flush();
+  }
+}```
+Please fix the error and return the whole fixed unit test. You can use Junit 5, Mockito 3 and reflection. No explanation is needed.
+, name=null)]
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[DEBUG] AskGPT: Failed to get response
+
+[INFO] Test for method < flush > extract code failed
+[INFO] Fixing test for method < flush > round 4 ...
+[DEBUG] Allowed tokens: 2162
+[DEBUG] Processed error message:
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+
+[DEBUG] [Prompt]:
+[Message(role=user, content=I need you to fix an error in a unit test, an error occurred while compiling and executing
+The unit test is:
+```
+package com.google.gson.stream;
+import org.junit.jupiter.api.Timeout;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+
+class JsonWriter_flush_30_1_Test {
+
+    @Mock
+    private Writer out;
+
+    private JsonWriter jsonWriter;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        jsonWriter = new JsonWriter(out);
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_shouldFlushWriter() throws IOException {
+        // Arrange
+
+        // Act
+        jsonWriter.flush();
+
+        // Assert
+        verify(out).flush();
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_whenStackIsEmpty_shouldThrowIllegalStateException() throws IOException {
+        // Arrange
+        jsonWriter.close();
+
+        // Act and Assert
+        assertThrows(IllegalStateException.class, () -> jsonWriter.flush());
+    }
+}```
+The error message is:
+```
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+```
+The unit test is testing the method flush() in the class JsonWriter,
+the source code of the method under test and its class is:
+```
+package com.google.gson.stream;
+import static com.google.gson.stream.JsonScope.DANGLING_NAME;
+import static com.google.gson.stream.JsonScope.EMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.EMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.EMPTY_OBJECT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.NONEMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_OBJECT;
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Pattern;
+import com.google.gson.FormattingStyle;
+public class JsonWriter {
+public JsonWriter(Writer out);
+
+@Override public void flush() throws IOException {
+    if (stackSize == 0) {
+      throw new IllegalStateException("JsonWriter is closed.");
+    }
+    out.flush();
+  }
+}```
+Please fix the error and return the whole fixed unit test. You can use Junit 5, Mockito 3 and reflection. No explanation is needed.
+, name=null)]
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[INFO] Test for method < flush > execution failed
+[INFO] Fixing test for method < flush > round 5 ...
+[DEBUG] Allowed tokens: 2162
+[DEBUG] Processed error message:
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+
+[DEBUG] [Prompt]:
+[Message(role=user, content=I need you to fix an error in a unit test, an error occurred while compiling and executing
+The unit test is:
+```
+package com.google.gson.stream;
+import org.junit.jupiter.api.Timeout;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+
+class JsonWriter_flush_30_1_Test {
+
+    @Mock
+    private Writer out;
+
+    private JsonWriter jsonWriter;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        jsonWriter = new JsonWriter(out);
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_shouldFlushWriter() throws IOException {
+        // Arrange
+
+        // Act
+        jsonWriter.flush();
+
+        // Assert
+        verify(out).flush();
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_whenStackIsEmpty_shouldThrowIllegalStateException() throws IOException {
+        // Arrange
+        jsonWriter.close();
+
+        // Act and Assert
+        assertThrows(IllegalStateException.class, () -> jsonWriter.flush());
+    }
+}```
+The error message is:
+```
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+```
+The unit test is testing the method flush() in the class JsonWriter,
+the source code of the method under test and its class is:
+```
+package com.google.gson.stream;
+import static com.google.gson.stream.JsonScope.DANGLING_NAME;
+import static com.google.gson.stream.JsonScope.EMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.EMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.EMPTY_OBJECT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.NONEMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_OBJECT;
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Pattern;
+import com.google.gson.FormattingStyle;
+public class JsonWriter {
+public JsonWriter(Writer out);
+
+@Override public void flush() throws IOException {
+    if (stackSize == 0) {
+      throw new IllegalStateException("JsonWriter is closed.");
+    }
+    out.flush();
+  }
+}```
+Please fix the error and return the whole fixed unit test. You can use Junit 5, Mockito 3 and reflection. No explanation is needed.
+, name=null)]
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[DEBUG] AskGPT: Failed to get response
+
+[INFO] Test for method < flush > extract code failed
+[INFO] Fixing test for method < flush > round 6 ...
+[DEBUG] Allowed tokens: 2162
+[DEBUG] Processed error message:
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+
+[DEBUG] [Prompt]:
+[Message(role=user, content=I need you to fix an error in a unit test, an error occurred while compiling and executing
+The unit test is:
+```
+package com.google.gson.stream;
+import org.junit.jupiter.api.Timeout;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.io.IOException;
+import java.io.Writer;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+
+class JsonWriter_flush_30_1_Test {
+
+    @Mock
+    private Writer out;
+
+    private JsonWriter jsonWriter;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        jsonWriter = new JsonWriter(out);
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_shouldFlushWriter() throws IOException {
+        // Arrange
+
+        // Act
+        jsonWriter.flush();
+
+        // Assert
+        verify(out).flush();
+    }
+
+    @Test
+    @Timeout(8000)
+    void flush_whenStackIsEmpty_shouldThrowIllegalStateException() throws IOException {
+        // Arrange
+        jsonWriter.close();
+
+        // Act and Assert
+        assertThrows(IllegalStateException.class, () -> jsonWriter.flush());
+    }
+}```
+The error message is:
+```
+flush_whenStackIsEmpty_shouldThrowIllegalStateException():  line: 61 java.io.IOException: Incomplete document
+```
+The unit test is testing the method flush() in the class JsonWriter,
+the source code of the method under test and its class is:
+```
+package com.google.gson.stream;
+import static com.google.gson.stream.JsonScope.DANGLING_NAME;
+import static com.google.gson.stream.JsonScope.EMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.EMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.EMPTY_OBJECT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_ARRAY;
+import static com.google.gson.stream.JsonScope.NONEMPTY_DOCUMENT;
+import static com.google.gson.stream.JsonScope.NONEMPTY_OBJECT;
+import java.io.Closeable;
+import java.io.Flushable;
+import java.io.IOException;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Pattern;
+import com.google.gson.FormattingStyle;
+public class JsonWriter {
+public JsonWriter(Writer out);
+
+@Override public void flush() throws IOException {
+    if (stackSize == 0) {
+      throw new IllegalStateException("JsonWriter is closed.");
+    }
+    out.flush();
+  }
+}```
+Please fix the error and return the whole fixed unit test. You can use Junit 5, Mockito 3 and reflection. No explanation is needed.
+, name=null)]
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[ERROR] In AskGPT.askChatGPT: java.io.IOException: Unexpected code Response{protocol=h2, code=429, message=, url=https://api.openai.com/v1/chat/completions}
+[DEBUG] AskGPT: Failed to get response
+
+[INFO] Test for method < flush > extract code failed
+[INFO]
+==========================
+[ChatTester] Generation finished
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 54.840 s
+[INFO] Finished at: 2023-10-18T17:34:07+08:00
+[INFO] Final Memory: 27M/100M
+[INFO] ------------------------------------------------------------------------

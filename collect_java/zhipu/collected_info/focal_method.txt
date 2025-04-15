@@ -1,0 +1,212 @@
+public void write(JsonWriter out, AssistantMessage assistantMessage) throws IOException {        out.beginObject();        out.name("role");        out.value(assistantMessage.getRole().toString().toLowerCase());        out.name("content");        if (assistantMessage.getContent() == null) {            boolean serializeNulls = out.getSerializeNulls();            out.setSerializeNulls(true);            out.nullValue();             out.setSerializeNulls(serializeNulls);        } else {            out.value(assistantMessage.getContent());        }        if (assistantMessage.getName() != null) {            out.name("name");            out.value(assistantMessage.getName());        }        List<ToolCall> toolCalls = assistantMessage.getToolCalls();        if (toolCalls != null && !toolCalls.isEmpty()) {            out.name("tool_calls");            out.beginArray();            TypeAdapter<ToolCall> toolCallTypeAdapter = Json.GSON.getAdapter(ToolCall.class);            for (ToolCall toolCall : toolCalls) {                toolCallTypeAdapter.write(out, toolCall);            }            out.endArray();        }        out.endObject();    }
+public AssistantMessage read(JsonReader in) throws IOException {        return delegate.read(in);    }
+----------------------------------------------------------------------------------------------------
+public Response intercept(Chain chain) throws IOException {        String token = getOrDefault(cache.getIfPresent(this.apiKey), generateToken());        Request request = chain.request()                .newBuilder()                .addHeader("Authorization", "Bearer " + token)                .removeHeader("Accept")                .build();        return chain.proceed(request);    }
+----------------------------------------------------------------------------------------------------
+public static List<Embedding> toEmbed(EmbeddingResponse response) {        return response.getData().stream()                .map(zhipuAiEmbedding -> Embedding.from(zhipuAiEmbedding.getEmbedding()))                .collect(Collectors.toList());    }
+public static String toEmbedTexts(List<TextSegment> textSegments) {        List<String> embedText = textSegments.stream()                .map(TextSegment::text)                .collect(Collectors.toList());        if (Utils.isNullOrEmpty(embedText)) {            return null;        }        return embedText.get(0);    }
+public static List<Tool> toTools(List<ToolSpecification> toolSpecifications) {        return toolSpecifications.stream()                .map(toolSpecification -> Tool.from(toFunction(toolSpecification)))                .collect(Collectors.toList());    }
+public static List<Message> toZhipuAiMessages(List<ChatMessage> messages) {        return messages.stream()                .map(DefaultZhipuAiHelper::toZhipuAiMessage)                .collect(Collectors.toList());    }
+public static AiMessage aiMessageFrom(ChatCompletionResponse response) {        Message message = response.getChoices().get(0).getMessage();        AssistantMessage assistantMessage = (AssistantMessage) message;        if (isNullOrEmpty(assistantMessage.getToolCalls())) {            return AiMessage.from(assistantMessage.getContent());        }        return AiMessage.from(specificationsFrom(assistantMessage.getToolCalls()));    }
+public static List<ToolExecutionRequest> specificationsFrom(List<ToolCall> toolCalls) {        List<ToolExecutionRequest> specifications = new ArrayList<>(toolCalls.size());        for (ToolCall toolCall : toolCalls) {            specifications.add(                    ToolExecutionRequest.builder()                            .id(toolCall.getId())                            .name(toolCall.getFunction().getName())                            .arguments(toolCall.getFunction().getArguments())                            .build()            );        }        return specifications;    }
+public static TokenUsage tokenUsageFrom(Usage zhipuUsage) {        if (zhipuUsage == null) {            return null;        }        return new TokenUsage(                zhipuUsage.getPromptTokens(),                zhipuUsage.getCompletionTokens(),                zhipuUsage.getTotalTokens()        );    }
+public static FinishReason finishReasonFrom(String finishReason) {        if (finishReason == null) {            return null;        }        switch (finishReason) {            case "stop":                return STOP;            case "length":                return LENGTH;            case "tool_calls":                return TOOL_EXECUTION;            default:                return OTHER;        }    }
+----------------------------------------------------------------------------------------------------
+public Response intercept(Interceptor.Chain chain) throws IOException {        Request request = chain.request();        log(request);        return chain.proceed(request);    }
+----------------------------------------------------------------------------------------------------
+public Response intercept(Interceptor.Chain chain) throws IOException {        Request request = chain.request();        Response response = chain.proceed(request);        log(response);        return response;    }
+----------------------------------------------------------------------------------------------------
+public static ZhipuAiChatModelBuilder builder() {        for (ZhipuAiChatModelBuilderFactory factories : loadFactories(ZhipuAiChatModelBuilderFactory.class)) {            return factories.get();        }        return new ZhipuAiChatModelBuilder();    }
+public Response<AiMessage> generate(List<ChatMessage> messages) {        return generate(messages, (ToolSpecification) null);    }
+public Response<AiMessage> generate(List<ChatMessage> messages, List<ToolSpecification> toolSpecifications) {        ensureNotEmpty(messages, "messages");        ChatCompletionRequest.Builder requestBuilder = ChatCompletionRequest.builder()                .model(this.model)                .maxTokens(maxToken)                .stream(false)                .topP(topP)                .temperature(temperature)                .toolChoice(ToolChoiceMode.AUTO)                .messages(toZhipuAiMessages(messages));        if (!isNullOrEmpty(toolSpecifications)) {            requestBuilder.tools(toTools(toolSpecifications));        }        ChatCompletionResponse response = withRetry(() -> client.chatCompletion(requestBuilder.build()), maxRetries);        return Response.from(                aiMessageFrom(response),                tokenUsageFrom(response.getUsage()),                finishReasonFrom(response.getChoices().get(0).getFinishReason())        );    }
+public Response<AiMessage> generate(List<ChatMessage> messages, ToolSpecification toolSpecification) {        return generate(messages, toolSpecification != null ? Collections.singletonList(toolSpecification) : null);    }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public ChatCompletionResponse chatCompletion(ChatCompletionRequest request) {        try {            retrofit2.Response<ChatCompletionResponse> retrofitResponse                    = zhipuAiApi.chatCompletion(request).execute();            if (retrofitResponse.isSuccessful()) {                return retrofitResponse.body();            } else {                throw toException(retrofitResponse);            }        } catch (IOException e) {            throw new RuntimeException(e);        }    }
+public EmbeddingResponse embedAll(EmbeddingRequest request) {        try {            retrofit2.Response<EmbeddingResponse> responseResponse = zhipuAiApi.embeddings(request).execute();            if (responseResponse.isSuccessful()) {                return responseResponse.body();            } else {                throw toException(responseResponse);            }        } catch (IOException e) {            throw new RuntimeException(e);        }    }
+public void onOpen(EventSource eventSource, okhttp3.Response response) {                if (logResponses) {                    log.debug("onOpen()");                }            }
+public void onEvent(EventSource eventSource, String id, String type, String data) {                if (logResponses) {                    log.debug("onEvent() {}", data);                }                if ("[DONE]".equals(data)) {                    AiMessage aiMessage;                    if (isNullOrEmpty(specifications)) {                        aiMessage = AiMessage.from(contentBuilder.toString());                    } else {                        aiMessage = AiMessage.from(specifications);                    }                    Response<AiMessage> response = Response.from(                            aiMessage,                            tokenUsage,                            finishReason                    );                    handler.onComplete(response);                } else {                    try {                        ChatCompletionResponse chatCompletionResponse = Json.fromJson(data, ChatCompletionResponse.class);                        ChatCompletionChoice zhipuChatCompletionChoice = chatCompletionResponse.getChoices().get(0);                        String chunk = zhipuChatCompletionChoice.getDelta().getContent();                        contentBuilder.append(chunk);                        handler.onNext(chunk);                        Usage zhipuUsageInfo = chatCompletionResponse.getUsage();                        if (zhipuUsageInfo != null) {                            this.tokenUsage = tokenUsageFrom(zhipuUsageInfo);                        }                        String finishReasonString = zhipuChatCompletionChoice.getFinishReason();                        if (finishReasonString != null) {                            this.finishReason = finishReasonFrom(finishReasonString);                        }                        List<ToolCall> toolCalls = zhipuChatCompletionChoice.getDelta().getToolCalls();                        if (!isNullOrEmpty(toolCalls)) {                            this.specifications = specificationsFrom(toolCalls);                        }                    } catch (Exception e) {                        handler.onError(e);                        throw new RuntimeException(e);                    }                }            }
+public void onFailure(EventSource eventSource, Throwable t, okhttp3.Response response) {                if (logResponses) {                    log.debug("onFailure()", t);                }                if (t != null) {                    handler.onError(t);                } else {                    handler.onError(new RuntimeException(String.format("status code: %s; body: %s", response.code(), response.body())));                }            }
+public void onClosed(EventSource eventSource) {                if (logResponses) {                    log.debug("onClosed()");                }            }
+public Builder baseUrl(String baseUrl) {            if (baseUrl != null && !baseUrl.trim().isEmpty()) {                this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";                return this;            } else {                throw new IllegalArgumentException("baseUrl cannot be null or empty");            }        }
+public Builder apiKey(String apiKey) {            if (apiKey != null && !apiKey.trim().isEmpty()) {                this.apiKey = apiKey;                return this;            } else {                throw new IllegalArgumentException("apiKey cannot be null or empty. ");            }        }
+public Builder callTimeout(Duration callTimeout) {            if (callTimeout == null) {                throw new IllegalArgumentException("callTimeout cannot be null");            } else {                this.callTimeout = callTimeout;                return this;            }        }
+public Builder connectTimeout(Duration connectTimeout) {            if (connectTimeout == null) {                throw new IllegalArgumentException("connectTimeout cannot be null");            } else {                this.connectTimeout = connectTimeout;                return this;            }        }
+public Builder readTimeout(Duration readTimeout) {            if (readTimeout == null) {                throw new IllegalArgumentException("readTimeout cannot be null");            } else {                this.readTimeout = readTimeout;                return this;            }        }
+public Builder writeTimeout(Duration writeTimeout) {            if (writeTimeout == null) {                throw new IllegalArgumentException("writeTimeout cannot be null");            } else {                this.writeTimeout = writeTimeout;                return this;            }        }
+public Builder logRequests() {            return this.logRequests(true);        }
+public Builder logRequests(Boolean logRequests) {            if (logRequests == null) {                logRequests = false;            }            this.logRequests = logRequests;            return this;        }
+public Builder logResponses() {            return this.logResponses(true);        }
+public Builder logResponses(Boolean logResponses) {            if (logResponses == null) {                logResponses = false;            }            this.logResponses = logResponses;            return this;        }
+public ZhipuAiClient build() {            return new ZhipuAiClient(this);        }
+----------------------------------------------------------------------------------------------------
+public static ZhipuAiEmbeddingModelBuilder builder() {        for (ZhipuAiEmbeddingModelBuilderFactory factories : loadFactories(ZhipuAiEmbeddingModelBuilderFactory.class)) {            return factories.get();        }        return new ZhipuAiEmbeddingModelBuilder();    }
+public Response<List<Embedding>> embedAll(List<TextSegment> textSegments) {        EmbeddingRequest request = EmbeddingRequest.builder()                .model(this.model)                .input(toEmbedTexts(textSegments))                .build();        EmbeddingResponse response = withRetry(() -> client.embedAll(request), maxRetries);        return Response.from(                toEmbed(response),                tokenUsageFrom(response.getUsage())        );    }
+----------------------------------------------------------------------------------------------------
+public static ZhipuAiStreamingChatModelBuilder builder() {        for (ZhipuAiStreamingChatModelBuilderFactory factories : loadFactories(ZhipuAiStreamingChatModelBuilderFactory.class)) {            return factories.get();        }        return new ZhipuAiStreamingChatModelBuilder();    }
+public void generate(String userMessage, StreamingResponseHandler<AiMessage> handler) {        this.generate(Collections.singletonList(UserMessage.from(userMessage)), handler);    }
+public void generate(List<ChatMessage> messages, StreamingResponseHandler<AiMessage> handler) {        this.generate(messages, (ToolSpecification) null, handler);    }
+public void generate(List<ChatMessage> messages, List<ToolSpecification> toolSpecifications, StreamingResponseHandler<AiMessage> handler) {        ensureNotEmpty(messages, "messages");        ChatCompletionRequest.Builder builder = ChatCompletionRequest.builder()                .model(this.model)                .maxTokens(maxToken)                .stream(true)                .topP(topP)                .temperature(temperature)                .toolChoice(ToolChoiceMode.AUTO)                .messages(toZhipuAiMessages(messages));        if (!isNullOrEmpty(toolSpecifications)) {            builder.tools(toTools(toolSpecifications));        }        client.streamingChatCompletion(builder.build(), handler);    }
+public void generate(List<ChatMessage> messages, ToolSpecification toolSpecification, StreamingResponseHandler<AiMessage> handler) {        this.generate(messages, toolSpecification == null ? null : Collections.singletonList(toolSpecification), handler);    }
+----------------------------------------------------------------------------------------------------
+public static AssistantMessage from(String content) {        return AssistantMessage.builder()                .content(content)                .build();    }
+public static Builder builder() {        return new Builder();    }
+public Role getRole() {        return role;    }
+public Builder content(String content) {            this.content = content;            return this;        }
+public Builder name(String name) {            this.name = name;            return this;        }
+public Builder toolCalls(ToolCall... toolCalls) {            return toolCalls(asList(toolCalls));        }
+public Builder toolCalls(List<ToolCall> toolCalls) {            if (toolCalls != null) {                this.toolCalls = unmodifiableList(toolCalls);            }            return this;        }
+public AssistantMessage build() {            return new AssistantMessage(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public Builder index(Integer index) {            this.index = index;            return this;        }
+public Builder message(AssistantMessage message) {            this.message = message;            return this;        }
+public Builder delta(Delta delta) {            this.delta = delta;            return this;        }
+public Builder finishReason(String finishReason) {            this.finishReason = finishReason;            return this;        }
+public ChatCompletionChoice build() {            return new ChatCompletionChoice(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public String model() {        return model;    }
+public List<Message> messages() {        return messages;    }
+public Double temperature() {        return temperature;    }
+public Double topP() {        return topP;    }
+public Boolean stream() {        return stream;    }
+public List<String> stop() {        return stop;    }
+public Integer maxTokens() {        return maxTokens;    }
+public List<Tool> tools() {        return tools;    }
+public Object toolChoice() {        return toolChoice;    }
+public Builder from(ChatCompletionRequest instance) {            model(instance.model);            messages(instance.messages);            temperature(instance.temperature);            topP(instance.topP);            requestId(instance.requestId);            stream(instance.stream);            stop(instance.stop);            maxTokens(instance.maxTokens);            doSample(instance.doSample);            tools(instance.tools);            toolChoice(instance.toolChoice);            return this;        }
+public Builder model(ChatCompletionModel model) {            return model(model.toString());        }
+public Builder model(String model) {            this.model = model;            return this;        }
+public Builder messages(List<Message> messages) {            if (messages != null) {                this.messages = unmodifiableList(messages);            }            return this;        }
+public Builder messages(Message... messages) {            return messages(asList(messages));        }
+public Builder addSystemMessage(String systemMessage) {            if (this.messages == null) {                this.messages = new ArrayList<>();            }            this.messages.add(SystemMessage.from(systemMessage));            return this;        }
+public Builder addUserMessage(String userMessage) {            if (this.messages == null) {                this.messages = new ArrayList<>();            }            this.messages.add(UserMessage.from(userMessage));            return this;        }
+public Builder addAssistantMessage(String assistantMessage) {            if (this.messages == null) {                this.messages = new ArrayList<>();            }            this.messages.add(AssistantMessage.from(assistantMessage));            return this;        }
+public Builder addToolMessage(String toolCallId, String content) {            if (this.messages == null) {                this.messages = new ArrayList<>();            }            this.messages.add(ToolMessage.from(toolCallId, content));            return this;        }
+public Builder temperature(Double temperature) {            this.temperature = temperature;            return this;        }
+public Builder topP(Double topP) {            this.topP = topP;            return this;        }
+public Builder requestId(String requestId) {            this.requestId = requestId;            return this;        }
+public Builder stream(Boolean stream) {            this.stream = stream;            return this;        }
+public Builder stop(List<String> stop) {            if (stop != null) {                this.stop = unmodifiableList(stop);            }            return this;        }
+public Builder stop(String... stop) {            return stop(asList(stop));        }
+public Builder maxTokens(Integer maxTokens) {            this.maxTokens = maxTokens;            return this;        }
+public Builder doSample(String doSample) {            this.doSample = doSample;            return this;        }
+public Builder tools(List<Tool> tools) {            if (tools != null) {                this.tools = unmodifiableList(tools);            }            return this;        }
+public Builder tools(Tool... tools) {            return tools(asList(tools));        }
+public Builder toolChoice(ToolChoiceMode toolChoiceMode) {            this.toolChoice = toolChoiceMode;            return this;        }
+public Builder toolChoice(String functionName) {            return toolChoice(ToolChoice.from(functionName));        }
+public Builder toolChoice(Object toolChoice) {            this.toolChoice = toolChoice;            return this;        }
+public ChatCompletionRequest build() {            return new ChatCompletionRequest(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public String content() {        return getChoices().get(0).getMessage().getContent();    }
+public Builder id(String id) {            this.id = id;            return this;        }
+public Builder created(Integer created) {            this.created = created;            return this;        }
+public Builder model(String model) {            this.model = model;            return this;        }
+public Builder choices(List<ChatCompletionChoice> choices) {            this.choices = choices;            return this;        }
+public Builder usage(Usage usage) {            this.usage = usage;            return this;        }
+public ChatCompletionResponse build() {            return new ChatCompletionResponse(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public Builder content(String content) {            this.content = content;            return this;        }
+public Builder toolCalls(List<ToolCall> toolCalls) {            if (toolCalls != null) {                this.toolCalls = Collections.unmodifiableList(toolCalls);            }            return this;        }
+public Delta build() {            return new Delta(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public String name() {        return this.name;    }
+public String description() {        return this.description;    }
+public Parameters parameters() {        return this.parameters;    }
+public Builder name(String name) {            this.name = name;            return this;        }
+public Builder description(String description) {            this.description = description;            return this;        }
+public Builder parameters(Parameters parameters) {            this.parameters = parameters;            return this;        }
+public Builder addParameter(String name, JsonSchemaProperty... jsonSchemaProperties) {            this.addOptionalParameter(name, jsonSchemaProperties);            this.parameters.required().add(name);            return this;        }
+public Builder addOptionalParameter(String name, JsonSchemaProperty... jsonSchemaProperties) {            if (this.parameters == null) {                this.parameters = Parameters.builder().build();            }            Map<String, Object> jsonSchemaPropertiesMap = new HashMap<>();            for (JsonSchemaProperty jsonSchemaProperty : jsonSchemaProperties) {                jsonSchemaPropertiesMap.put(jsonSchemaProperty.key(), jsonSchemaProperty.value());            }            this.parameters.properties().put(name, jsonSchemaPropertiesMap);            return this;        }
+public Function build() {            return new Function(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public Builder name(String name) {            this.name = name;            return this;        }
+public Builder arguments(String arguments) {            this.arguments = arguments;            return this;        }
+public FunctionCall build() {            return new FunctionCall(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public String type() {        return "object";    }
+public List<String> required() {        return this.required;    }
+public Builder properties(Map<String, Map<String, Object>> properties) {            if (properties != null) {                this.properties = Collections.unmodifiableMap(properties);            }            return this;        }
+public Builder required(List<String> required) {            if (required != null) {                this.required = Collections.unmodifiableList(required);            }            return this;        }
+public Parameters build() {            return new Parameters(this);        }
+----------------------------------------------------------------------------------------------------
+public static RetrievalBuilder builder() {        return new RetrievalBuilder();    }
+public RetrievalBuilder knowledgeId(String knowledgeId) {            this.knowledgeId = knowledgeId;            return this;        }
+public RetrievalBuilder promptTemplate(String promptTemplate) {            this.promptTemplate = promptTemplate;            return this;        }
+public Retrieval build() {            return new Retrieval(this);        }
+----------------------------------------------------------------------------------------------------
+public static SystemMessage from(String content) {        return SystemMessage.builder()                .content(content)                .build();    }
+public static Builder builder() {        return new Builder();    }
+public Role getRole() {        return role;    }
+public Builder content(String content) {            this.content = content;            return this;        }
+public Builder name(String name) {            this.name = name;            return this;        }
+public SystemMessage build() {            return new SystemMessage(this);        }
+----------------------------------------------------------------------------------------------------
+public static Tool from(Function function) {        return new Tool(function);    }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public Builder id(String id) {            this.id = id;            return this;        }
+public Builder index(Integer index) {            this.index = index;            return this;        }
+public Builder type(ToolType type) {            this.type = type;            return this;        }
+public Builder function(FunctionCall function) {            this.function = function;            return this;        }
+public ToolCall build() {            return new ToolCall(this);        }
+----------------------------------------------------------------------------------------------------
+public static ToolChoice from(String functionName) {        return new ToolChoice(functionName);    }
+----------------------------------------------------------------------------------------------------
+public static ToolMessage from(String toolCallId, String content) {        return ToolMessage.builder()                .toolCallId(toolCallId)                .content(content)                .build();    }
+public static Builder builder() {        return new Builder();    }
+public Role getRole() {        return role;    }
+public Builder toolCallId(String toolCallId) {            this.toolCallId = toolCallId;            return this;        }
+public Builder content(String content) {            this.content = content;            return this;        }
+public ToolMessage build() {            return new ToolMessage(this);        }
+----------------------------------------------------------------------------------------------------
+public static UserMessage from(String text) {        return UserMessage.builder()                .content(text)                .build();    }
+public static Builder builder() {        return new Builder();    }
+public Role getRole() {        return role;    }
+public Builder content(String content) {            if (content != null) {                this.content = content;            }            return this;        }
+public Builder name(String name) {            this.name = name;            return this;        }
+public UserMessage build() {            return new UserMessage(this);        }
+----------------------------------------------------------------------------------------------------
+public static WebSearchBuilder builder() {        return new WebSearchBuilder();    }
+public WebSearchBuilder enable(Boolean enable) {            this.enable = enable;            return this;        }
+public WebSearchBuilder searchQuery(String searchQuery) {            this.searchQuery = searchQuery;            return this;        }
+public WebSearch build() {            return new WebSearch(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public Builder embedding(List<Float> embedding) {            if (embedding != null) {                this.embedding = unmodifiableList(embedding);            }            return this;        }
+public Builder object(String object) {            this.object = object;            return this;        }
+public Builder index(Integer index) {            this.index = index;            return this;        }
+public Embedding build() {            return new Embedding(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public String getInput() {        return input;    }
+public String getModel() {        return model;    }
+public boolean equals(Object another) {        if (this == another) return true;        return another instanceof EmbeddingRequest                && equalTo((EmbeddingRequest) another);    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(model);        h += (h << 5) + Objects.hashCode(input);        return h;    }
+public String toString() {        return "EmbeddingRequest{"                + "model=" + model                + ", input=" + input                + "}";    }
+public Builder model(EmbeddingModel model) {            return model(model.toString());        }
+public Builder model(String model) {            this.model = model;            return this;        }
+public Builder input(String... input) {            return input(asList(input));        }
+public Builder input(List<String> input) {            if (input == null || input.isEmpty()) {                throw new RuntimeException();            }            if (input.size() > 1) {                throw new RuntimeException();            }            this.input = unmodifiableList(input);            return this;        }
+public EmbeddingRequest build() {            return new EmbeddingRequest(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public List<Float> getEmbedding() {        return data.get(0).getEmbedding();    }
+public Builder model(String model) {            this.model = model;            return this;        }
+public Builder object(String object) {            this.object = object;            return this;        }
+public Builder data(List<Embedding> data) {            if (data != null) {                this.data = unmodifiableList(data);            }            return this;        }
+public Builder usage(Usage usage) {            this.usage = usage;            return this;        }
+public EmbeddingResponse build() {            return new EmbeddingResponse(this);        }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public Builder promptTokens(Integer promptTokens) {            this.promptTokens = promptTokens;            return this;        }
+public Builder completionTokens(Integer completionTokens) {            this.completionTokens = completionTokens;            return this;        }
+public Builder totalTokens(Integer totalTokens) {            this.totalTokens = totalTokens;            return this;        }
+public Usage build() {            return new Usage(this);        }
+----------------------------------------------------------------------------------------------------

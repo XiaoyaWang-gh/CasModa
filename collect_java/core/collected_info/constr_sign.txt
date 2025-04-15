@@ -1,0 +1,519 @@
+public JsonSchemaProperty(String key, Object value)
+public JsonSchemaProperty(String key, Object value)
+public JsonSchemaProperty(String key, Object value)
+public JsonSchemaProperty(String key, Object value)
+public JsonSchemaProperty(String key, Object value)
+JsonSchemaProperty
+JsonSchemaProperty
+JsonSchemaProperty
+JsonSchemaProperty
+JsonSchemaProperty
+JsonSchemaProperty
+JsonSchemaProperty
+JsonSchemaProperty
+----------------------------------------------------------------------------------------------------
+ToolExecutionRequest.builder().id("id").name("name").arguments("arguments").build();
+ToolExecutionRequest.builder().id("id").name("name").arguments("arguments").build();
+ToolExecutionRequest.builder().id("id").name("name").arguments("arguments").build();
+ToolExecutionRequest.builder().id("id").name("name").arguments("arguments").build();
+ToolExecutionRequest.builder().id("id").name("name").arguments("arguments").build();
+ToolExecutionRequest.builder().id("id").name("name").arguments("arguments").build();
+ToolExecutionRequest
+ToolExecutionRequest.Builder()
+ToolExecutionRequest.Builder()
+ToolExecutionRequest.Builder()
+ToolExecutionRequest.Builder()
+----------------------------------------------------------------------------------------------------
+ToolParameters.builder().type("foo").properties(singletonMap("abc", singletonMap("xyz", 12))).required(singletonList("jkl")).build();
+ToolParameters.builder().type("foo").properties(singletonMap("abc", singletonMap("xyz", 12))).required(singletonList("jkl")).build();
+ToolParameters.builder().type("foo").properties(singletonMap("abc", singletonMap("xyz", 12))).required(singletonList("jkl")).build();
+ToolParameters.builder().type("foo").properties(singletonMap("abc", singletonMap("xyz", 12))).required(singletonList("jkl")).build();
+ToolParameters.builder().type("foo").properties(singletonMap("abc", singletonMap("xyz", 12))).required(singletonList("jkl")).build();
+ToolParameters
+ToolParameters.Builder()
+ToolParameters.Builder()
+ToolParameters.Builder()
+ToolParameters.Builder()
+----------------------------------------------------------------------------------------------------
+ToolSpecification.builder().name("name").description("description").addParameter("req", JsonSchemaProperty.BOOLEAN).addOptionalParameter("foo", JsonSchemaProperty.STRING, JsonSchemaProperty.description("description")).addOptionalParameter("bar", JsonSchemaProperty.INTEGER).build();
+ToolSpecification.builder().name("name").description("description").addParameter("req", JsonSchemaProperty.BOOLEAN).addOptionalParameter("foo", JsonSchemaProperty.STRING, JsonSchemaProperty.description("description")).addOptionalParameter("bar", JsonSchemaProperty.INTEGER).build();
+ToolSpecification.builder().name("name").description("description").addParameter("req", JsonSchemaProperty.BOOLEAN).addOptionalParameter("foo", JsonSchemaProperty.STRING, JsonSchemaProperty.description("description")).addOptionalParameter("bar", JsonSchemaProperty.INTEGER).build();
+ToolSpecification.builder().name("name").description("description").addParameter("req", JsonSchemaProperty.BOOLEAN).addOptionalParameter("foo", JsonSchemaProperty.STRING, JsonSchemaProperty.description("description")).addOptionalParameter("bar", JsonSchemaProperty.INTEGER).build();
+ToolSpecification.builder().name("name").description("description").addParameter("req", JsonSchemaProperty.BOOLEAN).addOptionalParameter("foo", JsonSchemaProperty.STRING, JsonSchemaProperty.description("description")).addOptionalParameter("bar", JsonSchemaProperty.INTEGER).build();
+ToolSpecification.builder().name("name").description("description").addParameter("req", JsonSchemaProperty.BOOLEAN).addOptionalParameter("foo", JsonSchemaProperty.STRING, JsonSchemaProperty.description("description")).addOptionalParameter("bar", JsonSchemaProperty.INTEGER).build();
+ToolSpecification
+ToolSpecification.Builder()
+ToolSpecification.Builder()
+ToolSpecification.Builder()
+ToolSpecification.Builder()
+ToolSpecification.Builder()
+ToolSpecification.Builder()
+ToolSpecification.Builder()
+ToolSpecification.Builder()
+----------------------------------------------------------------------------------------------------
+ToolSpecifications
+ToolSpecifications
+----------------------------------------------------------------------------------------------------
+public Document(String text, Metadata metadata)
+public Document(String text, Metadata metadata)
+public Document(String text, Metadata metadata)
+public Document(String text, Metadata metadata)
+public Document(String text, Metadata metadata)
+public Document(String text, Metadata metadata)
+public Document(String text, Metadata metadata)
+Document
+Document
+Document
+Document
+----------------------------------------------------------------------------------------------------
+DocumentLoader
+----------------------------------------------------------------------------------------------------
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+public Metadata()
+Metadata
+Metadata
+Metadata
+Metadata
+----------------------------------------------------------------------------------------------------
+public Embedding(float[] vector)
+public Embedding(float[] vector)
+public Embedding(float[] vector)
+public Embedding(float[] vector)
+public Embedding(float[] vector)
+public Embedding(float[] vector)
+public Embedding(float[] vector)
+Embedding
+Embedding
+----------------------------------------------------------------------------------------------------
+Image
+Image.builder().url(new URI("https://example.com/image.png")).base64Data("base64Data").mimeType("image/png").revisedPrompt("revisedPrompt").build();
+Image.builder().url(new URI("https://example.com/image.png")).base64Data("base64Data").mimeType("image/png").revisedPrompt("revisedPrompt").build();
+Image.builder().url(new URI("https://example.com/image.png")).base64Data("base64Data").mimeType("image/png").revisedPrompt("revisedPrompt").build();
+Image.builder().url(new URI("https://example.com/image.png")).base64Data("base64Data").mimeType("image/png").revisedPrompt("revisedPrompt").build();
+Image.builder().url(new URI("https://example.com/image.png")).base64Data("base64Data").mimeType("image/png").revisedPrompt("revisedPrompt").build();
+Image.builder().url(new URI("https://example.com/image.png")).base64Data("base64Data").mimeType("image/png").revisedPrompt("revisedPrompt").build();
+Image.builder().url(new URI("https://example.com/image.png")).base64Data("base64Data").mimeType("image/png").revisedPrompt("revisedPrompt").build();
+Image.Builder()
+Image.Builder()
+Image.Builder()
+Image.Builder()
+Image.Builder()
+Image.Builder()
+----------------------------------------------------------------------------------------------------
+public AiMessage(String text)
+public AiMessage(String text)
+public AiMessage(String text)
+public AiMessage(String text)
+public AiMessage(String text)
+public AiMessage(String text)
+public AiMessage(String text)
+AiMessage
+AiMessage
+AiMessage
+AiMessage
+AiMessage
+AiMessage
+----------------------------------------------------------------------------------------------------
+ChatMessageDeserializer
+ChatMessageDeserializer
+----------------------------------------------------------------------------------------------------
+ChatMessageSerializer
+ChatMessageSerializer
+----------------------------------------------------------------------------------------------------
+public GsonChatMessageAdapter()
+public GsonChatMessageAdapter()
+----------------------------------------------------------------------------------------------------
+public GsonChatMessageJsonCodec()
+public GsonChatMessageJsonCodec()
+public GsonChatMessageJsonCodec()
+public GsonChatMessageJsonCodec()
+----------------------------------------------------------------------------------------------------
+public GsonContentAdapter()
+public GsonContentAdapter()
+----------------------------------------------------------------------------------------------------
+public ImageContent(String url)
+public ImageContent(String url)
+public ImageContent(String url)
+public ImageContent(String url)
+public ImageContent(String url)
+public ImageContent(String url)
+ImageContent
+ImageContent
+ImageContent
+ImageContent
+ImageContent
+ImageContent
+ImageContent
+ImageContent
+----------------------------------------------------------------------------------------------------
+public SystemMessage(String text)
+public SystemMessage(String text)
+public SystemMessage(String text)
+public SystemMessage(String text)
+public SystemMessage(String text)
+SystemMessage
+SystemMessage
+----------------------------------------------------------------------------------------------------
+public TextContent(String text)
+public TextContent(String text)
+public TextContent(String text)
+public TextContent(String text)
+public TextContent(String text)
+TextContent
+----------------------------------------------------------------------------------------------------
+public ToolExecutionResultMessage(String id, String toolName, String text)
+public ToolExecutionResultMessage(String id, String toolName, String text)
+public ToolExecutionResultMessage(String id, String toolName, String text)
+public ToolExecutionResultMessage(String id, String toolName, String text)
+public ToolExecutionResultMessage(String id, String toolName, String text)
+public ToolExecutionResultMessage(String id, String toolName, String text)
+public ToolExecutionResultMessage(String id, String toolName, String text)
+ToolExecutionResultMessage
+ToolExecutionResultMessage
+ToolExecutionResultMessage
+ToolExecutionResultMessage
+----------------------------------------------------------------------------------------------------
+public UserMessage(String text)
+public UserMessage(String text)
+public UserMessage(String text)
+public UserMessage(String text)
+public UserMessage(String text)
+public UserMessage(String text)
+public UserMessage(String text)
+public UserMessage(String text)
+public UserMessage(String text)
+UserMessage
+UserMessage
+UserMessage
+UserMessage
+UserMessage
+UserMessage
+UserMessage
+UserMessage
+UserMessage
+UserMessage
+UserMessage
+UserMessage
+----------------------------------------------------------------------------------------------------
+public TextSegment(String text, Metadata metadata)
+public TextSegment(String text, Metadata metadata)
+public TextSegment(String text, Metadata metadata)
+public TextSegment(String text, Metadata metadata)
+public TextSegment(String text, Metadata metadata)
+public TextSegment(String text, Metadata metadata)
+TextSegment
+TextSegment
+TextSegment
+TextSegment
+----------------------------------------------------------------------------------------------------
+Exceptions
+Exceptions
+----------------------------------------------------------------------------------------------------
+public GsonJsonCodec()
+public GsonJsonCodec()
+public GsonJsonCodec()
+----------------------------------------------------------------------------------------------------
+Json
+Json
+Json
+----------------------------------------------------------------------------------------------------
+RetryUtils
+RetryUtils.RetryPolicy()
+RetryUtils.RetryPolicy()
+RetryUtils.RetryPolicy()
+RetryUtils.RetryPolicy()
+RetryUtils.RetryPolicy()
+public RetryPolicy( int maxAttempts, int delayMillis, double jitterScale, double backoffExp)
+public RetryPolicy( int maxAttempts, int delayMillis, double jitterScale, double backoffExp)
+public RetryPolicy( int maxAttempts, int delayMillis, double jitterScale, double backoffExp)
+----------------------------------------------------------------------------------------------------
+Utils
+Utils
+Utils
+Utils
+Utils
+Utils
+Utils
+Utils
+Utils
+Utils
+Utils
+----------------------------------------------------------------------------------------------------
+ValidationUtils
+ValidationUtils
+ValidationUtils
+ValidationUtils
+ValidationUtils
+ValidationUtils
+ValidationUtils
+----------------------------------------------------------------------------------------------------
+public DisabledChatLanguageModel()
+public DisabledChatLanguageModel()
+public DisabledChatLanguageModel()
+public DisabledChatLanguageModel()
+public DisabledChatLanguageModel()
+----------------------------------------------------------------------------------------------------
+public DisabledStreamingChatLanguageModel()
+public DisabledStreamingChatLanguageModel()
+public DisabledStreamingChatLanguageModel()
+public DisabledStreamingChatLanguageModel()
+----------------------------------------------------------------------------------------------------
+public DisabledEmbeddingModel()
+public DisabledEmbeddingModel()
+public DisabledEmbeddingModel()
+----------------------------------------------------------------------------------------------------
+public DisabledImageModel()
+public DisabledImageModel()
+public DisabledImageModel()
+public DisabledImageModel()
+----------------------------------------------------------------------------------------------------
+public DefaultStructuredPromptFactory()
+----------------------------------------------------------------------------------------------------
+StructuredPromptProcessor
+----------------------------------------------------------------------------------------------------
+public DefaultPromptTemplateFactory()
+----------------------------------------------------------------------------------------------------
+public Prompt(String text)
+public Prompt(String text)
+public Prompt(String text)
+public Prompt(String text)
+public Prompt(String text)
+public Prompt(String text)
+public Prompt(String text)
+Prompt
+----------------------------------------------------------------------------------------------------
+public PromptTemplate(String template)
+public PromptTemplate(String template)
+public PromptTemplate(String template)
+PromptTemplate
+----------------------------------------------------------------------------------------------------
+public DisabledLanguageModel()
+public DisabledLanguageModel()
+----------------------------------------------------------------------------------------------------
+public DisabledStreamingLanguageModel()
+public DisabledStreamingLanguageModel()
+----------------------------------------------------------------------------------------------------
+public DisabledModerationModel()
+public DisabledModerationModel()
+public DisabledModerationModel()
+public DisabledModerationModel()
+public DisabledModerationModel()
+----------------------------------------------------------------------------------------------------
+public Moderation()
+public Moderation()
+public Moderation()
+public Moderation()
+public Moderation()
+Moderation
+Moderation
+----------------------------------------------------------------------------------------------------
+public Response(T content)
+public Response(T content)
+public Response(T content)
+public Response(T content)
+public Response(T content)
+public Response(T content)
+----------------------------------------------------------------------------------------------------
+public TokenUsage()
+public TokenUsage()
+public TokenUsage()
+public TokenUsage()
+public TokenUsage()
+public TokenUsage()
+public TokenUsage()
+----------------------------------------------------------------------------------------------------
+public DefaultContentAggregator()
+----------------------------------------------------------------------------------------------------
+ReciprocalRankFuser
+ReciprocalRankFuser
+----------------------------------------------------------------------------------------------------
+public ReRankingContentAggregator(ScoringModel scoringModel)
+----------------------------------------------------------------------------------------------------
+public DefaultContentInjector()
+----------------------------------------------------------------------------------------------------
+EmbeddingStoreContentRetriever.EmbeddingStoreContentRetrieverBuilder()
+EmbeddingStoreContentRetriever.EmbeddingStoreContentRetrieverBuilder()
+EmbeddingStoreContentRetriever.EmbeddingStoreContentRetrieverBuilder()
+public EmbeddingStoreContentRetriever(EmbeddingStore<TextSegment> embeddingStore, EmbeddingModel embeddingModel)
+----------------------------------------------------------------------------------------------------
+public Content(String text)
+public Content(String text)
+public Content(String text)
+public Content(String text)
+Content
+Content
+----------------------------------------------------------------------------------------------------
+public DefaultQueryRouter(ContentRetriever... contentRetrievers)
+----------------------------------------------------------------------------------------------------
+public LanguageModelQueryRouter(ChatLanguageModel chatLanguageModel, Map<ContentRetriever, String> retrieverToDescription)
+----------------------------------------------------------------------------------------------------
+public CompressingQueryTransformer(ChatLanguageModel chatLanguageModel, PromptTemplate promptTemplate)
+----------------------------------------------------------------------------------------------------
+public DefaultQueryTransformer()
+----------------------------------------------------------------------------------------------------
+public ExpandingQueryTransformer(ChatLanguageModel chatLanguageModel)
+----------------------------------------------------------------------------------------------------
+public Metadata(UserMessage userMessage, Object chatMemoryId, List<ChatMessage> chatMemory)
+public Metadata(UserMessage userMessage, Object chatMemoryId, List<ChatMessage> chatMemory)
+public Metadata(UserMessage userMessage, Object chatMemoryId, List<ChatMessage> chatMemory)
+public Metadata(UserMessage userMessage, Object chatMemoryId, List<ChatMessage> chatMemory)
+public Metadata(UserMessage userMessage, Object chatMemoryId, List<ChatMessage> chatMemory)
+public Metadata(UserMessage userMessage, Object chatMemoryId, List<ChatMessage> chatMemory)
+Metadata
+----------------------------------------------------------------------------------------------------
+public Query(String text)
+public Query(String text)
+public Query(String text)
+public Query(String text)
+public Query(String text)
+Query
+Query
+----------------------------------------------------------------------------------------------------
+DefaultRetrievalAugmentor.builder().queryTransformer(queryTransformer).queryRouter(queryRouter).contentAggregator(contentAggregator).contentInjector(contentInjector).executor(executor).build();
+DefaultRetrievalAugmentor
+DefaultRetrievalAugmentor.DefaultRetrievalAugmentorBuilder()
+----------------------------------------------------------------------------------------------------
+public IsEqualTo(String key, Object comparisonValue)
+public IsEqualTo(String key, Object comparisonValue)
+public IsEqualTo(String key, Object comparisonValue)
+----------------------------------------------------------------------------------------------------
+public IsGreaterThan(String key, Comparable<?> comparisonValue)
+public IsGreaterThan(String key, Comparable<?> comparisonValue)
+public IsGreaterThan(String key, Comparable<?> comparisonValue)
+----------------------------------------------------------------------------------------------------
+public IsGreaterThanOrEqualTo(String key, Comparable<?> comparisonValue)
+public IsGreaterThanOrEqualTo(String key, Comparable<?> comparisonValue)
+public IsGreaterThanOrEqualTo(String key, Comparable<?> comparisonValue)
+----------------------------------------------------------------------------------------------------
+public IsIn(String key, Collection<?> comparisonValues)
+public IsIn(String key, Collection<?> comparisonValues)
+public IsIn(String key, Collection<?> comparisonValues)
+----------------------------------------------------------------------------------------------------
+public IsLessThan(String key, Comparable<?> comparisonValue)
+public IsLessThan(String key, Comparable<?> comparisonValue)
+public IsLessThan(String key, Comparable<?> comparisonValue)
+----------------------------------------------------------------------------------------------------
+public IsLessThanOrEqualTo(String key, Comparable<?> comparisonValue)
+public IsLessThanOrEqualTo(String key, Comparable<?> comparisonValue)
+public IsLessThanOrEqualTo(String key, Comparable<?> comparisonValue)
+----------------------------------------------------------------------------------------------------
+public IsNotEqualTo(String key, Object comparisonValue)
+public IsNotEqualTo(String key, Object comparisonValue)
+public IsNotEqualTo(String key, Object comparisonValue)
+----------------------------------------------------------------------------------------------------
+public IsNotIn(String key, Collection<?> comparisonValues)
+public IsNotIn(String key, Collection<?> comparisonValues)
+public IsNotIn(String key, Collection<?> comparisonValues)
+----------------------------------------------------------------------------------------------------
+public And(Filter left, Filter right)
+public And(Filter left, Filter right)
+public And(Filter left, Filter right)
+----------------------------------------------------------------------------------------------------
+public Not(Filter expression)
+public Not(Filter expression)
+----------------------------------------------------------------------------------------------------
+public Or(Filter left, Filter right)
+public Or(Filter left, Filter right)
+public Or(Filter left, Filter right)
+----------------------------------------------------------------------------------------------------
+MetadataFilterBuilder
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+public MetadataFilterBuilder(String key)
+----------------------------------------------------------------------------------------------------
+CosineSimilarity
+CosineSimilarity
+----------------------------------------------------------------------------------------------------
+public EmbeddingMatch(Double score, String embeddingId, Embedding embedding, Embedded embedded)
+public EmbeddingMatch(Double score, String embeddingId, Embedding embedding, Embedded embedded)
+public EmbeddingMatch(Double score, String embeddingId, Embedding embedding, Embedded embedded)
+public EmbeddingMatch(Double score, String embeddingId, Embedding embedding, Embedded embedded)
+public EmbeddingMatch(Double score, String embeddingId, Embedding embedding, Embedded embedded)
+public EmbeddingMatch(Double score, String embeddingId, Embedding embedding, Embedded embedded)
+public EmbeddingMatch(Double score, String embeddingId, Embedding embedding, Embedded embedded)
+----------------------------------------------------------------------------------------------------
+public EmbeddingSearchRequest(Embedding queryEmbedding, Integer maxResults, Double minScore, Filter filter)
+public EmbeddingSearchRequest(Embedding queryEmbedding, Integer maxResults, Double minScore, Filter filter)
+public EmbeddingSearchRequest(Embedding queryEmbedding, Integer maxResults, Double minScore, Filter filter)
+public EmbeddingSearchRequest(Embedding queryEmbedding, Integer maxResults, Double minScore, Filter filter)
+----------------------------------------------------------------------------------------------------
+public EmbeddingSearchResult(List<EmbeddingMatch<Embedded>> matches)
+----------------------------------------------------------------------------------------------------
+EmbeddingStoreIngestor.builder().documentTransformer(documentTransformer).documentSplitter(documentSplitter).textSegmentTransformer(textSegmentTransformer).embeddingModel(embeddingModel).embeddingStore(embeddingStore).build();
+EmbeddingStoreIngestor.builder().documentTransformer(documentTransformer).documentSplitter(documentSplitter).textSegmentTransformer(textSegmentTransformer).embeddingModel(embeddingModel).embeddingStore(embeddingStore).build();
+EmbeddingStoreIngestor.builder().documentTransformer(documentTransformer).documentSplitter(documentSplitter).textSegmentTransformer(textSegmentTransformer).embeddingModel(embeddingModel).embeddingStore(embeddingStore).build();
+EmbeddingStoreIngestor
+EmbeddingStoreIngestor.Builder()
+EmbeddingStoreIngestor.Builder()
+EmbeddingStoreIngestor.Builder()
+EmbeddingStoreIngestor.Builder()
+EmbeddingStoreIngestor.Builder()
+EmbeddingStoreIngestor.Builder()
+----------------------------------------------------------------------------------------------------
+RelevanceScore
+----------------------------------------------------------------------------------------------------
+public InMemoryChatMemoryStore()
+public InMemoryChatMemoryStore()
+public InMemoryChatMemoryStore()
+----------------------------------------------------------------------------------------------------

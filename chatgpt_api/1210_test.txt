@@ -1,0 +1,2 @@
+assertEquals(fraction.getNumerator(), 1);
+assertEquals(fraction.getDenominator(), 2);

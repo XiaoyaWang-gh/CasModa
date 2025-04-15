@@ -1,0 +1,77 @@
+InternalOpenAiHelper
+InternalOpenAiHelper
+InternalOpenAiHelper
+InternalOpenAiHelper
+InternalOpenAiHelper
+InternalOpenAiHelper
+----------------------------------------------------------------------------------------------------
+OpenAiChatModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).modelName(GPT_3_5_TURBO).logRequests(true).logResponses(true).build();
+OpenAiChatModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).modelName(GPT_3_5_TURBO).logRequests(true).logResponses(true).build();
+OpenAiChatModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).modelName(GPT_3_5_TURBO).logRequests(true).logResponses(true).build();
+OpenAiChatModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).modelName(GPT_3_5_TURBO).logRequests(true).logResponses(true).build();
+OpenAiChatModel
+OpenAiChatModel
+OpenAiChatModel.OpenAiChatModelBuilder()
+OpenAiChatModel.OpenAiChatModelBuilder()
+---------------------------------------------------------------------------------------------------- 
+OpenAiEmbeddingModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).logRequests(true).logResponses(true).build();
+OpenAiEmbeddingModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).logRequests(true).logResponses(true).build();
+OpenAiEmbeddingModel
+OpenAiEmbeddingModel
+OpenAiEmbeddingModel.OpenAiEmbeddingModelBuilder()
+OpenAiEmbeddingModel.OpenAiEmbeddingModelBuilder()
+----------------------------------------------------------------------------------------------------
+OpenAiImageModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).modelName(OpenAiModelName.DALL_E_2).size(DALL_E_SIZE_256_x_256).logRequests(true).logResponses(true).build();
+OpenAiImageModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).modelName(OpenAiModelName.DALL_E_2).size(DALL_E_SIZE_256_x_256).logRequests(true).logResponses(true).build();
+OpenAiImageModel
+OpenAiImageModel
+OpenAiImageModel.OpenAiImageModelBuilder()
+OpenAiImageModel.OpenAiImageModelBuilder()
+OpenAiImageModel.OpenAiImageModelBuilder()
+OpenAiImageModel.OpenAiImageModelBuilder()
+----------------------------------------------------------------------------------------------------
+OpenAiLanguageModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).logRequests(true).logResponses(true).build();
+OpenAiLanguageModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).logRequests(true).logResponses(true).build();
+OpenAiLanguageModel
+OpenAiLanguageModel
+OpenAiLanguageModel.OpenAiLanguageModelBuilder()
+OpenAiLanguageModel.OpenAiLanguageModelBuilder()
+----------------------------------------------------------------------------------------------------
+OpenAiModerationModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).build();
+OpenAiModerationModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).build();
+OpenAiModerationModel
+OpenAiModerationModel
+OpenAiModerationModel.OpenAiModerationModelBuilder()
+OpenAiModerationModel.OpenAiModerationModelBuilder()
+----------------------------------------------------------------------------------------------------
+OpenAiStreamingChatModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).temperature(0.0).logRequests(true).logResponses(true).build();
+OpenAiStreamingChatModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).temperature(0.0).logRequests(true).logResponses(true).build();
+OpenAiStreamingChatModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).temperature(0.0).logRequests(true).logResponses(true).build();
+OpenAiStreamingChatModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).temperature(0.0).logRequests(true).logResponses(true).build();
+OpenAiStreamingChatModel
+OpenAiStreamingChatModel
+OpenAiStreamingChatModel.OpenAiStreamingChatModelBuilder()
+OpenAiStreamingChatModel.OpenAiStreamingChatModelBuilder()
+----------------------------------------------------------------------------------------------------
+OpenAiStreamingLanguageModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).logRequests(true).logResponses(true).build();
+OpenAiStreamingLanguageModel.builder().baseUrl(System.getenv("OPENAI_BASE_URL")).apiKey(System.getenv("OPENAI_API_KEY")).logRequests(true).logResponses(true).build();
+OpenAiStreamingLanguageModel
+OpenAiStreamingLanguageModel
+OpenAiStreamingLanguageModel.OpenAiStreamingLanguageModelBuilder()
+OpenAiStreamingLanguageModel.OpenAiStreamingLanguageModelBuilder()
+----------------------------------------------------------------------------------------------------
+public OpenAiStreamingResponseBuilder(Integer inputTokenCount)
+public OpenAiStreamingResponseBuilder(Integer inputTokenCount)
+public OpenAiStreamingResponseBuilder(Integer inputTokenCount)
+----------------------------------------------------------------------------------------------------
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+public OpenAiTokenizer(OpenAiChatModelName modelName)
+----------------------------------------------------------------------------------------------------

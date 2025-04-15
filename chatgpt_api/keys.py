@@ -1,0 +1,25 @@
+OPENAI_API_KEY = "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"
+PLUS_OPENAI_API_KEY = "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"
+NEW_PLUS_KEY = "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"  # 超出了120
+PLUS_KEY_3 = "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"  # 4.3发现被封
+PLUS_KEY_4 = "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"  # 23.03.30  4.3发现被封
+PLUS_KEY_5 = "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"  # 23.04.03
+PLUS_KEY_6 = "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"  # 23.04.09
+PLUS_KEY_7 = "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"  # 23.04.17
+PLUS_KEY_8 = "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"  # 23.04.20
+PLUS_KEY_9 = "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"  # 23.05.09
+AZURE_KEY_10 = "f2fe76fb90084b2a94f76a8602029f35"  # 23.06.13
+# 23.07.21 incorrect api key
+KEY_11 = "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"
+KEY_12 = "sk-qgEGR0NeXtFD2pj0882429C7Ae5e4f1e86Ca4eD6Ae272a4d"  # ￥7 used for proxy
+KEY_13 = "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"  # xinyin given
+KEY_14 = "sk-zM6DACvTRIkvL9BN715dD8E29fF24eBc89Ab08E24a1dB12e"  # 反馈空值新得到
+KEY_15 = "sk-iNIQVMdLonyo0x2hAf720aA6FaBc46DdBf2cF26e8f2491A0"  # 来源同上，据说有20D
+# 23.07.26 告诉我反向代理暂时无法使用，直接用这个走官方通道,incorrect api key
+KEY_16 = "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"
+KEY_17 = "sk-B8JsmCINtNBwWwNkE7CdA974D56a4d288a13D1644d24Dc14"
+# 2023.08.17 加入了ICSOFT组织,理论上以后自己不用买了
+KEY_18 = "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"  # 2023.08.17
+KEY_19 = "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"  # 2023.08.17
+KEY_20 = "sk-BcqDwxmmfq62qjyAAd9fB676F4E7462b95194dD4B591058d"  # 2023.08.18
+KEY_21 = "sk-7VPLcfHYtjHX2bED00E217190bF046D7964c9b63E8A341D2"  # 2023.08.19

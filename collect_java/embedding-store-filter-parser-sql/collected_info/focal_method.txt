@@ -1,0 +1,11 @@
+public String name() {        return name;    }
+public String type() {        return type;    }
+public String description() {        return description;    }
+----------------------------------------------------------------------------------------------------
+public Filter build(Query query) {        Prompt prompt = createPrompt(query);        Response<AiMessage> response = chatLanguageModel.generate(prompt.toUserMessage());        String generatedSql = response.content().text();        String cleanedSql = clean(generatedSql);        log.trace("Cleaned SQL: '{}'", cleanedSql);        try {            return sqlFilterParser.parse(cleanedSql);        } catch (Exception e) {            log.warn("Failed parsing the following SQL: '{}'", cleanedSql, e);                                                                        return fallback(query, generatedSql, cleanedSql, e);        }    }
+----------------------------------------------------------------------------------------------------
+public Filter parse(String sql) {        if (!sql.toUpperCase().startsWith("SELECT")) {            sql = "SELECT * FROM fake_table WHERE " + sql;        }        try {            PlainSelect select = (PlainSelect) CCJSqlParserUtil.parse(sql);            return mapParenthesis(select.getWhere());        } catch (JSQLParserException e) {            throw new RuntimeException(e);        }    }
+public void visit(StringValue value) {                comparisonValues.add(value.getValue());            }
+public void visit(LongValue value) {                comparisonValues.add(value.getValue());            }
+public void visit(DoubleValue value) {                comparisonValues.add(value.getValue());            }
+----------------------------------------------------------------------------------------------------

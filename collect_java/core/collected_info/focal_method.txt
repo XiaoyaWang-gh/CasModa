@@ -1,0 +1,521 @@
+public String key() {        return key;    }
+public Object value() {        return value;    }
+public boolean equals(Object another) {        if (this == another) return true;        return another instanceof JsonSchemaProperty                && equalTo((JsonSchemaProperty) another);    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(key);        int v = (value instanceof Object[]) ? Arrays.hashCode((Object[]) value) : Objects.hashCode(value);        h += (h << 5) + v;        return h;    }
+public String toString() {        String valueString = (value instanceof Object[]) ? Arrays.toString((Object[]) value) : value.toString();        return "JsonSchemaProperty {"                + " key = " + quoted(key)                + ", value = " + valueString                + " }";    }
+public static JsonSchemaProperty from(String key, Object value) {        return new JsonSchemaProperty(key, value);    }
+public static JsonSchemaProperty property(String key, Object value) {        return from(key, value);    }
+public static JsonSchemaProperty type(String value) {        return from("type", value);    }
+public static JsonSchemaProperty description(String value) {        return from("description", value);    }
+public static JsonSchemaProperty enums(String... enumValues) {        return from("enum", enumValues);    }
+public static JsonSchemaProperty enums(Object... enumValues) {        List<String> enumNames = new ArrayList<>();        for (Object enumValue : enumValues) {            if (!enumValue.getClass().isEnum()) {                throw new RuntimeException("Value " + enumValue.getClass().getName() + " should be enum");            }            enumNames.add(((Enum<?>) enumValue).name());        }        return from("enum", enumNames);    }
+public static JsonSchemaProperty enums(Class<?> enumClass) {        if (!enumClass.isEnum()) {            throw new RuntimeException("Class " + enumClass.getName() + " should be enum");        }        return enums((Object[]) enumClass.getEnumConstants());    }
+public static JsonSchemaProperty items(JsonSchemaProperty type) {        return from("items", singletonMap(type.key, type.value));    }
+----------------------------------------------------------------------------------------------------
+public String id() {        return id;    }
+public String name() {        return name;    }
+public String arguments() {        return arguments;    }
+public boolean equals(Object another) {        if (this == another) return true;        return another instanceof ToolExecutionRequest                && equalTo((ToolExecutionRequest) another);    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(id);        h += (h << 5) + Objects.hashCode(name);        h += (h << 5) + Objects.hashCode(arguments);        return h;    }
+public String toString() {        return "ToolExecutionRequest {"                + " id = " + quoted(id)                + ", name = " + quoted(name)                + ", arguments = " + quoted(arguments)                + " }";    }
+public static Builder builder() {        return new Builder();    }
+public Builder id(String id) {            this.id = id;            return this;        }
+public Builder name(String name) {            this.name = name;            return this;        }
+public Builder arguments(String arguments) {            this.arguments = arguments;            return this;        }
+public ToolExecutionRequest build() {            return new ToolExecutionRequest(this);        }
+----------------------------------------------------------------------------------------------------
+public String type() {        return type;    }
+public List<String> required() {        return required;    }
+public boolean equals(Object another) {        if (this == another) return true;        return another instanceof ToolParameters                && equalTo((ToolParameters) another);    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(type);        h += (h << 5) + Objects.hashCode(properties);        h += (h << 5) + Objects.hashCode(required);        return h;    }
+public String toString() {        return "ToolParameters {"                + " type = " + quoted(type)                + ", properties = " + properties                + ", required = " + required                + " }";    }
+public static Builder builder() {        return new Builder();    }
+public Builder type(String type) {            this.type = type;            return this;        }
+public Builder properties(Map<String, Map<String, Object>> properties) {            this.properties = properties;            return this;        }
+public Builder required(List<String> required) {            this.required = required;            return this;        }
+public ToolParameters build() {            return new ToolParameters(this);        }
+----------------------------------------------------------------------------------------------------
+public String name() {        return name;    }
+public String description() {        return description;    }
+public ToolParameters parameters() {        return parameters;    }
+public boolean equals(Object another) {        if (this == another) return true;        return another instanceof ToolSpecification                && equalTo((ToolSpecification) another);    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(name);        h += (h << 5) + Objects.hashCode(description);        h += (h << 5) + Objects.hashCode(parameters);        return h;    }
+public String toString() {        return "ToolSpecification {"                + " name = " + quoted(name)                + ", description = " + quoted(description)                + ", parameters = " + parameters                + " }";    }
+public static Builder builder() {        return new Builder();    }
+public Builder name(String name) {            this.name = name;            return this;        }
+public Builder description(String description) {            this.description = description;            return this;        }
+public Builder parameters(ToolParameters parameters) {            this.parameters = parameters;            return this;        }
+public Builder addParameter(String name, JsonSchemaProperty... jsonSchemaProperties) {            return addParameter(name, asList(jsonSchemaProperties));        }
+public Builder addParameter(String name, Iterable<JsonSchemaProperty> jsonSchemaProperties) {            addOptionalParameter(name, jsonSchemaProperties);            this.parameters.required().add(name);            return this;        }
+public Builder addOptionalParameter(String name, JsonSchemaProperty... jsonSchemaProperties) {            return addOptionalParameter(name, asList(jsonSchemaProperties));        }
+public Builder addOptionalParameter(String name, Iterable<JsonSchemaProperty> jsonSchemaProperties) {            if (this.parameters == null) {                this.parameters = ToolParameters.builder().build();            }            Map<String, Object> jsonSchemaPropertiesMap = new HashMap<>();            for (JsonSchemaProperty jsonSchemaProperty : jsonSchemaProperties) {                jsonSchemaPropertiesMap.put(jsonSchemaProperty.key(), jsonSchemaProperty.value());            }            this.parameters.properties().put(name, jsonSchemaPropertiesMap);            return this;        }
+public ToolSpecification build() {            return new ToolSpecification(this);        }
+----------------------------------------------------------------------------------------------------
+public static List<ToolSpecification> toolSpecificationsFrom(Object objectWithTools) {        return stream(objectWithTools.getClass().getDeclaredMethods())                .filter(method -> method.isAnnotationPresent(Tool.class))                .map(ToolSpecifications::toolSpecificationFrom)                .collect(toList());    }
+public static ToolSpecification toolSpecificationFrom(Method method) {        Tool annotation = method.getAnnotation(Tool.class);        String name = isNullOrBlank(annotation.name()) ? method.getName() : annotation.name();        String description = String.join("\n", annotation.value());         ToolSpecification.Builder builder = ToolSpecification.builder()                .name(name)                .description(description);        for (Parameter parameter : method.getParameters()) {            if (parameter.isAnnotationPresent(ToolMemoryId.class)) {                continue;            }            builder.addParameter(parameter.getName(), toJsonSchemaProperties(parameter));        }        return builder.build();    }
+----------------------------------------------------------------------------------------------------
+public String text() {        return text;    }
+public Metadata metadata() {        return metadata;    }
+public String metadata(String key) {        return metadata.get(key);    }
+public TextSegment toTextSegment() {        return TextSegment.from(text, metadata.copy().add("index", "0"));    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Document that = (Document) o;        return Objects.equals(this.text, that.text)                && Objects.equals(this.metadata, that.metadata);    }
+public int hashCode() {        return Objects.hash(text, metadata);    }
+public String toString() {        return "Document {" +                " text = " + quoted(text) +                " metadata = " + metadata.asMap() +                " }";    }
+public static Document from(String text) {        return new Document(text);    }
+public static Document from(String text, Metadata metadata) {        return new Document(text, metadata);    }
+public static Document document(String text) {        return from(text);    }
+public static Document document(String text, Metadata metadata) {        return from(text, metadata);    }
+----------------------------------------------------------------------------------------------------
+public static Document load(DocumentSource source, DocumentParser parser) {        try (InputStream inputStream = source.inputStream()) {            Document document = parser.parse(inputStream);            source.metadata().asMap().forEach((key, value) -> document.metadata().add(key, value));            return document;        } catch (Exception e) {            throw new RuntimeException("Failed to load document", e);        }    }
+----------------------------------------------------------------------------------------------------
+public String get(String key) {        Object value = metadata.get(key);        if (value != null) {            return value.toString();        } else {            return null;        }    }
+public String getString(String key) {        if (!containsKey(key)) {            return null;        }        Object value = metadata.get(key);        if (value instanceof String) {            return (String) value;        }        throw runtime("Metadata entry with the key '%s' has a value of '%s' and type '%s'. " +                "It cannot be returned as a String.", key, value, value.getClass().getName());    }
+public Integer getInteger(String key) {        if (!containsKey(key)) {            return null;        }        Object value = metadata.get(key);        if (value instanceof String) {            return Integer.parseInt(value.toString());        } else if (value instanceof Number) {            return ((Number) value).intValue();        }        throw runtime("Metadata entry with the key '%s' has a value of '%s' and type '%s'. " +                "It cannot be returned as an Integer.", key, value, value.getClass().getName());    }
+public Long getLong(String key) {        if (!containsKey(key)) {            return null;        }        Object value = metadata.get(key);        if (value instanceof String) {            return Long.parseLong(value.toString());        } else if (value instanceof Number) {            return ((Number) value).longValue();        }        throw runtime("Metadata entry with the key '%s' has a value of '%s' and type '%s'. " +                "It cannot be returned as a Long.", key, value, value.getClass().getName());    }
+public Float getFloat(String key) {        if (!containsKey(key)) {            return null;        }        Object value = metadata.get(key);        if (value instanceof String) {            return Float.parseFloat(value.toString());        } else if (value instanceof Number) {            return ((Number) value).floatValue();        }        throw runtime("Metadata entry with the key '%s' has a value of '%s' and type '%s'. " +                "It cannot be returned as a Float.", key, value, value.getClass().getName());    }
+public Double getDouble(String key) {        if (!containsKey(key)) {            return null;        }        Object value = metadata.get(key);        if (value instanceof String) {            return Double.parseDouble(value.toString());        } else if (value instanceof Number) {            return ((Number) value).doubleValue();        }        throw runtime("Metadata entry with the key '%s' has a value of '%s' and type '%s'. " +                "It cannot be returned as a Double.", key, value, value.getClass().getName());    }
+public boolean containsKey(String key) {        return metadata.containsKey(key);    }
+public Metadata add(String key, Object value) {        return put(key, value.toString());    }
+public Metadata add(String key, String value) {        validate(key, value);        this.metadata.put(key, value);        return this;    }
+public Metadata put(String key, String value) {        validate(key, value);        this.metadata.put(key, value);        return this;    }
+public Metadata put(String key, int value) {        validate(key, value);        this.metadata.put(key, value);        return this;    }
+public Metadata put(String key, long value) {        validate(key, value);        this.metadata.put(key, value);        return this;    }
+public Metadata put(String key, float value) {        validate(key, value);        this.metadata.put(key, value);        return this;    }
+public Metadata put(String key, double value) {        validate(key, value);        this.metadata.put(key, value);        return this;    }
+public Metadata remove(String key) {        this.metadata.remove(key);        return this;    }
+public Metadata copy() {        return new Metadata(metadata);    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Metadata that = (Metadata) o;        return Objects.equals(this.metadata, that.metadata);    }
+public int hashCode() {        return Objects.hash(metadata);    }
+public String toString() {        return "Metadata {" +                " metadata = " + metadata +                " }";    }
+public static Metadata from(String key, String value) {        return new Metadata().put(key, value);    }
+public static Metadata from(String key, Object value) {        return new Metadata().add(key, value);    }
+public static Metadata from(Map<String, ?> metadata) {        return new Metadata(metadata);    }
+public static Metadata metadata(String key, String value) {        return from(key, value);    }
+public static Metadata metadata(String key, Object value) {        return from(key, value);    }
+----------------------------------------------------------------------------------------------------
+public float[] vector() {        return vector;    }
+public List<Float> vectorAsList() {        List<Float> list = new ArrayList<>(vector.length);        for (float f : vector) {            list.add(f);        }        return list;    }
+public void normalize() {        double norm = 0.0;        for (float f : vector) {            norm += f * f;        }        norm = Math.sqrt(norm);        for (int i = 0; i < vector.length; i++) {            vector[i] /= norm;        }    }
+public int dimension() {        return vector.length;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Embedding that = (Embedding) o;        return Arrays.equals(this.vector, that.vector);    }
+public int hashCode() {        return Arrays.hashCode(vector);    }
+public String toString() {        return "Embedding {" +                " vector = " + Arrays.toString(vector) +                " }";    }
+public static Embedding from(float[] vector) {        return new Embedding(vector);    }
+public static Embedding from(List<Float> vector) {        float[] array = new float[vector.size()];        for (int i = 0; i < vector.size(); i++) {            array[i] = vector.get(i);        }        return new Embedding(array);    }
+----------------------------------------------------------------------------------------------------
+public static Builder builder() {        return new Builder();    }
+public URI url() {        return url;    }
+public String base64Data() {        return base64Data;    }
+public String mimeType() {        return mimeType;    }
+public String revisedPrompt() {        return revisedPrompt;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Image that = (Image) o;        return Objects.equals(this.url, that.url)                && Objects.equals(this.base64Data, that.base64Data)                && Objects.equals(this.mimeType, that.mimeType)                && Objects.equals(this.revisedPrompt, that.revisedPrompt);    }
+public int hashCode() {        return Objects.hash(url, base64Data, mimeType, revisedPrompt);    }
+public String toString() {        return "Image {" +                " url = " + quoted(url) +                ", base64Data = " + quoted(base64Data) +                ", mimeType = " + quoted(mimeType) +                ", revisedPrompt = " + quoted(revisedPrompt) +                " }";    }
+public Builder url(URI url) {            this.url = url;            return this;        }
+public Builder url(String url) {            return url(URI.create(url));        }
+public Builder base64Data(String base64Data) {            this.base64Data = base64Data;            return this;        }
+public Builder mimeType(String mimeType) {            this.mimeType = mimeType;            return this;        }
+public Builder revisedPrompt(String revisedPrompt) {            this.revisedPrompt = revisedPrompt;            return this;        }
+public Image build() {            return new Image(this);        }
+----------------------------------------------------------------------------------------------------
+public String text() {        return text;    }
+public List<ToolExecutionRequest> toolExecutionRequests() {        return toolExecutionRequests;    }
+public boolean hasToolExecutionRequests() {        return !isNullOrEmpty(toolExecutionRequests);    }
+public ChatMessageType type() {        return AI;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        AiMessage that = (AiMessage) o;        return Objects.equals(this.text, that.text)                && Objects.equals(this.toolExecutionRequests, that.toolExecutionRequests);    }
+public int hashCode() {        return Objects.hash(text, toolExecutionRequests);    }
+public String toString() {        return "AiMessage {" +                " text = " + quoted(text) +                " toolExecutionRequests = " + toolExecutionRequests +                " }";    }
+public static AiMessage from(String text) {        return new AiMessage(text);    }
+public static AiMessage from(ToolExecutionRequest... toolExecutionRequests) {        return from(asList(toolExecutionRequests));    }
+public static AiMessage from(List<ToolExecutionRequest> toolExecutionRequests) {        return new AiMessage(toolExecutionRequests);    }
+public static AiMessage aiMessage(String text) {        return from(text);    }
+public static AiMessage aiMessage(ToolExecutionRequest... toolExecutionRequests) {        return aiMessage(asList(toolExecutionRequests));    }
+public static AiMessage aiMessage(List<ToolExecutionRequest> toolExecutionRequests) {        return from(toolExecutionRequests);    }
+----------------------------------------------------------------------------------------------------
+public static ChatMessage messageFromJson(String json) {        return CODEC.messageFromJson(json);    }
+public static List<ChatMessage> messagesFromJson(String json) {        return CODEC.messagesFromJson(json);    }
+----------------------------------------------------------------------------------------------------
+public static String messageToJson(ChatMessage message) {        return CODEC.messageToJson(message);    }
+public static String messagesToJson(List<ChatMessage> messages) {        return CODEC.messagesToJson(messages);    }
+----------------------------------------------------------------------------------------------------
+public JsonElement serialize(ChatMessage chatMessage, Type ignored, JsonSerializationContext context) {        JsonObject messageJsonObject = GSON.toJsonTree(chatMessage).getAsJsonObject();        messageJsonObject.addProperty(CHAT_MESSAGE_TYPE, chatMessage.type().toString());        return messageJsonObject;    }
+public ChatMessage deserialize(JsonElement messageJsonElement, Type ignored, JsonDeserializationContext context) throws JsonParseException {        String chatMessageTypeString = messageJsonElement.getAsJsonObject().get(CHAT_MESSAGE_TYPE).getAsString();        ChatMessageType chatMessageType = ChatMessageType.valueOf(chatMessageTypeString);        ChatMessage chatMessage = GSON.fromJson(messageJsonElement, chatMessageType.messageClass());        if (chatMessage instanceof UserMessage && ((UserMessage) chatMessage).contents() == null) {                        chatMessage = UserMessage.from(messageJsonElement.getAsJsonObject().get("text").getAsString());        }        return chatMessage;    }
+----------------------------------------------------------------------------------------------------
+public ChatMessage messageFromJson(String json) {        return GSON.fromJson(json, ChatMessage.class);    }
+public List<ChatMessage> messagesFromJson(String json) {        List<ChatMessage> messages = GSON.fromJson(json, MESSAGE_LIST_TYPE);        return messages == null ? emptyList() : messages;    }
+public String messageToJson(ChatMessage message) {        return GSON.toJson(message);    }
+public String messagesToJson(List<ChatMessage> messages) {        return GSON.toJson(messages);    }
+----------------------------------------------------------------------------------------------------
+public JsonElement serialize(Content content, Type ignored, JsonSerializationContext context) {        JsonObject contentJsonObject = GSON.toJsonTree(content).getAsJsonObject();        contentJsonObject.addProperty(CONTENT_TYPE, content.type().toString());        return contentJsonObject;    }
+public Content deserialize(JsonElement contentJsonElement, Type ignored, JsonDeserializationContext context) throws JsonParseException {        String contentTypeString = contentJsonElement.getAsJsonObject().get(CONTENT_TYPE).getAsString();        ContentType contentType = ContentType.valueOf(contentTypeString);        return GSON.fromJson(contentJsonElement, contentType.getContentClass());    }
+----------------------------------------------------------------------------------------------------
+public Image image() {        return image;    }
+public DetailLevel detailLevel() {        return detailLevel;    }
+public ContentType type() {        return IMAGE;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        ImageContent that = (ImageContent) o;        return Objects.equals(this.image, that.image)                && Objects.equals(this.detailLevel, that.detailLevel);    }
+public int hashCode() {        return Objects.hash(image, detailLevel);    }
+public String toString() {        return "ImageContent {" +                " image = " + image +                " detailLevel = " + detailLevel +                " }";    }
+public static ImageContent from(URI url) {        return new ImageContent(url);    }
+public static ImageContent from(String url) {        return new ImageContent(url);    }
+public static ImageContent from(URI url, DetailLevel detailLevel) {        return new ImageContent(url, detailLevel);    }
+public static ImageContent from(String url, DetailLevel detailLevel) {        return new ImageContent(url, detailLevel);    }
+public static ImageContent from(String base64Data, String mimeType) {        return new ImageContent(base64Data, mimeType);    }
+public static ImageContent from(String base64Data, String mimeType, DetailLevel detailLevel) {        return new ImageContent(base64Data, mimeType, detailLevel);    }
+public static ImageContent from(Image image) {        return new ImageContent(image);    }
+public static ImageContent from(Image image, DetailLevel detailLevel) {        return new ImageContent(image, detailLevel);    }
+----------------------------------------------------------------------------------------------------
+public String text() {        return text;    }
+public ChatMessageType type() {        return SYSTEM;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        SystemMessage that = (SystemMessage) o;        return Objects.equals(this.text, that.text);    }
+public int hashCode() {        return Objects.hash(text);    }
+public String toString() {        return "SystemMessage {" +                " text = " + quoted(text) +                " }";    }
+public static SystemMessage from(String text) {        return new SystemMessage(text);    }
+public static SystemMessage systemMessage(String text) {        return from(text);    }
+----------------------------------------------------------------------------------------------------
+public String text() {        return text;    }
+public ContentType type() {        return TEXT;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        TextContent that = (TextContent) o;        return Objects.equals(this.text, that.text);    }
+public int hashCode() {        return Objects.hash(text);    }
+public String toString() {        return "TextContent {" +                " text = " + quoted(text) +                " }";    }
+public static TextContent from(String text) {        return new TextContent(text);    }
+----------------------------------------------------------------------------------------------------
+public String id() {        return id;    }
+public String toolName() {        return toolName;    }
+public String text() {        return text;    }
+public ChatMessageType type() {        return TOOL_EXECUTION_RESULT;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        ToolExecutionResultMessage that = (ToolExecutionResultMessage) o;        return Objects.equals(this.id, that.id)                && Objects.equals(this.toolName, that.toolName)                && Objects.equals(this.text, that.text);    }
+public int hashCode() {        return Objects.hash(id, toolName, text);    }
+public String toString() {        return "ToolExecutionResultMessage {" +                " id = " + quoted(id) +                " toolName = " + quoted(toolName) +                " text = " + quoted(text) +                " }";    }
+public static ToolExecutionResultMessage from(ToolExecutionRequest request, String toolExecutionResult) {        return new ToolExecutionResultMessage(request.id(), request.name(), toolExecutionResult);    }
+public static ToolExecutionResultMessage from(String id, String toolName, String toolExecutionResult) {        return new ToolExecutionResultMessage(id, toolName, toolExecutionResult);    }
+public static ToolExecutionResultMessage toolExecutionResultMessage(ToolExecutionRequest request, String toolExecutionResult) {        return from(request, toolExecutionResult);    }
+public static ToolExecutionResultMessage toolExecutionResultMessage(String id, String toolName, String toolExecutionResult) {        return from(id, toolName, toolExecutionResult);    }
+----------------------------------------------------------------------------------------------------
+public String name() {        return name;    }
+public List<Content> contents() {        return contents;    }
+public String singleText() {        if (hasSingleText()) {            return ((TextContent) contents.get(0)).text();        } else {            throw runtime("Expecting single text content, but got: " + contents);        }    }
+public boolean hasSingleText() {        return contents.size() == 1 && contents.get(0) instanceof TextContent;    }
+public String text() {        return singleText();    }
+public ChatMessageType type() {        return USER;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        UserMessage that = (UserMessage) o;        return Objects.equals(this.name, that.name)                && Objects.equals(this.contents, that.contents);    }
+public int hashCode() {        return Objects.hash(name, contents);    }
+public String toString() {        return "UserMessage {" +                " name = " + quoted(name) +                " contents = " + contents +                " }";    }
+public static UserMessage from(String text) {        return new UserMessage(text);    }
+public static UserMessage from(String name, String text) {        return new UserMessage(name, text);    }
+public static UserMessage from(Content... contents) {        return new UserMessage(contents);    }
+public static UserMessage from(String name, Content... contents) {        return new UserMessage(name, contents);    }
+public static UserMessage from(List<Content> contents) {        return new UserMessage(contents);    }
+public static UserMessage from(String name, List<Content> contents) {        return new UserMessage(name, contents);    }
+public static UserMessage userMessage(String text) {        return from(text);    }
+public static UserMessage userMessage(String name, String text) {        return from(name, text);    }
+public static UserMessage userMessage(Content... contents) {        return from(contents);    }
+public static UserMessage userMessage(String name, Content... contents) {        return from(name, contents);    }
+public static UserMessage userMessage(List<Content> contents) {        return from(contents);    }
+public static UserMessage userMessage(String name, List<Content> contents) {        return from(name, contents);    }
+----------------------------------------------------------------------------------------------------
+public String text() {        return text;    }
+public Metadata metadata() {        return metadata;    }
+public String metadata(String key) {        return metadata.get(key);    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        TextSegment that = (TextSegment) o;        return Objects.equals(this.text, that.text)                && Objects.equals(this.metadata, that.metadata);    }
+public int hashCode() {        return Objects.hash(text, metadata);    }
+public String toString() {        return "TextSegment {" +                " text = " + quoted(text) +                " metadata = " + metadata.asMap() +                " }";    }
+public static TextSegment from(String text) {        return new TextSegment(text, new Metadata());    }
+public static TextSegment from(String text, Metadata metadata) {        return new TextSegment(text, metadata);    }
+public static TextSegment textSegment(String text) {        return from(text);    }
+public static TextSegment textSegment(String text, Metadata metadata) {        return from(text, metadata);    }
+----------------------------------------------------------------------------------------------------
+public static IllegalArgumentException illegalArgument(String format, Object... args) {        return new IllegalArgumentException(String.format(format, args));    }
+public static RuntimeException runtime(String format, Object... args) {        return new RuntimeException(String.format(format, args));    }
+----------------------------------------------------------------------------------------------------
+public String toJson(Object o) {        return GSON.toJson(o);    }
+public InputStream toInputStream(Object o, Class<?> type) throws IOException {        try (                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(                        byteArrayOutputStream, StandardCharsets.UTF_8);                JsonWriter jsonWriter = new JsonWriter(outputStreamWriter)        ) {            GSON.toJson(o, type, jsonWriter);            jsonWriter.flush();            return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());        }    }
+----------------------------------------------------------------------------------------------------
+public static String toJson(Object o) {        return CODEC.toJson(o);    }
+public static InputStream toInputStream(Object o, Class<?> type) throws IOException {        return CODEC.toInputStream(o, type);    }
+----------------------------------------------------------------------------------------------------
+public static RetryPolicy.Builder retryPolicyBuilder() {        return new RetryPolicy.Builder();    }
+public Builder maxAttempts(int maxAttempts) {                this.maxAttempts = maxAttempts;                return this;            }
+public Builder delayMillis(int delayMillis) {                this.delayMillis = delayMillis;                return this;            }
+public Builder jitterScale(double jitterScale) {                this.jitterScale = jitterScale;                return this;            }
+public Builder backoffExp(double backoffExp) {                this.backoffExp = backoffExp;                return this;            }
+public RetryPolicy build() {                return new RetryPolicy(maxAttempts, delayMillis, jitterScale, backoffExp);            }
+public double rawDelayMs(int attempt) {            return ((double) delayMillis) * Math.pow(backoffExp, attempt - 1);        }
+public int jitterDelayMillis(int attempt) {            Random rand = new Random();            double delay = rawDelayMs(attempt);            double jitter = delay * jitterScale;            return (int) (delay + rand.nextInt((int) jitter));        }
+public void sleep(int attempt) {            try {                Thread.sleep(jitterDelayMillis(attempt));            } catch (InterruptedException ignored) {                            }        }
+----------------------------------------------------------------------------------------------------
+public static boolean isNullOrBlank(String string) {    return string == null || string.trim().isEmpty();  }
+public static boolean isNotNullOrBlank(String string) {    return !isNullOrBlank(string);  }
+public static boolean areNotNullOrBlank(String... strings) {    if (strings == null || strings.length == 0) {      return false;    }    for (String string : strings) {      if (isNullOrBlank(string)) {        return false;      }    }    return true;  }
+public static boolean isNullOrEmpty(Collection<?> collection) {    return collection == null || collection.isEmpty();  }
+public static boolean isCollectionEmpty(Collection<?> collection) {    return isNullOrEmpty(collection);  }
+public static String repeat(String string, int times) {    StringBuilder sb = new StringBuilder();    for (int i = 0; i < times; i++) {      sb.append(string);    }    return sb.toString();  }
+public static String randomUUID() {    return UUID.randomUUID().toString();  }
+public static String generateUUIDFrom(String input) {      byte[] hashBytes = getSha256Instance().digest(input.getBytes(UTF_8));      StringBuilder sb = new StringBuilder();      for (byte b : hashBytes) sb.append(String.format("%02x", b));      return UUID.nameUUIDFromBytes(sb.toString().getBytes(UTF_8)).toString();  }
+public static String quoted(Object object) {    if (object == null) {      return "null";    }    return "\"" + object + "\"";  }
+public static String firstChars(String string, int numberOfChars) {    if (string == null) {      return null;    }    return string.length() > numberOfChars ? string.substring(0, numberOfChars) : string;  }
+public static byte[] readBytes(String url) {    try {      HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();      connection.setRequestMethod("GET");      int responseCode = connection.getResponseCode();      if (responseCode == HTTP_OK) {        InputStream inputStream = connection.getInputStream();        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();        byte[] buffer = new byte[1024];        int bytesRead;        while ((bytesRead = inputStream.read(buffer)) != -1) {          outputStream.write(buffer, 0, bytesRead);        }        return outputStream.toByteArray();      } else {        throw new RuntimeException("Error while reading: " + responseCode);      }    } catch (Exception e) {      throw new RuntimeException(e);    }  }
+----------------------------------------------------------------------------------------------------
+public static void ensureEq(Object lhs, Object rhs, String format, Object... args) {        if (!Objects.equals(lhs, rhs)) {            throw illegalArgument(format, args);        }    }
+public static String ensureNotBlank(String string, String name) {        if (string == null || string.trim().isEmpty()) {            throw illegalArgument("%s cannot be null or blank", name);        }        return string;    }
+public static void ensureTrue(boolean expression, String msg) {        if (!expression) {            throw illegalArgument(msg);        }    }
+public static int ensureGreaterThanZero(Integer i, String name) {        if (i == null || i <= 0) {            throw illegalArgument("%s must be greater than zero, but is: %s", name, i);        }        return i;    }
+public static double ensureBetween(Double d, double min, double max, String name) {        if (d == null || d < min || d > max) {            throw illegalArgument("%s must be between %s and %s, but is: %s", name, min, max, d);        }        return d;    }
+public static int ensureBetween(Integer i, int min, int max, String name) {        if (i == null || i < min || i > max) {            throw illegalArgument("%s must be between %s and %s, but is: %s", name, min, max, i);        }        return i;    }
+public static long ensureBetween(Long i, long min, long max, String name) {        if (i == null || i < min || i > max) {            throw illegalArgument("%s must be between %s and %s, but is: %s", name, min, max, i);        }        return i;    }
+----------------------------------------------------------------------------------------------------
+public String generate(String userMessage) {        throw new ModelDisabledException("ChatLanguageModel is disabled");    }
+public Response<AiMessage> generate(ChatMessage... messages) {        throw new ModelDisabledException("ChatLanguageModel is disabled");    }
+public Response<AiMessage> generate(List<ChatMessage> messages) {        throw new ModelDisabledException("ChatLanguageModel is disabled");    }
+public Response<AiMessage> generate(List<ChatMessage> messages, List<ToolSpecification> toolSpecifications) {        throw new ModelDisabledException("ChatLanguageModel is disabled");    }
+public Response<AiMessage> generate(List<ChatMessage> messages, ToolSpecification toolSpecification) {        throw new ModelDisabledException("ChatLanguageModel is disabled");    }
+----------------------------------------------------------------------------------------------------
+public void generate(String userMessage, StreamingResponseHandler<AiMessage> handler) {        throw new ModelDisabledException("StreamingChatLanguageModel is disabled");    }
+public void generate(List<ChatMessage> messages, StreamingResponseHandler<AiMessage> handler) {        throw new ModelDisabledException("StreamingChatLanguageModel is disabled");    }
+public void generate(List<ChatMessage> messages, List<ToolSpecification> toolSpecifications, StreamingResponseHandler<AiMessage> handler) {        throw new ModelDisabledException("StreamingChatLanguageModel is disabled");    }
+public void generate(List<ChatMessage> messages, ToolSpecification toolSpecification, StreamingResponseHandler<AiMessage> handler) {        throw new ModelDisabledException("StreamingChatLanguageModel is disabled");    }
+----------------------------------------------------------------------------------------------------
+public Response<Embedding> embed(String text) {        throw new ModelDisabledException("EmbeddingModel is disabled");    }
+public Response<Embedding> embed(TextSegment textSegment) {        throw new ModelDisabledException("EmbeddingModel is disabled");    }
+public Response<List<Embedding>> embedAll(List<TextSegment> textSegments) {        throw new ModelDisabledException("EmbeddingModel is disabled");    }
+----------------------------------------------------------------------------------------------------
+public Response<Image> generate(String prompt) {        throw new ModelDisabledException("ImageModel is disabled");    }
+public Response<List<Image>> generate(String prompt, int n) {        throw new ModelDisabledException("ImageModel is disabled");    }
+public Response<Image> edit(Image image, String prompt) {        throw new ModelDisabledException("ImageModel is disabled");    }
+public Response<Image> edit(Image image, Image mask, String prompt) {        throw new ModelDisabledException("ImageModel is disabled");    }
+----------------------------------------------------------------------------------------------------
+public Prompt toPrompt(Object structuredPrompt) {        StructuredPrompt annotation = StructuredPrompt.Util.validateStructuredPrompt(structuredPrompt);        String promptTemplateString = StructuredPrompt.Util.join(annotation);        PromptTemplate promptTemplate = PromptTemplate.from(promptTemplateString);        Map<String, Object> variables = extractVariables(structuredPrompt);        return promptTemplate.apply(variables);    }
+----------------------------------------------------------------------------------------------------
+public static Prompt toPrompt(Object structuredPrompt) {        return FACTORY.toPrompt(structuredPrompt);    }
+----------------------------------------------------------------------------------------------------
+public DefaultTemplate create(PromptTemplateFactory.Input input) {        return new DefaultTemplate(input.getTemplate());    }
+public String render(Map<String, Object> variables) {            ensureAllVariablesProvided(variables);            String result = template;            for (Map.Entry<String, Object> entry : variables.entrySet()) {                result = replaceAll(result, entry.getKey(), entry.getValue());            }            return result;        }
+----------------------------------------------------------------------------------------------------
+public String text() {        return text;    }
+public SystemMessage toSystemMessage() {        return systemMessage(text);    }
+public UserMessage toUserMessage() {        return userMessage(text);    }
+public AiMessage toAiMessage() {        return aiMessage(text);    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Prompt that = (Prompt) o;        return Objects.equals(this.text, that.text);    }
+public int hashCode() {        return Objects.hash(text);    }
+public String toString() {        return "Prompt {" +                " text = " + quoted(text) +                " }";    }
+public static Prompt from(String text) {        return new Prompt(text);    }
+----------------------------------------------------------------------------------------------------
+public String getTemplate() {                return template;            }
+public String getName() {                return "template";            }
+public String template() {        return templateString;    }
+public Prompt apply(Object value) {        return apply(singletonMap("it", value));    }
+public Prompt apply(Map<String, Object> variables) {        ensureNotNull(variables, "variables");        return Prompt.from(template.render(injectDateTimeVariables(variables)));    }
+public static PromptTemplate from(String template) {        return new PromptTemplate(template);    }
+----------------------------------------------------------------------------------------------------
+public Response<String> generate(String prompt) {        throw new ModelDisabledException("LanguageModel is disabled");    }
+public Response<String> generate(Prompt prompt) {        throw new ModelDisabledException("LanguageModel is disabled");    }
+----------------------------------------------------------------------------------------------------
+public void generate(String prompt, StreamingResponseHandler<String> handler) {        throw new ModelDisabledException("StreamingLanguageModel is disabled");    }
+public void generate(Prompt prompt, StreamingResponseHandler<String> handler) {        throw new ModelDisabledException("StreamingLanguageModel is disabled");    }
+----------------------------------------------------------------------------------------------------
+public Response<Moderation> moderate(String text) {        throw new ModelDisabledException("ModerationModel is disabled");    }
+public Response<Moderation> moderate(Prompt prompt) {        throw new ModelDisabledException("ModerationModel is disabled");    }
+public Response<Moderation> moderate(ChatMessage message) {        throw new ModelDisabledException("ModerationModel is disabled");    }
+public Response<Moderation> moderate(List<ChatMessage> messages) {        throw new ModelDisabledException("ModerationModel is disabled");    }
+public Response<Moderation> moderate(TextSegment textSegment) {        throw new ModelDisabledException("ModerationModel is disabled");    }
+----------------------------------------------------------------------------------------------------
+public boolean flagged() {        return flagged;    }
+public String flaggedText() {        return flaggedText;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Moderation that = (Moderation) o;        return this.flagged == that.flagged                && Objects.equals(this.flaggedText, that.flaggedText);    }
+public int hashCode() {        return Objects.hash(flagged, flaggedText);    }
+public String toString() {        return "Moderation {" +                " flagged = " + flagged +                ", flaggedText = " + quoted(flaggedText) +                " }";    }
+public static Moderation flagged(String flaggedText) {        return new Moderation(flaggedText);    }
+public static Moderation notFlagged() {        return new Moderation();    }
+----------------------------------------------------------------------------------------------------
+public T content() {        return content;    }
+public TokenUsage tokenUsage() {        return tokenUsage;    }
+public FinishReason finishReason() {        return finishReason;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Response<?> that = (Response<?>) o;        return Objects.equals(this.content, that.content)                && Objects.equals(this.tokenUsage, that.tokenUsage)                && Objects.equals(this.finishReason, that.finishReason);    }
+public int hashCode() {        return Objects.hash(content, tokenUsage, finishReason);    }
+public String toString() {        return "Response {" +                " content = " + content +                ", tokenUsage = " + tokenUsage +                ", finishReason = " + finishReason +                " }";    }
+----------------------------------------------------------------------------------------------------
+public Integer inputTokenCount() {        return inputTokenCount;    }
+public Integer outputTokenCount() {        return outputTokenCount;    }
+public Integer totalTokenCount() {        return totalTokenCount;    }
+public TokenUsage add(TokenUsage that) {        return new TokenUsage(                sum(this.inputTokenCount, that.inputTokenCount),                sum(this.outputTokenCount, that.outputTokenCount),                sum(this.totalTokenCount, that.totalTokenCount)        );    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        TokenUsage that = (TokenUsage) o;        return Objects.equals(this.inputTokenCount, that.inputTokenCount)                && Objects.equals(this.outputTokenCount, that.outputTokenCount)                && Objects.equals(this.totalTokenCount, that.totalTokenCount);    }
+public int hashCode() {        return Objects.hash(inputTokenCount, outputTokenCount, totalTokenCount);    }
+public String toString() {        return "TokenUsage {" +                " inputTokenCount = " + inputTokenCount +                ", outputTokenCount = " + outputTokenCount +                ", totalTokenCount = " + totalTokenCount +                " }";    }
+----------------------------------------------------------------------------------------------------
+public List<Content> aggregate(Map<Query, Collection<List<Content>>> queryToContents) {                Map<Query, List<Content>> fused = fuse(queryToContents);                return ReciprocalRankFuser.fuse(fused.values());    }
+----------------------------------------------------------------------------------------------------
+public static List<Content> fuse(Collection<List<Content>> listsOfContents) {        return fuse(listsOfContents, 60);    }
+public static List<Content> fuse(Collection<List<Content>> listsOfContents, int k) {        ensureBetween(k, 1, Integer.MAX_VALUE, "k");        Map<Content, Double> scores = new LinkedHashMap<>();        for (List<Content> singleListOfContent : listsOfContents) {            for (int i = 0; i < singleListOfContent.size(); i++) {                Content content = singleListOfContent.get(i);                double currentScore = scores.getOrDefault(content, 0.0);                int rank = i + 1;                double newScore = currentScore + 1.0 / (k + rank);                scores.put(content, newScore);            }        }        List<Content> fused = new ArrayList<>(scores.keySet());        fused.sort(Comparator.comparingDouble(scores::get).reversed());        return fused;    }
+----------------------------------------------------------------------------------------------------
+public List<Content> aggregate(Map<Query, Collection<List<Content>>> queryToContents) {                Query query = querySelector.apply(queryToContents);                Map<Query, List<Content>> queryToFusedContents = fuse(queryToContents);                List<Content> fusedContents = ReciprocalRankFuser.fuse(queryToFusedContents.values());                List<TextSegment> reRankedAndFilteredSegments = reRankAndFilter(fusedContents, query);        return reRankedAndFilteredSegments.stream()                .map(Content::from)                .collect(toList());    }
+----------------------------------------------------------------------------------------------------
+public UserMessage inject(List<Content> contents, UserMessage userMessage) {        if (contents.isEmpty()) {            return userMessage;        }        Prompt prompt = createPrompt(userMessage, contents);        return prompt.toUserMessage();    }
+----------------------------------------------------------------------------------------------------
+public EmbeddingStoreContentRetrieverBuilder maxResults(Integer maxResults) {            if (maxResults != null) {                dynamicMaxResults = (query) -> ensureGreaterThanZero(maxResults, "maxResults");            }            return this;        }
+public EmbeddingStoreContentRetrieverBuilder minScore(Double minScore) {            if (minScore != null) {                dynamicMinScore = (query) -> ensureBetween(minScore, 0, 1, "minScore");            }            return this;        }
+public EmbeddingStoreContentRetrieverBuilder filter(Filter filter) {            if (filter != null) {                dynamicFilter = (query) -> filter;            }            return this;        }
+public List<Content> retrieve(Query query) {        Embedding embeddedQuery = embeddingModel.embed(query.text()).content();        EmbeddingSearchRequest searchRequest = EmbeddingSearchRequest.builder()                .queryEmbedding(embeddedQuery)                .maxResults(maxResultsProvider.apply(query))                .minScore(minScoreProvider.apply(query))                .filter(filterProvider.apply(query))                .build();        EmbeddingSearchResult<TextSegment> searchResult = embeddingStore.search(searchRequest);        return searchResult.matches().stream()                .map(EmbeddingMatch::embedded)                .map(Content::from)                .collect(toList());    }
+----------------------------------------------------------------------------------------------------
+public TextSegment textSegment() {        return textSegment;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Content that = (Content) o;        return Objects.equals(this.textSegment, that.textSegment);    }
+public int hashCode() {        return Objects.hash(textSegment);    }
+public String toString() {        return "Content {" +                " textSegment = " + textSegment +                " }";    }
+public static Content from(String text) {        return new Content(text);    }
+public static Content from(TextSegment textSegment) {        return new Content(textSegment);    }
+----------------------------------------------------------------------------------------------------
+public Collection<ContentRetriever> route(Query query) {        return contentRetrievers;    }
+----------------------------------------------------------------------------------------------------
+public Collection<ContentRetriever> route(Query query) {        Prompt prompt = createPrompt(query);        try {            String response = chatLanguageModel.generate(prompt.text());            return parse(response);        } catch (Exception e) {            log.warn("Failed to route query '{}'", query.text(), e);            return fallback(query, e);        }    }
+----------------------------------------------------------------------------------------------------
+public Collection<Query> transform(Query query) {        List<ChatMessage> chatMemory = query.metadata().chatMemory();        if (chatMemory.isEmpty()) {                        return singletonList(query);        }        Prompt prompt = createPrompt(query, format(chatMemory));        String compressedQuery = chatLanguageModel.generate(prompt.text());        return singletonList(Query.from(compressedQuery));    }
+----------------------------------------------------------------------------------------------------
+public Collection<Query> transform(Query query) {        return singletonList(query);    }
+----------------------------------------------------------------------------------------------------
+public Collection<Query> transform(Query query) {        Prompt prompt = createPrompt(query);        String response = chatLanguageModel.generate(prompt.text());        return parse(response);    }
+----------------------------------------------------------------------------------------------------
+public UserMessage userMessage() {        return userMessage;    }
+public Object chatMemoryId() {        return chatMemoryId;    }
+public List<ChatMessage> chatMemory() {        return chatMemory;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Metadata that = (Metadata) o;        return Objects.equals(this.userMessage, that.userMessage)                && Objects.equals(this.chatMemoryId, that.chatMemoryId)                && Objects.equals(this.chatMemory, that.chatMemory);    }
+public int hashCode() {        return Objects.hash(userMessage, chatMemoryId, chatMemory);    }
+public String toString() {        return "Metadata {" +                " userMessage = " + userMessage +                ", chatMemoryId = " + chatMemoryId +                ", chatMemory = " + chatMemory +                " }";    }
+public static Metadata from(UserMessage userMessage, Object chatMemoryId, List<ChatMessage> chatMemory) {        return new Metadata(userMessage, chatMemoryId, chatMemory);    }
+----------------------------------------------------------------------------------------------------
+public String text() {        return text;    }
+public Metadata metadata() {        return metadata;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        Query that = (Query) o;        return Objects.equals(this.text, that.text)                && Objects.equals(this.metadata, that.metadata);    }
+public int hashCode() {        return Objects.hash(text, metadata);    }
+public String toString() {        return "Query {" +                " text = " + quoted(text) +                ", metadata = " + metadata +                " }";    }
+public static Query from(String text) {        return new Query(text);    }
+public static Query from(String text, Metadata metadata) {        return new Query(text, metadata);    }
+----------------------------------------------------------------------------------------------------
+public UserMessage augment(UserMessage userMessage, Metadata metadata) {        Query originalQuery = Query.from(userMessage.text(), metadata);        log(originalQuery);        Collection<Query> queries = queryTransformer.transform(originalQuery);        log(queries);        Map<Query, CompletableFuture<Collection<List<Content>>>> queryToFutureContents = new ConcurrentHashMap<>();        queries.forEach(query -> {            CompletableFuture<Collection<List<Content>>> futureContents =                    supplyAsync(() -> {                                Collection<ContentRetriever> retrievers = queryRouter.route(query);                                log(query, retrievers);                                return retrievers;                            },                            executor                    ).thenCompose(retrievers -> retrieveFromAll(retrievers, query));            queryToFutureContents.put(query, futureContents);        });        Map<Query, Collection<List<Content>>> queryToContents = join(queryToFutureContents);        List<Content> contents = contentAggregator.aggregate(queryToContents);        log(contents);        UserMessage augmentedUserMessage = contentInjector.inject(contents, userMessage);        log(augmentedUserMessage);        return augmentedUserMessage;    }
+public static DefaultRetrievalAugmentorBuilder builder() {        return new DefaultRetrievalAugmentorBuilder();    }
+public DefaultRetrievalAugmentorBuilder contentRetriever(ContentRetriever contentRetriever) {            this.queryRouter = new DefaultQueryRouter(ensureNotNull(contentRetriever, "contentRetriever"));            return this;        }
+----------------------------------------------------------------------------------------------------
+public String key() {        return key;    }
+public Object comparisonValue() {        return comparisonValue;    }
+public boolean test(Object object) {        if (!(object instanceof Metadata)) {            return false;        }        Metadata metadata = (Metadata) object;        if (!metadata.containsKey(key)) {            return false;        }        Object actualValue = metadata.toMap().get(key);        ensureTypesAreCompatible(actualValue, comparisonValue, key);        if (actualValue instanceof Number) {            return compareAsBigDecimals(actualValue, comparisonValue) == 0;        }        return actualValue.equals(comparisonValue);    }
+----------------------------------------------------------------------------------------------------
+public String key() {        return key;    }
+public Comparable<?> comparisonValue() {        return comparisonValue;    }
+public boolean test(Object object) {        if (!(object instanceof Metadata)) {            return false;        }        Metadata metadata = (Metadata) object;        if (!metadata.containsKey(key)) {            return false;        }        Object actualValue = metadata.toMap().get(key);        ensureTypesAreCompatible(actualValue, comparisonValue, key);        if (actualValue instanceof Number) {            return compareAsBigDecimals(actualValue, comparisonValue) > 0;        }        return ((Comparable) actualValue).compareTo(comparisonValue) > 0;    }
+----------------------------------------------------------------------------------------------------
+public String key() {        return key;    }
+public Comparable<?> comparisonValue() {        return comparisonValue;    }
+public boolean test(Object object) {        if (!(object instanceof Metadata)) {            return false;        }        Metadata metadata = (Metadata) object;        if (!metadata.containsKey(key)) {            return false;        }        Object actualValue = metadata.toMap().get(key);        ensureTypesAreCompatible(actualValue, comparisonValue, key);        if (actualValue instanceof Number) {            return compareAsBigDecimals(actualValue, comparisonValue) >= 0;        }        return ((Comparable) actualValue).compareTo(comparisonValue) >= 0;    }
+----------------------------------------------------------------------------------------------------
+public String key() {        return key;    }
+public Collection<?> comparisonValues() {        return comparisonValues;    }
+public boolean test(Object object) {        if (!(object instanceof Metadata)) {            return false;        }        Metadata metadata = (Metadata) object;        if (!metadata.containsKey(key)) {            return false;        }        Object actualValue = metadata.toMap().get(key);        ensureTypesAreCompatible(actualValue, comparisonValues.iterator().next(), key);        if (comparisonValues.iterator().next() instanceof Number) {            return containsAsBigDecimals(actualValue, comparisonValues);        }        return comparisonValues.contains(actualValue);    }
+----------------------------------------------------------------------------------------------------
+public String key() {        return key;    }
+public Comparable<?> comparisonValue() {        return comparisonValue;    }
+public boolean test(Object object) {        if (!(object instanceof Metadata)) {            return false;        }        Metadata metadata = (Metadata) object;        if (!metadata.containsKey(key)) {            return false;        }        Object actualValue = metadata.toMap().get(key);        ensureTypesAreCompatible(actualValue, comparisonValue, key);        if (actualValue instanceof Number) {            return compareAsBigDecimals(actualValue, comparisonValue) < 0;        }        return ((Comparable) actualValue).compareTo(comparisonValue) < 0;    }
+----------------------------------------------------------------------------------------------------
+public String key() {        return key;    }
+public Comparable<?> comparisonValue() {        return comparisonValue;    }
+public boolean test(Object object) {        if (!(object instanceof Metadata)) {            return false;        }        Metadata metadata = (Metadata) object;        if (!metadata.containsKey(key)) {            return false;        }        Object actualValue = metadata.toMap().get(key);        ensureTypesAreCompatible(actualValue, comparisonValue, key);        if (actualValue instanceof Number) {            return compareAsBigDecimals(actualValue, comparisonValue) <= 0;        }        return ((Comparable) actualValue).compareTo(comparisonValue) <= 0;    }
+----------------------------------------------------------------------------------------------------
+public String key() {        return key;    }
+public Object comparisonValue() {        return comparisonValue;    }
+public boolean test(Object object) {        if (!(object instanceof Metadata)) {            return false;        }        Metadata metadata = (Metadata) object;        if (!metadata.containsKey(key)) {            return true;        }        Object actualValue = metadata.toMap().get(key);        ensureTypesAreCompatible(actualValue, comparisonValue, key);        if (actualValue instanceof Number) {            return compareAsBigDecimals(actualValue, comparisonValue) != 0;        }        return !actualValue.equals(comparisonValue);    }
+----------------------------------------------------------------------------------------------------
+public String key() {        return key;    }
+public Collection<?> comparisonValues() {        return comparisonValues;    }
+public boolean test(Object object) {        if (!(object instanceof Metadata)) {            return false;        }        Metadata metadata = (Metadata) object;        if (!metadata.containsKey(key)) {            return true;        }        Object actualValue = metadata.toMap().get(key);        ensureTypesAreCompatible(actualValue, comparisonValues.iterator().next(), key);        if (comparisonValues.iterator().next() instanceof Number) {            return !containsAsBigDecimals(actualValue, comparisonValues);        }        return !comparisonValues.contains(actualValue);    }
+----------------------------------------------------------------------------------------------------
+public Filter left() {        return left;    }
+public Filter right() {        return right;    }
+public boolean test(Object object) {        return left().test(object) && right().test(object);    }
+----------------------------------------------------------------------------------------------------
+public Filter expression() {        return expression;    }
+public boolean test(Object object) {        return !expression.test(object);    }
+----------------------------------------------------------------------------------------------------
+public Filter left() {        return left;    }
+public Filter right() {        return right;    }
+public boolean test(Object object) {        return left().test(object) || right().test(object);    }
+----------------------------------------------------------------------------------------------------
+public static MetadataFilterBuilder metadataKey(String key) {        return new MetadataFilterBuilder(key);    }
+public Filter isEqualTo(String value) {        return new IsEqualTo(key, value);    }
+public Filter isEqualTo(int value) {        return new IsEqualTo(key, value);    }
+public Filter isEqualTo(long value) {        return new IsEqualTo(key, value);    }
+public Filter isEqualTo(float value) {        return new IsEqualTo(key, value);    }
+public Filter isEqualTo(double value) {        return new IsEqualTo(key, value);    }
+public Filter isNotEqualTo(String value) {        return new IsNotEqualTo(key, value);    }
+public Filter isNotEqualTo(int value) {        return new IsNotEqualTo(key, value);    }
+public Filter isNotEqualTo(long value) {        return new IsNotEqualTo(key, value);    }
+public Filter isNotEqualTo(float value) {        return new IsNotEqualTo(key, value);    }
+public Filter isNotEqualTo(double value) {        return new IsNotEqualTo(key, value);    }
+public Filter isGreaterThan(String value) {        return new IsGreaterThan(key, value);    }
+public Filter isGreaterThan(int value) {        return new IsGreaterThan(key, value);    }
+public Filter isGreaterThan(long value) {        return new IsGreaterThan(key, value);    }
+public Filter isGreaterThan(float value) {        return new IsGreaterThan(key, value);    }
+public Filter isGreaterThan(double value) {        return new IsGreaterThan(key, value);    }
+public Filter isGreaterThanOrEqualTo(String value) {        return new IsGreaterThanOrEqualTo(key, value);    }
+public Filter isGreaterThanOrEqualTo(int value) {        return new IsGreaterThanOrEqualTo(key, value);    }
+public Filter isGreaterThanOrEqualTo(long value) {        return new IsGreaterThanOrEqualTo(key, value);    }
+public Filter isGreaterThanOrEqualTo(float value) {        return new IsGreaterThanOrEqualTo(key, value);    }
+public Filter isGreaterThanOrEqualTo(double value) {        return new IsGreaterThanOrEqualTo(key, value);    }
+public Filter isLessThan(String value) {        return new IsLessThan(key, value);    }
+public Filter isLessThan(int value) {        return new IsLessThan(key, value);    }
+public Filter isLessThan(long value) {        return new IsLessThan(key, value);    }
+public Filter isLessThan(float value) {        return new IsLessThan(key, value);    }
+public Filter isLessThan(double value) {        return new IsLessThan(key, value);    }
+public Filter isLessThanOrEqualTo(String value) {        return new IsLessThanOrEqualTo(key, value);    }
+public Filter isLessThanOrEqualTo(int value) {        return new IsLessThanOrEqualTo(key, value);    }
+public Filter isLessThanOrEqualTo(long value) {        return new IsLessThanOrEqualTo(key, value);    }
+public Filter isLessThanOrEqualTo(float value) {        return new IsLessThanOrEqualTo(key, value);    }
+public Filter isLessThanOrEqualTo(double value) {        return new IsLessThanOrEqualTo(key, value);    }
+public Filter isBetween(String fromValue, String toValue) {        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));    }
+public Filter isBetween(int fromValue, int toValue) {        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));    }
+public Filter isBetween(long fromValue, long toValue) {        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));    }
+public Filter isBetween(float fromValue, float toValue) {        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));    }
+public Filter isBetween(double fromValue, double toValue) {        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));    }
+public Filter isIn(String... values) {        return new IsIn(key, asList(values));    }
+public Filter isIn(int... values) {        return new IsIn(key, stream(values).boxed().collect(toList()));    }
+public Filter isIn(long... values) {        return new IsIn(key, stream(values).boxed().collect(toList()));    }
+public Filter isIn(float... values) {        List<Float> valuesList = new ArrayList<>();        for (float value : values) {            valuesList.add(value);        }        return new IsIn(key, valuesList);    }
+public Filter isIn(double... values) {        return new IsIn(key, stream(values).boxed().collect(toList()));    }
+public Filter isIn(Collection<?> values) {        return new IsIn(key, values);    }
+public Filter isNotIn(String... values) {        return new IsNotIn(key, asList(values));    }
+public Filter isNotIn(int... values) {        return new IsNotIn(key, stream(values).boxed().collect(toList()));    }
+public Filter isNotIn(long... values) {        return new IsNotIn(key, stream(values).boxed().collect(toList()));    }
+public Filter isNotIn(float... values) {        List<Float> valuesList = new ArrayList<>();        for (float value : values) {            valuesList.add(value);        }        return new IsNotIn(key, valuesList);    }
+public Filter isNotIn(double... values) {        return new IsNotIn(key, stream(values).boxed().collect(toList()));    }
+public Filter isNotIn(Collection<?> values) {        return new IsNotIn(key, values);    }
+----------------------------------------------------------------------------------------------------
+public static double between(Embedding embeddingA, Embedding embeddingB) {        ensureNotNull(embeddingA, "embeddingA");        ensureNotNull(embeddingB, "embeddingB");        float[] vectorA = embeddingA.vector();        float[] vectorB = embeddingB.vector();        if (vectorA.length != vectorB.length) {            throw illegalArgument("Length of vector a (%s) must be equal to the length of vector b (%s)",                    vectorA.length, vectorB.length);        }        double dotProduct = 0.0;        double normA = 0.0;        double normB = 0.0;        for (int i = 0; i < vectorA.length; i++) {            dotProduct += vectorA[i] * vectorB[i];            normA += vectorA[i] * vectorA[i];            normB += vectorB[i] * vectorB[i];        }                return dotProduct / Math.max(Math.sqrt(normA) * Math.sqrt(normB), EPSILON);    }
+public static double fromRelevanceScore(double relevanceScore) {        return relevanceScore * 2 - 1;    }
+----------------------------------------------------------------------------------------------------
+public Double score() {        return score;    }
+public String embeddingId() {        return embeddingId;    }
+public Embedding embedding() {        return embedding;    }
+public Embedded embedded() {        return embedded;    }
+public boolean equals(Object o) {        if (this == o) return true;        if (o == null || getClass() != o.getClass()) return false;        EmbeddingMatch<?> that = (EmbeddingMatch<?>) o;        return Objects.equals(this.score, that.score)                && Objects.equals(this.embeddingId, that.embeddingId)                && Objects.equals(this.embedding, that.embedding)                && Objects.equals(this.embedded, that.embedded);    }
+public int hashCode() {        return Objects.hash(score, embeddingId, embedding, embedded);    }
+public String toString() {        return "EmbeddingMatch {" +                " score = " + score +                ", embedded = " + embedded +                ", embeddingId = " + embeddingId +                ", embedding = " + embedding +                " }";    }
+----------------------------------------------------------------------------------------------------
+public Embedding queryEmbedding() {        return queryEmbedding;    }
+public int maxResults() {        return maxResults;    }
+public double minScore() {        return minScore;    }
+public Filter filter() {        return filter;    }
+----------------------------------------------------------------------------------------------------
+public List<EmbeddingMatch<Embedded>> matches() {        return matches;    }
+----------------------------------------------------------------------------------------------------
+public void ingest(Document document) {        ingest(singletonList(document));    }
+public void ingest(Document... documents) {        ingest(asList(documents));    }
+public void ingest(List<Document> documents) {        if (documentTransformer != null) {            documents = documentTransformer.transformAll(documents);        }        List<TextSegment> segments = documentSplitter.splitAll(documents);        if (textSegmentTransformer != null) {            segments = textSegmentTransformer.transformAll(segments);        }        List<Embedding> embeddings = embeddingModel.embedAll(segments).content();        embeddingStore.addAll(embeddings, segments);    }
+public static Builder builder() {        return new Builder();    }
+public Builder documentTransformer(DocumentTransformer documentTransformer) {            this.documentTransformer = documentTransformer;            return this;        }
+public Builder documentSplitter(DocumentSplitter documentSplitter) {            this.documentSplitter = documentSplitter;            return this;        }
+public Builder textSegmentTransformer(TextSegmentTransformer textSegmentTransformer) {            this.textSegmentTransformer = textSegmentTransformer;            return this;        }
+public Builder embeddingModel(EmbeddingModel embeddingModel) {            this.embeddingModel = embeddingModel;            return this;        }
+public Builder embeddingStore(EmbeddingStore<TextSegment> embeddingStore) {            this.embeddingStore = embeddingStore;            return this;        }
+public EmbeddingStoreIngestor build() {            return new EmbeddingStoreIngestor(                    documentTransformer,                    documentSplitter,                    textSegmentTransformer,                    embeddingModel,                    embeddingStore            );        }
+----------------------------------------------------------------------------------------------------
+public static double fromCosineSimilarity(double cosineSimilarity) {        return (cosineSimilarity + 1) / 2;    }
+----------------------------------------------------------------------------------------------------
+public List<ChatMessage> getMessages(Object memoryId) {        return messagesByMemoryId.computeIfAbsent(memoryId, ignored -> new ArrayList<>());    }
+public void updateMessages(Object memoryId, List<ChatMessage> messages) {        messagesByMemoryId.put(memoryId, messages);    }
+public void deleteMessages(Object memoryId) {        messagesByMemoryId.remove(memoryId);    }
+----------------------------------------------------------------------------------------------------

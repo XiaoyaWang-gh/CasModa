@@ -1,0 +1,10 @@
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\InternalOpenAiHelper.java
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\OpenAiChatModel.java
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\OpenAiEmbeddingModel.java
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\OpenAiImageModel.java
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\OpenAiLanguageModel.java
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\OpenAiModerationModel.java
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\OpenAiStreamingChatModel.java
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\OpenAiStreamingLanguageModel.java
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\OpenAiStreamingResponseBuilder.java
+C:\dataset\trending_java_pros\langchain4j-0.28.0\langchain4j-open-ai\src\main\java\dev\langchain4j\model\openai\OpenAiTokenizer.java

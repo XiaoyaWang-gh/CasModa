@@ -1,0 +1,324 @@
+public static List<Function> toFunctions(Collection<ToolSpecification> toolSpecifications) {        return toolSpecifications.stream()                .map(InternalQianfanHelper::toFunction)                .collect(toList());    }
+public static Message toQianfanMessage(ChatMessage message) {        if (message instanceof UserMessage) {            UserMessage userMessage = (UserMessage) message;            return Message.builder()                    .role(Role.USER)                    .content(userMessage.text())                    .name(userMessage.name())                    .build();        }        if (message instanceof AiMessage) {            AiMessage aiMessage = (AiMessage) message;            if (!aiMessage.hasToolExecutionRequests()) {                return  Message.builder()                        .content(message.text())                        .role(Role.ASSISTANT)                        .build();            }            ToolExecutionRequest toolExecutionRequest = aiMessage.toolExecutionRequests().get(0);            if (toolExecutionRequest.id() == null) {                FunctionCall functionCall = FunctionCall.builder()                        .name(toolExecutionRequest.name())                        .arguments(toolExecutionRequest.arguments())                        .build();                return Message.builder()                        .content(message.text())                        .role(Role.ASSISTANT)                        .functionCall(functionCall)                        .build();            }        }        if (message instanceof ToolExecutionResultMessage) {            ToolExecutionResultMessage toolExecutionResultMessage = (ToolExecutionResultMessage) message;                FunctionCall functionCall = FunctionCall.builder()                        .name(toolExecutionResultMessage.toolName())                        .arguments(toolExecutionResultMessage.text())                        .build();                return  Message.builder()                        .content(message.text())                        .role(Role.FUNCTION)                        .name(functionCall.name())                        .build();        }        throw illegalArgument("Unknown message type: " + message.type());    }
+public static FinishReason finishReasonFrom(String finishReason) {        if(Utils.isNullOrBlank(finishReason)){            return null;        }        switch (finishReason) {            case "normal":                return STOP;            case "stop":                return STOP;            case "length":                return LENGTH;            case "content_filter":                return CONTENT_FILTER;            case "function_call":                return TOOL_EXECUTION;            default:                return null;        }    }
+public static AiMessage aiMessageFrom(ChatCompletionResponse response) {        FunctionCall functionCall = response.getFunctionCall();        if (functionCall != null) {            ToolExecutionRequest toolExecutionRequest = ToolExecutionRequest.builder()                    .name(functionCall.name())                    .arguments(functionCall.arguments())                    .build();            return aiMessage(toolExecutionRequest);        }        return aiMessage(response.getResult());    }
+public static List<Message> toOpenAiMessages(List<ChatMessage> messages) {        return messages.stream()                .filter(chatMessage -> !(chatMessage instanceof SystemMessage))                .map(InternalQianfanHelper::toQianfanMessage)                .collect(toList());    }
+----------------------------------------------------------------------------------------------------
+public Response<AiMessage> generate(List<ChatMessage> messages) {          return  generate(messages, null,null);    }
+public Response<AiMessage> generate(List<ChatMessage> messages, List<ToolSpecification> toolSpecifications) {        return generate(messages, toolSpecifications,null);    }
+public Response<AiMessage> generate(List<ChatMessage> messages, ToolSpecification toolSpecification) {        throw new RuntimeException("Not supported");    }
+public static QianfanChatModelBuilder builder() {        for (QianfanChatModelBuilderFactory factory : loadFactories(QianfanChatModelBuilderFactory.class)) {            return factory.get();        }        return new QianfanChatModelBuilder();    }
+----------------------------------------------------------------------------------------------------
+public Response<List<Embedding>> embedAll(List<TextSegment> textSegments) {        List<String> texts = textSegments.stream()                .map(TextSegment::text)                .collect(toList());        return embedTexts(texts);    }
+public static QianfanEmbeddingModelBuilder builder() {        for (QianfanEmbeddingModelBuilderFactory factory : loadFactories(QianfanEmbeddingModelBuilderFactory.class)) {            return factory.get();        }        return new QianfanEmbeddingModelBuilder();    }
+----------------------------------------------------------------------------------------------------
+public Response<String> generate(String prompt) {        CompletionRequest request = CompletionRequest.builder()                .prompt(prompt)                .topK(topK)                .topP(topP)                .temperature(temperature)                .penaltyScore(penaltyScore)                .build();        CompletionResponse response = withRetry(() -> client.completion(request,false,endpoint).execute(), maxRetries);        return Response.from(                response.getResult(),                tokenUsageFrom(response),                finishReasonFrom(response.getFinishReason())        );    }
+public static QianfanLanguageModelBuilder builder() {        for (QianfanLanguageModelBuilderFactory factory : loadFactories(QianfanLanguageModelBuilderFactory.class)) {            return factory.get();        }        return new QianfanLanguageModelBuilder();    }
+----------------------------------------------------------------------------------------------------
+public void generate(List<ChatMessage> messages, StreamingResponseHandler<AiMessage> handler) {        generate(messages, null, null, handler);    }
+public void generate(List<ChatMessage> messages, List<ToolSpecification> toolSpecifications, StreamingResponseHandler<AiMessage> handler) {        generate(messages, toolSpecifications, null, handler);    }
+public void generate(List<ChatMessage> messages, ToolSpecification toolSpecification, StreamingResponseHandler<AiMessage> handler) {        throw new RuntimeException("Not supported");    }
+public static QianfanStreamingChatModelBuilder builder() {        for (QianfanStreamingChatModelBuilderFactory factory : loadFactories(QianfanStreamingChatModelBuilderFactory.class)) {            return factory.get();        }        return new QianfanStreamingChatModelBuilder();    }
+----------------------------------------------------------------------------------------------------
+public void generate(String prompt, StreamingResponseHandler<String> handler) {        CompletionRequest request = CompletionRequest.builder()                .prompt(prompt)                .topK(topK)                .topP(topP)                .temperature(temperature)                .penaltyScore(penaltyScore)                .build();        QianfanStreamingResponseBuilder responseBuilder = new QianfanStreamingResponseBuilder(null);        SyncOrAsyncOrStreaming<CompletionResponse> response = client.completion(request, true, endpoint);        response.onPartialResponse(partialResponse -> {                    responseBuilder.append(partialResponse);                    handle(partialResponse, handler);                })                .onComplete(() -> {                    Response<String> response1 = responseBuilder.build(null);                    handler.onComplete(response1);                })                .onError(handler::onError)                .execute();    }
+public static QianfanStreamingLanguageModelBuilder builder() {        for (QianfanStreamingLanguageModelBuilderFactory factory : loadFactories(QianfanStreamingLanguageModelBuilderFactory.class)) {            return factory.get();        }        return new QianfanStreamingLanguageModelBuilder();    }
+----------------------------------------------------------------------------------------------------
+public ErrorHandling onError(final Consumer<Throwable> errorHandler) {                return new ErrorHandling() {                    public void execute() {                        try {                            retrofit2.Response<Response> retrofitResponse = AsyncRequestExecutor.this.call.execute();                            if (retrofitResponse.isSuccessful()) {                                Response response = retrofitResponse.body();                                ResponseContent responseContent = AsyncRequestExecutor.this.responseContentExtractor.apply(response);                                responseHandler.accept(responseContent);                            } else {                                errorHandler.accept(Utils.toException(retrofitResponse));                            }                        } catch (IOException var4) {                            errorHandler.accept(var4);                        }                    }                };            }
+public void execute() {                        try {                            retrofit2.Response<Response> retrofitResponse = AsyncRequestExecutor.this.call.execute();                            if (retrofitResponse.isSuccessful()) {                                Response response = retrofitResponse.body();                                ResponseContent responseContent = AsyncRequestExecutor.this.responseContentExtractor.apply(response);                                responseHandler.accept(responseContent);                            } else {                                errorHandler.accept(Utils.toException(retrofitResponse));                            }                        } catch (IOException var4) {                            errorHandler.accept(var4);                        }                    }
+public ErrorHandling ignoreErrors() {                return new ErrorHandling() {                    public void execute() {                        try {                            retrofit2.Response<Response> retrofitResponse = AsyncRequestExecutor.this.call.execute();                            if (retrofitResponse.isSuccessful()) {                                Response response = retrofitResponse.body();                                ResponseContent responseContent = AsyncRequestExecutor.this.responseContentExtractor.apply(response);                                responseHandler.accept(responseContent);                            }                        } catch (IOException var4) {                        }                    }                };            }
+public void execute() {                        try {                            retrofit2.Response<Response> retrofitResponse = AsyncRequestExecutor.this.call.execute();                            if (retrofitResponse.isSuccessful()) {                                Response response = retrofitResponse.body();                                ResponseContent responseContent = AsyncRequestExecutor.this.responseContentExtractor.apply(response);                                responseHandler.accept(responseContent);                            }                        } catch (IOException var4) {                        }                    }
+----------------------------------------------------------------------------------------------------
+public Response intercept(Chain chain) throws IOException {        Request request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + this.apiKey).build();        return chain.proceed(request);    }
+----------------------------------------------------------------------------------------------------
+public void write(JsonWriter out, Message message) throws IOException {        out.beginObject();        out.name("role");        out.value(message.role().toString());        out.name("content");        if (message.content() == null) {            boolean serializeNulls = out.getSerializeNulls();            out.setSerializeNulls(true);            out.nullValue();            out.setSerializeNulls(serializeNulls);        } else {            out.value(message.content());        }        if (message.name() != null) {            out.name("name");            out.value(message.name());        }        if (message.functionCall() != null) {            out.name("function_call");            TypeAdapter<FunctionCall> functionCallTypeAdapter = Json.GSON.getAdapter(                    FunctionCall.class);            functionCallTypeAdapter.write(out, message.functionCall());        }        out.endObject();    }
+public Message read(JsonReader in) throws IOException {        return (Message)this.delegate.read(in);    }
+----------------------------------------------------------------------------------------------------
+public void shutdown() {        this.okHttpClient.dispatcher().executorService().shutdown();        this.okHttpClient.connectionPool().evictAll();        Cache cache = this.okHttpClient.cache();        if (cache != null) {            try {                cache.close();            } catch (IOException var3) {                log.error("Failed to close cache", var3);            }        }    }
+public static Builder builder() {        return new Builder();    }
+public SyncOrAsyncOrStreaming<ChatCompletionResponse> chatCompletion(ChatCompletionRequest request,String endpoint) {        refreshToken();        return new RequestExecutor(this.qianfanApi.chatCompletions(endpoint,request, this.token), (r) -> {            return r;        }, this.okHttpClient, this.formatUrl("rpc/2.0/ai_custom/v1/wenxinworkshop/chat/"+endpoint+"?access_token="+this.token), () -> {            return ChatCompletionRequest.builder().from(request).stream(true).build();        }, ChatCompletionResponse.class, (r) -> {            return r;        }, this.logStreamingResponses);    }
+public SyncOrAsyncOrStreaming<CompletionResponse> completion(CompletionRequest request, boolean stream,                                                                 String endpoint) {        refreshToken();        CompletionRequest syncRequest = CompletionRequest.builder().from(request).stream(stream).build();        return new RequestExecutor(this.qianfanApi.completions(endpoint,request, this.token), (r) -> {            return r;        }, this.okHttpClient, this.formatUrl("rpc/2.0/ai_custom/v1/wenxinworkshop/completions/"+endpoint+"?access_token="+this.token), () -> {            return CompletionRequest.builder().from(request).stream(true).build();        }, CompletionResponse.class, (r) -> {            return r;        }, this.logStreamingResponses);    }
+public SyncOrAsync<EmbeddingResponse> embedding(EmbeddingRequest request, String serviceName) {        refreshToken();        return new RequestExecutor(this.qianfanApi.embeddings(serviceName, request, this.token), (r) -> {            return r;        });    }
+public Builder baseUrl(String baseUrl) {            if (baseUrl != null && !baseUrl.trim().isEmpty()) {                this.baseUrl = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";                return this;            } else {                throw new IllegalArgumentException("baseUrl cannot be null or empty");            }        }
+public Builder apiKey(String apiKey) {            if (apiKey != null && !apiKey.trim().isEmpty()) {                this.apiKey = apiKey;                return this;            } else {                throw new IllegalArgumentException("apiKey cannot be null or empty. ");            }        }
+public Builder secretKey(String secretKey) {            if (secretKey != null && !secretKey.trim().isEmpty()) {                this.secretKey = secretKey;                return this;            } else {                throw new IllegalArgumentException("secretKey cannot be null or empty. ");            }        }
+public Builder callTimeout(Duration callTimeout) {            if (callTimeout == null) {                throw new IllegalArgumentException("callTimeout cannot be null");            } else {                this.callTimeout = callTimeout;                return this;            }        }
+public Builder connectTimeout(Duration connectTimeout) {            if (connectTimeout == null) {                throw new IllegalArgumentException("connectTimeout cannot be null");            } else {                this.connectTimeout = connectTimeout;                return this;            }        }
+public Builder readTimeout(Duration readTimeout) {            if (readTimeout == null) {                throw new IllegalArgumentException("readTimeout cannot be null");            } else {                this.readTimeout = readTimeout;                return this;            }        }
+public Builder writeTimeout(Duration writeTimeout) {            if (writeTimeout == null) {                throw new IllegalArgumentException("writeTimeout cannot be null");            } else {                this.writeTimeout = writeTimeout;                return this;            }        }
+public Builder proxy(Proxy.Type type, String ip, int port) {            this.proxy = new Proxy(type, new InetSocketAddress(ip, port));            return this;        }
+public Builder proxy(Proxy proxy) {            this.proxy = proxy;            return this;        }
+public Builder logRequests() {            return this.logRequests(true);        }
+public Builder logRequests(Boolean logRequests) {            if (logRequests == null) {                logRequests = false;            }            this.logRequests = logRequests;            return this;        }
+public Builder logResponses() {            return this.logResponses(true);        }
+public Builder logResponses(Boolean logResponses) {            if (logResponses == null) {                logResponses = false;            }            this.logResponses = logResponses;            return this;        }
+public Builder logStreamingResponses() {            return this.logStreamingResponses(true);        }
+public Builder logStreamingResponses(Boolean logStreamingResponses) {            if (logStreamingResponses == null) {                logStreamingResponses = false;            }            this.logStreamingResponses = logStreamingResponses;            return this;        }
+public QianfanClient build() {            return new QianfanClient(this);        }
+----------------------------------------------------------------------------------------------------
+public int code() {        return this.code;    }
+----------------------------------------------------------------------------------------------------
+public void append(ChatCompletionResponse partialResponse) {        if (partialResponse == null) {            return;        }        String finishReason = partialResponse.getFinishReason();        if (finishReason != null) {            this.finishReason = finishReason;        }        String content = partialResponse.getResult();        if (content != null) {            contentBuilder.append(content);        }        Usage usage = partialResponse.getUsage();        if (usage!=null){            inputTokenCount = usage.promptTokens();            outputTokenCount = usage.completionTokens();        }        FunctionCall functionCall = partialResponse.getFunctionCall();        if (functionCall != null) {            if (functionCall.name() != null) {                toolNameBuilder.append(functionCall.name());            }            if (functionCall.arguments() != null) {                toolArgumentsBuilder.append(functionCall.arguments());            }        }    }
+public void append(CompletionResponse partialResponse) {        if (partialResponse == null) {            return;        }        String result = partialResponse.getResult();        if (Utils.isNullOrBlank(result)) {            return;        }        String finishReason = partialResponse.getFinishReason();        if (finishReason != null) {            this.finishReason = finishReason;        }        String token = partialResponse.getResult();        if (token != null) {            contentBuilder.append(token);        }    }
+public Response<AiMessage> build(Tokenizer tokenizer, boolean forcefulToolExecution) {        String content = contentBuilder.toString();        if (!content.isEmpty()) {            return Response.from(                    AiMessage.from(content),                    tokenUsage(content, tokenizer),                    InternalQianfanHelper.finishReasonFrom(finishReason)            );        }        String toolName = toolNameBuilder.toString();        if (!toolName.isEmpty()) {            ToolExecutionRequest toolExecutionRequest = ToolExecutionRequest.builder()                    .name(toolName)                    .arguments(toolArgumentsBuilder.toString())                    .build();            return Response.from(                    AiMessage.from(toolExecutionRequest),                    tokenUsage(singletonList(toolExecutionRequest), tokenizer, forcefulToolExecution),                    InternalQianfanHelper.finishReasonFrom(finishReason)            );        }        if (!indexToToolExecutionRequestBuilder.isEmpty()) {            List<ToolExecutionRequest> toolExecutionRequests = indexToToolExecutionRequestBuilder.values().stream()                    .map(it -> ToolExecutionRequest.builder()                            .id(it.idBuilder.toString())                            .name(it.nameBuilder.toString())                            .arguments(it.argumentsBuilder.toString())                            .build())                    .collect(toList());            return Response.from(                    AiMessage.from(toolExecutionRequests),                    tokenUsage(toolExecutionRequests, tokenizer, forcefulToolExecution),                    InternalQianfanHelper.finishReasonFrom(finishReason)            );        }        return null;    }
+public Response<String> build(Tokenizer tokenizer) {        String content = contentBuilder.toString();        if (!content.isEmpty()) {            return Response.from(                    content,                    tokenUsage(content, tokenizer),                    InternalQianfanHelper.finishReasonFrom(finishReason)            );        }        return null;    }
+public Response<AiMessage> build() {        String content = contentBuilder.toString();        if (!content.isEmpty()) {            return Response.from(                    AiMessage.from(content),                    new TokenUsage(inputTokenCount, outputTokenCount),                    InternalQianfanHelper.finishReasonFrom(finishReason)            );        }        String toolName = toolNameBuilder.toString();        if (!toolName.isEmpty()) {            ToolExecutionRequest toolExecutionRequest = ToolExecutionRequest.builder()                    .name(toolName)                    .arguments(toolArgumentsBuilder.toString())                    .build();            return Response.from(                    AiMessage.from(toolExecutionRequest),                    new TokenUsage(inputTokenCount, outputTokenCount),                    InternalQianfanHelper.finishReasonFrom(finishReason)            );        }        if (!indexToToolExecutionRequestBuilder.isEmpty()) {            List<ToolExecutionRequest> toolExecutionRequests = indexToToolExecutionRequestBuilder.values().stream()                    .map(it -> ToolExecutionRequest.builder()                            .id(it.idBuilder.toString())                            .name(it.nameBuilder.toString())                            .arguments(it.argumentsBuilder.toString())                            .build())                    .collect(toList());            return Response.from(                    AiMessage.from(toolExecutionRequests),                    new TokenUsage(inputTokenCount, outputTokenCount),                    InternalQianfanHelper.finishReasonFrom(finishReason)            );        }        return null;    }
+----------------------------------------------------------------------------------------------------
+public ResponseContent execute() {        return (new SyncRequestExecutor<>(this.call, this.responseContentExtractor)).execute();    }
+public AsyncResponseHandling onResponse(Consumer<ResponseContent> responseHandler) {        return (new AsyncRequestExecutor<>(this.call, this.responseContentExtractor)).onResponse(responseHandler);    }
+public StreamingResponseHandling onPartialResponse(Consumer<ResponseContent> partialResponseHandler) {        return (new StreamingRequestExecutor(this.okHttpClient, this.endpointUrl, this.requestWithStreamSupplier,                this.responseClass, this.streamEventContentExtractor, this.logStreamingResponses)).onPartialResponse(                partialResponseHandler);    }
+----------------------------------------------------------------------------------------------------
+public Response intercept(Chain chain) throws IOException {        Request request = chain.request();        log(request);        return chain.proceed(request);    }
+----------------------------------------------------------------------------------------------------
+public Response intercept(Chain chain) throws IOException {        Request request = chain.request();        Response response = chain.proceed(request);        log(response);        return response;    }
+----------------------------------------------------------------------------------------------------
+public StreamingCompletionHandling onComplete(final Runnable streamingCompletionCallback) {                return new StreamingCompletionHandling() {                    public ErrorHandling onError(final Consumer<Throwable> errorHandler) {                        return new ErrorHandling() {                            public void execute() {                                StreamingRequestExecutor.this.stream(partialResponseHandler,                                        streamingCompletionCallback, errorHandler);                            }                        };                    }                    public ErrorHandling ignoreErrors() {                        return new ErrorHandling() {                            public void execute() {                                StreamingRequestExecutor.this.stream(partialResponseHandler,                                        streamingCompletionCallback, (e) -> {                                        });                            }                        };                    }                };            }
+public ErrorHandling onError(final Consumer<Throwable> errorHandler) {                        return new ErrorHandling() {                            public void execute() {                                StreamingRequestExecutor.this.stream(partialResponseHandler,                                        streamingCompletionCallback, errorHandler);                            }                        };                    }
+public void execute() {                                StreamingRequestExecutor.this.stream(partialResponseHandler,                                        streamingCompletionCallback, errorHandler);                            }
+public ErrorHandling ignoreErrors() {                        return new ErrorHandling() {                            public void execute() {                                StreamingRequestExecutor.this.stream(partialResponseHandler,                                        streamingCompletionCallback, (e) -> {                                        });                            }                        };                    }
+public void execute() {                                StreamingRequestExecutor.this.stream(partialResponseHandler,                                        streamingCompletionCallback, (e) -> {                                        });                            }
+public ErrorHandling onError(final Consumer<Throwable> errorHandler) {                return new ErrorHandling() {                    public void execute() {                        StreamingRequestExecutor.this.stream(partialResponseHandler, () -> {                        }, errorHandler);                    }                };            }
+public void execute() {                        StreamingRequestExecutor.this.stream(partialResponseHandler, () -> {                        }, errorHandler);                    }
+public ErrorHandling ignoreErrors() {                return new ErrorHandling() {                    public void execute() {                        StreamingRequestExecutor.this.stream(partialResponseHandler, () -> {                        }, (e) -> {                        });                    }                };            }
+public void execute() {                        StreamingRequestExecutor.this.stream(partialResponseHandler, () -> {                        }, (e) -> {                        });                    }
+public void onOpen(EventSource eventSource, okhttp3.Response response) {                if (StreamingRequestExecutor.this.logStreamingResponses) {                    ResponseLoggingInterceptor.log(response);                }            }
+public void onEvent(EventSource eventSource, String id, String type, String data) {                if (StreamingRequestExecutor.this.logStreamingResponses) {                    StreamingRequestExecutor.log.debug("onEvent() {}", data);                }                if ("[DONE]".equals(data)) {                    streamingCompletionCallback.run();                } else {                    try {                        Response response = Json.fromJson(data, StreamingRequestExecutor.this.responseClass);                        ResponseContent responseContent = StreamingRequestExecutor.this.streamEventContentExtractor.apply(                                response);                        if (responseContent != null) {                            partialResponseHandler.accept(responseContent);                        }                    } catch (Exception var7) {                        errorHandler.accept(var7);                    }                }            }
+public void onClosed(EventSource eventSource) {                if (StreamingRequestExecutor.this.logStreamingResponses) {                    StreamingRequestExecutor.log.debug("onClosed()");                }                streamingCompletionCallback.run();            }
+public void onFailure(EventSource eventSource, Throwable t, okhttp3.Response response) {                if (StreamingRequestExecutor.this.logStreamingResponses) {                    StreamingRequestExecutor.log.debug("reqeust url:",response.request().url().toString());                    StreamingRequestExecutor.log.debug("onFailure()", t);                    ResponseLoggingInterceptor.log(response);                }                if (t != null) {                    errorHandler.accept(t);                } else {                    try {                        errorHandler.accept(Utils.toException(response));                    } catch (IOException var5) {                        errorHandler.accept(var5);                    }                }            }
+----------------------------------------------------------------------------------------------------
+public ResponseContent execute() {        try {            retrofit2.Response<Response> retrofitResponse =  this.call.execute();            if (retrofitResponse.isSuccessful()) {                Response response = retrofitResponse.body();                return this.responseContentExtractor.apply(response);            } else {                throw Utils.toException(retrofitResponse);            }        } catch (IOException var3) {            throw new RuntimeException(var3);        }    }
+public  String getBody(Request request) {        if("GET".equals(request.method())){            return "";        }        try {            Buffer buffer = new Buffer();            request.body().writeTo(buffer);            return buffer.readUtf8();        } catch (Exception var2) {            return "[Exception happened while reading request body. Check logs for more details.]";        }    }
+----------------------------------------------------------------------------------------------------
+public Integer promptTokens() {        return this.promptTokens;    }
+public Integer completionTokens() {        return this.completionTokens;    }
+public Integer totalTokens() {        return this.totalTokens;    }
+public boolean equals(Object another) {        if (this == another) {            return true;        } else {            return another instanceof Usage && this.equalTo((Usage)another);        }    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(this.promptTokens);        h += (h << 5) + Objects.hashCode(this.completionTokens);        h += (h << 5) + Objects.hashCode(this.totalTokens);        return h;    }
+public String toString() {        return "Usage{promptTokens=" + this.promptTokens + ", completionTokens=" + this.completionTokens + ", totalTokens=" + this.totalTokens + "}";    }
+public static Builder builder() {        return new Builder();    }
+public Builder promptTokens(Integer promptTokens) {            this.promptTokens = promptTokens;            return this;        }
+public Builder completionTokens(Integer completionTokens) {            this.completionTokens = completionTokens;            return this;        }
+public Builder totalTokens(Integer totalTokens) {            this.totalTokens = totalTokens;            return this;        }
+public Usage build() {            return new Usage(this);        }
+----------------------------------------------------------------------------------------------------
+public List<Message> messages() {        return this.messages;    }
+public Double temperature() {        return this.temperature;    }
+public Double topP() {        return this.topP;    }
+public Boolean stream() {        return this.stream;    }
+public String system() {        return this.system;    }
+public Double penaltyScore() {        return this.penaltyScore;    }
+public String userId() {        return this.userId;    }
+public List<Function> functions() {        return this.functions;    }
+public String toString() {        return "ChatCompletionRequest{" +                "messages=" + messages +                ", temperature=" + temperature +                ", topP=" + topP +                ", stream=" + stream +                ", penaltyScore=" + penaltyScore +                ", userId='" + userId + '\'' +                ", functions=" + functions +                ", system='" + system + '\'' +                '}';    }
+public static Builder builder() {        return new Builder();    }
+public Builder from(                ChatCompletionRequest instance) {            this.messages(instance.messages);            this.temperature(instance.temperature);            this.topP(instance.topP);            this.stream(instance.stream);            this.penaltyScore(instance.penaltyScore);            this.userId(instance.userId);            this.functions(instance.functions);            this.system(instance.system);            this.responseFormat(instance.responseFormat);            return this;        }
+public Builder messages(List<Message> messages) {            if (messages == null) {                return this;            } else {                this.messages = Collections.unmodifiableList(messages);                return this;            }        }
+public Builder messages(Message... messages) {            return this.messages(Arrays.asList(messages));        }
+public Builder addSystemMessage(String systemMessage) {            if (this.messages == null) {                this.messages = new ArrayList();            }            this.messages.add(Message.systemMessage(systemMessage));            return this;        }
+public Builder addUserMessage(String userMessage) {            if (this.messages == null) {                this.messages = new ArrayList();            }            this.messages.add(Message.userMessage(userMessage));            return this;        }
+public Builder addAssistantMessage(String assistantMessage) {            if (this.messages == null) {                this.messages = new ArrayList();            }            this.messages.add(Message.assistantMessage(assistantMessage));            return this;        }
+public Builder addFunctionMessage(String name, String content) {            if (this.messages == null) {                this.messages = new ArrayList();            }            this.messages.add(Message.functionMessage(name, content));            return this;        }
+public Builder temperature(Double temperature) {            this.temperature = temperature;            return this;        }
+public Builder system(String system) {            this.system = system;            return this;        }
+public Builder responseFormat(String responseFormat) {            this.responseFormat = responseFormat;            return this;        }
+public Builder topP(Double topP) {            this.topP = topP;            return this;        }
+public Builder stream(Boolean stream) {            this.stream = stream;            return this;        }
+public Builder penaltyScore(Double penaltyScore) {            this.penaltyScore = penaltyScore;            return this;        }
+public Builder userId(String userId) {            this.userId = userId;            return this;        }
+public Builder functions(List<Function> functions) {            if (functions == null) {                return this;            } else {                this.functions = Collections.unmodifiableList(functions);                return this;            }        }
+public Builder functions(Function... functions) {            return this.functions(Arrays.asList(functions));        }
+public Builder addFunction(Function function) {            if (this.functions == null) {                this.functions = new ArrayList();            }            this.functions.add(function);            return this;        }
+public ChatCompletionRequest build() {            return new ChatCompletionRequest(this);        }
+----------------------------------------------------------------------------------------------------
+public String toString() {        return "ChatCompletionResponse{" +                "id='" + id + '\'' +                ", errorCode=" + errorCode +                ", errorMsg='" + errorMsg + '\'' +                ", object='" + object + '\'' +                ", created=" + created +                ", sentenceId=" + sentenceId +                ", isEnd=" + isEnd +                ", isTruncated=" + isTruncated +                ", result='" + result + '\'' +                ", needClearHistory=" + needClearHistory +                ", banRound=" + banRound +                ", usage=" + usage +                ", functionCall=" + functionCall +                ", finishReason=" + finishReason +                '}';    }
+public String getId() {        return id;    }
+public Integer getErrorCode() {        return errorCode;    }
+public String getErrorMsg() {        return errorMsg;    }
+public String getObject() {        return object;    }
+public Integer getCreated() {        return created;    }
+public Integer getSentenceId() {        return sentenceId;    }
+public Boolean getIsEnd() {        return isEnd;    }
+public Boolean getIsTruncated() {        return isTruncated;    }
+public String getResult() {        return result;    }
+public Boolean getNeedClearHistory() {        return needClearHistory;    }
+public Integer getBanRound() {        return banRound;    }
+public Usage getUsage() {        return usage;    }
+public FunctionCall getFunctionCall() {        return functionCall;    }
+public String getFinishReason() {        return finishReason;    }
+public static Builder builder() {        return new Builder();    }
+public Builder errorCode(Integer errorCode) {            this.errorCode = errorCode;            return this;        }
+public Builder errorMsg(String errorMsg) {            this.errorMsg = errorMsg;            return this;        }
+public Builder created(Integer created) {            this.created = created;            return this;        }
+public Builder object(String object) {            this.object = object;            return this;        }
+public Builder sentenceId(Integer sentenceId) {            this.sentenceId = sentenceId;            return this;        }
+public Builder isEnd(Boolean isEnd) {            this.isEnd = isEnd;            return this;        }
+public Builder result(String result) {            this.result = result;            return this;        }
+public Builder needClearHistory(Boolean needClearHistory) {            this.needClearHistory = needClearHistory;            return this;        }
+public Builder banRound(Integer banRound) {            this.banRound = banRound;            return this;        }
+public Builder usage(Usage usage) {            this.usage = usage;            return this;        }
+public Builder functionCall(FunctionCall functionCall) {            this.functionCall = functionCall;            return this;        }
+public Builder isTruncated(Boolean isTruncated ) {            this.isTruncated = isTruncated;            return this;        }
+public Builder finishReason(String finishReason ) {            this.finishReason = finishReason;            return this;        }
+public ChatCompletionResponse build() {            return new ChatCompletionResponse(this);        }
+----------------------------------------------------------------------------------------------------
+public String getRefreshToken() {        return refreshToken;    }
+public Integer getExpiresIn() {        return expiresIn;    }
+public String getSessionKey() {        return sessionKey;    }
+public String getAccessToken() {        return accessToken;    }
+public String getScope() {        return scope;    }
+public String getSessionSecret() {        return sessionSecret;    }
+public static Builder builder() {        return new Builder();    }
+public Builder refreshToken(String refreshToken) {            this.refreshToken = refreshToken;            return this;        }
+public Builder expiresIn(Integer expiresIn) {            this.expiresIn = expiresIn;            return this;        }
+public Builder accessToken(String accessToken) {            this.accessToken = accessToken;            return this;        }
+public Builder scope(String scope) {            this.scope = scope;            return this;        }
+public Builder sessionKey(String sessionKey) {            this.sessionKey = sessionKey;            return this;        }
+public Builder sessionSecret(String sessionSecret) {            this.sessionSecret = sessionSecret;            return this;        }
+public ChatTokenResponse build() {            return new ChatTokenResponse(this);        }
+----------------------------------------------------------------------------------------------------
+public Role getRole() {        return role;    }
+public String getName() {        return name;    }
+public String getContent() {        return content;    }
+public FunctionCall getFunctionCall() {        return functionCall;    }
+public String toString() {        return "Examples{" +                "role=" + role +                ", name='" + name + '\'' +                ", content='" + content + '\'' +                ", functionCall=" + functionCall +                '}';    }
+public static Builder builder() {        return new Builder();    }
+public Builder role(Role role) {            this.role = role;            return this;        }
+public Builder name(String name) {            this.name = name;            return this;        }
+public Builder content(String content) {            this.content = content;            return this;        }
+public Builder functionCall(FunctionCall functionCall) {            this.functionCall = functionCall;            return this;        }
+----------------------------------------------------------------------------------------------------
+public String name() {        return this.name;    }
+public String description() {        return this.description;    }
+public Parameters parameters() {        return this.parameters;    }
+public Responses responses() {        return responses;    }
+public Examples examples() {        return examples;    }
+public String toString() {        return "Function{" +                "name='" + name + '\'' +                ", description='" + description + '\'' +                ", parameters=" + parameters +                ", responses=" + responses +                ", examples=" + examples +                '}';    }
+public static Builder builder() {        return new Builder();    }
+public Builder name(String name) {            this.name = name;            return this;        }
+public Builder description(String description) {            this.description = description;            return this;        }
+public Builder parameters(Parameters parameters) {            this.parameters = parameters;            return this;        }
+public Builder addParameter(String name, JsonSchemaProperty... jsonSchemaProperties) {            this.addOptionalParameter(name, jsonSchemaProperties);            this.parameters.required().add(name);            return this;        }
+public Builder addOptionalParameter(String name, JsonSchemaProperty... jsonSchemaProperties) {            if (this.parameters == null) {                this.parameters = Parameters.builder().build();            }            Map<String, Object> jsonSchemaPropertiesMap = new HashMap();            JsonSchemaProperty[] var4 = jsonSchemaProperties;            int var5 = jsonSchemaProperties.length;            for (int var6 = 0; var6 < var5; ++var6) {                JsonSchemaProperty jsonSchemaProperty = var4[var6];                jsonSchemaPropertiesMap.put(jsonSchemaProperty.key(), jsonSchemaProperty.value());            }            this.parameters.properties().put(name, jsonSchemaPropertiesMap);            return this;        }
+public Builder responses(Responses responses) {            this.responses = responses;            return this;        }
+public Builder examples(Examples examples) {            this.examples = examples;            return this;        }
+public Function build() {            return new Function(this);        }
+----------------------------------------------------------------------------------------------------
+public String name() {        return this.name;    }
+public String thoughts() {        return thoughts;    }
+public String arguments() {        return this.arguments;    }
+public boolean equals(Object another) {        if (this == another) {            return true;        } else {            return another instanceof FunctionCall                    && this.equalTo((FunctionCall)another);        }    }
+public String toString() {        return "{" +                "name='" + name + '\'' +                ", thoughts='" + thoughts + '\'' +                ", arguments='" + arguments + '\'' +                '}';    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(this.name);        h += (h << 5) + Objects.hashCode(this.arguments);        h += (h << 5) + Objects.hashCode(this.thoughts);        return h;    }
+public static Builder builder() {        return new Builder();    }
+public Builder name(String name) {            this.name = name;            return this;        }
+public Builder arguments(String arguments) {            this.arguments = arguments;            return this;        }
+public Builder thoughts(String thoughts) {            this.thoughts = thoughts;            return this;        }
+public FunctionCall build() {            return new FunctionCall(this);        }
+----------------------------------------------------------------------------------------------------
+public String key() {        return this.key;    }
+public Object value() {        return this.value;    }
+public boolean equals(Object another) {        if (this == another) {            return true;        } else {            return another instanceof JsonSchemaProperty                    && this.equalTo((JsonSchemaProperty)another);        }    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(this.key);        h += (h << 5) + Objects.hashCode(this.value);        return h;    }
+public String toString() {        return "JsonSchemaProperty{key=" + this.key + ", value=" + this.value + "}";    }
+public static JsonSchemaProperty from(String key, Object value) {        return new JsonSchemaProperty(key, value);    }
+public static JsonSchemaProperty property(String key, Object value) {        return from(key, value);    }
+public static JsonSchemaProperty type(String value) {        return from("type", value);    }
+public static JsonSchemaProperty description(String value) {        return from("description", value);    }
+public static JsonSchemaProperty enums(String... enumValues) {        return from("enum", enumValues);    }
+public static JsonSchemaProperty enums(Object... enumValues) {        Object[] var1 = enumValues;        int var2 = enumValues.length;        for(int var3 = 0; var3 < var2; ++var3) {            Object enumValue = var1[var3];            if (!enumValue.getClass().isEnum()) {                throw new RuntimeException("Value " + enumValue.getClass().getName() + " should be enum");            }        }        return from("enum", enumValues);    }
+public static JsonSchemaProperty enums(Class<?> enumClass) {        if (!enumClass.isEnum()) {            throw new RuntimeException("Class " + enumClass.getName() + " should be enum");        } else {            return from("enum", enumClass.getEnumConstants());        }    }
+----------------------------------------------------------------------------------------------------
+public Role role() {        return this.role;    }
+public String content() {        return this.content;    }
+public String name() {        return this.name;    }
+public FunctionCall functionCall() {        return this.functionCall;    }
+public boolean equals(Object another) {        if (this == another) {            return true;        } else {            return another instanceof Message && this.equalTo((Message)another);        }    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(this.role);        h += (h << 5) + Objects.hashCode(this.content);        h += (h << 5) + Objects.hashCode(this.name);        h += (h << 5) + Objects.hashCode(this.functionCall);        return h;    }
+public String toString() {        return "Message{role=" + this.role + ", content=" + this.content + ", name=" + this.name + ", functionCall=" + this.functionCall + "}";    }
+public static Message systemMessage(String content) {        return builder().role(Role.SYSTEM).content(content).build();    }
+public static Message userMessage(String content) {        return builder().role(Role.USER).content(content).build();    }
+public static Message assistantMessage(String content) {        return builder().role(Role.ASSISTANT).content(content).build();    }
+public static Message functionMessage(String name, String content) {        return builder().role(Role.FUNCTION).name(name).content(content).build();    }
+public static Builder builder() {        return new Builder();    }
+public Builder role(Role role) {            this.role = role;            return this;        }
+public Builder role(String role) {            return this.role(Role.from(role));        }
+public Builder content(String content) {            this.content = content;            return this;        }
+public Builder name(String name) {            this.name = name;            return this;        }
+public Builder functionCall(FunctionCall functionCall) {            this.functionCall = functionCall;            return this;        }
+public Message build() {            return new Message(this);        }
+----------------------------------------------------------------------------------------------------
+public String type() {        return this.type;    }
+public List<String> required() {        return this.required;    }
+public boolean equals(Object another) {        if (this == another) {            return true;        } else {            return another instanceof Parameters                    && this.equalTo((Parameters)another);        }    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(this.type);        h += (h << 5) + Objects.hashCode(this.properties);        h += (h << 5) + Objects.hashCode(this.required);        return h;    }
+public String toString() {        return "Parameters{type=" + this.type + ", properties=" + this.properties + ", required=" + this.required + "}";    }
+public static Builder builder() {        return new Builder();    }
+public Builder type(String type) {            this.type = type;            return this;        }
+public Builder properties(Map<String, Map<String, Object>> properties) {            this.properties = properties;            return this;        }
+public Builder required(List<String> required) {            this.required = required;            return this;        }
+public Parameters build() {            return new Parameters(this);        }
+----------------------------------------------------------------------------------------------------
+public String type() {        return this.type;    }
+public boolean equals(Object another) {        if (this == another) {            return true;        } else {            return another instanceof Responses                    && this.equalTo((Responses)another);        }    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(this.type);        h += (h << 5) + Objects.hashCode(this.properties);        return h;    }
+public String toString() {        return "Parameters{type=" + this.type + ", properties=" + this.properties +"}";    }
+public static Builder builder() {        return new Builder();    }
+public Builder type(String type) {            this.type = type;            return this;        }
+public Builder properties(Map<String, Map<String, Object>> properties) {            this.properties = properties;            return this;        }
+public Builder required(List<String> required) {            this.required = required;            return this;        }
+public Responses build() {            return new Responses(this);        }
+----------------------------------------------------------------------------------------------------
+public String toString() {        return this.stringValue;    }
+public void write(JsonWriter jsonWriter, Role role) throws IOException {            jsonWriter.value(role.toString());        }
+public Role read(JsonReader jsonReader) throws IOException {            return Role.from(jsonReader.nextString());        }
+----------------------------------------------------------------------------------------------------
+public String prompt() {        return this.prompt;    }
+public Boolean stream() {        return this.stream;    }
+public static Builder builder() {        return new Builder();    }
+public Builder from(                CompletionRequest request) {            this.prompt(request.prompt);            this.stream(request.stream);            this.user(request.userId);            this.prompt(request.prompt);            this.stream(request.stream);            this.user(request.userId);            this.temperature(request.temperature);            this.topK(request.topK);            this.topP(request.topP);            this.penaltyScore(request.penaltyScore);            return this;        }
+public Builder temperature(Double temperature) {            this.temperature = temperature;            return this;        }
+public Builder topK(Integer topK) {            this.topK = topK;            return this;        }
+public Builder topP(Double topP) {            this.topP = topP;            return this;        }
+public Builder penaltyScore(Double penaltyScore) {            this.penaltyScore = penaltyScore;            return this;        }
+public Builder prompt(String prompt) {            this.prompt = prompt;            return this;        }
+public Builder stream(Boolean stream) {            this.stream = stream;            return this;        }
+public Builder user(String userId) {            this.userId = userId;            return this;        }
+public CompletionRequest build() {            return new CompletionRequest(this);        }
+----------------------------------------------------------------------------------------------------
+public List<Float> embedding() {        return this.embedding;    }
+public Integer index() {        return this.index;    }
+public String object() {        return this.object;    }
+public String toString() {        return "EmbeddingData{" +                "object='" + object + '\'' +                ", embedding=" + embedding +                ", index=" + index +                '}';    }
+public static Builder builder() {        return new Builder();    }
+public Builder embedding(List<Float> embedding) {            if (embedding == null) {                return this;            } else {                this.embedding = Collections.unmodifiableList(embedding);                return this;            }        }
+public Builder index(Integer index) {            this.index = index;            return this;        }
+public Builder object(String object) {            this.object = object;            return this;        }
+public EmbeddingData build() {            return new EmbeddingData(this);        }
+----------------------------------------------------------------------------------------------------
+public String model() {        return this.model;    }
+public List<String> input() {        return this.input;    }
+public String user() {        return this.user;    }
+public boolean equals(Object another) {        if (this == another) {            return true;        } else {            return another instanceof EmbeddingRequest                    && this.equalTo((EmbeddingRequest)another);        }    }
+public int hashCode() {        int h = 5381;        h += (h << 5) + Objects.hashCode(this.model);        h += (h << 5) + Objects.hashCode(this.input);        h += (h << 5) + Objects.hashCode(this.user);        return h;    }
+public String toString() {        return "EmbeddingRequest{model=" + this.model + ", input=" + this.input + ", user=" + this.user + "}";    }
+public static Builder builder() {        return new Builder();    }
+public Builder model(String model) {            this.model = model;            return this;        }
+public Builder input(String... input) {            return this.input(Arrays.asList(input));        }
+public Builder input(List<String> input) {            if (input == null) {                return this;            } else {                this.input = Collections.unmodifiableList(input);                return this;            }        }
+public Builder user(String user) {            this.user = user;            return this;        }
+public EmbeddingRequest build() {            return new EmbeddingRequest(this);        }
+----------------------------------------------------------------------------------------------------
+public String object() {        return this.object;    }
+public List<EmbeddingData> data() {        return this.data;    }
+public Usage usage() {        return this.usage;    }
+public String id() {        return this.id;    }
+public Integer created() {        return this.created;    }
+public List<Float> embedding() {        return ((EmbeddingData)this.data.get(0)).embedding();    }
+public String toString() {        return "EmbeddingResponse{" +                "object='" + object + '\'' +                ", id='" + id + '\'' +                ", created=" + created +                ", data=" + data +                ", usage=" + usage +                '}';    }
+public static Builder builder() {        return new Builder();    }
+public Builder object(String object) {            this.object = object;            return this;        }
+public Builder data(List<EmbeddingData> data) {            if (data == null) {                return this;            } else {                this.data = Collections.unmodifiableList(data);                return this;            }        }
+public Builder usage(Usage usage) {            this.usage = usage;            return this;        }
+public Builder id(String id) {            this.id = id;            return this;        }
+public Builder created(Integer created) {            this.created = created;            return this;        }
+public EmbeddingResponse build() {            return new EmbeddingResponse(this);        }
+----------------------------------------------------------------------------------------------------

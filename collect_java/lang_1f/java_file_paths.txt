@@ -1,0 +1,7 @@
+C:\dataset\d4j-spec5\5_lang\1f\src\main\java\org\apache\commons\lang3\math\NumberUtils.java
+C:\dataset\d4j-spec5\5_lang\1f\src\main\java\org\apache\commons\lang3\RandomStringUtils.java
+C:\dataset\d4j-spec5\5_lang\1f\src\main\java\org\apache\commons\lang3\time\StopWatch.java
+C:\dataset\d4j-spec5\5_lang\1f\src\main\java\org\apache\commons\lang3\SystemUtils.java
+C:\dataset\d4j-spec5\5_lang\1f\src\main\java\org\apache\commons\lang3\builder\ToStringStyle.java
+C:\dataset\d4j-spec5\5_lang\1f\src\main\java\org\apache\commons\lang3\reflect\TypeUtils.java
+C:\dataset\d4j-spec5\5_lang\1f\src\main\java\org\apache\commons\lang3\text\WordUtils.java

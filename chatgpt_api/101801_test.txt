@@ -1,0 +1,4 @@
+int expectedNumerator = 1;
+int expectedDenominator = 2;
+assertEquals(expectedNumerator, fraction.getNumerator());
+assertEquals(expectedDenominator, fraction.getDenominator());
