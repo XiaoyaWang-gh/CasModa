@@ -5,11 +5,11 @@ import requests
 import json
 import re
 
-KEY = "lUMHwhghyPnB7XhvDd21F4868cF64022B0E7Bd7e30E4870a"
+KEY = "racuFeAlsOGLRgafF3616fEd9f514dAaA6F5C8543d8dC106"
 
 # PROXY_URL = "https://api.openai.com"
 # PROXY_URL = "https://api.ezchat.top"
-PROXY_URL = "https://platform.ezlinkai.com"
+PROXY_URL = "https://api.ezlinkai.com" # /v1/chat/completions
 
 logging.getLogger('backoff').addHandler(logging.StreamHandler())
 logging.getLogger('backoff').setLevel(logging.ERROR)
@@ -45,7 +45,7 @@ class ChatGPTAPI:
         openai.api_key = self.key
 
         data = {
-            'model': 'gpt-4-turbo-2024-04-09',
+            'model': 'o1',
             'messages': [
                 {"role": "system", "content": "You are a proficient and helpful assistant in java testing with JUnit framework."},
                 {"role": "user", "content": input_prompt}
@@ -80,9 +80,9 @@ class ChatGPTAPI:
 
 
 def main():
-    testgpt = ChatGPTAPI("23122902.txt")
+    testgpt = ChatGPTAPI("25042617.txt")
     for i in range(10):
-        testgpt.get_suggestions("Good morning, how are you?")
+        testgpt.get_suggestions("Good afternoon, how are you?")
 
 
 if __name__ == "__main__":
