@@ -21,7 +21,7 @@ ID_PLACEHOLDER = "<ID>"
 TM_PLACEHOLDER = "<TestMethodPlaceHolder>"
 
 message_list = [
-    {"role": "system", "content": "You are a proficient and helpful assistant in java testing with JUnit4 framework."}
+    {"role": "system", "content": "You are a proficient and helpful assistant in java testing with JUnit4 and Mockito frameworks."}
 ]
 
 

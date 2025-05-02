@@ -1,0 +1,186 @@
+[
+  {
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cOrderDto\u003e findAll() {\n    log.info(\"*** OrderDto List, service; fetch all orders *\");\n    return this.orderRepository.findAll().stream().map(OrderMappingHelper::map).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic OrderDto findById(final Integer orderId) {\n    log.info(\"*** OrderDto, service; fetch order by id *\");\n    return this.orderRepository.findById(orderId).map(OrderMappingHelper::map).orElseThrow(() -\u003e new OrderNotFoundException(String.format(\"Order with id: %d not found\", orderId)));\n}"
+  },
+  {
+    "method_name": "save",
+    "method_declaration": "@Override\npublic OrderDto save(final OrderDto orderDto) {\n    log.info(\"*** OrderDto, service; save order *\");\n    return OrderMappingHelper.map(this.orderRepository.save(OrderMappingHelper.map(orderDto)));\n}"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "@Override\npublic OrderDto update(final OrderDto orderDto) {\n    log.info(\"*** OrderDto, service; update order *\");\n    return OrderMappingHelper.map(this.orderRepository.save(OrderMappingHelper.map(orderDto)));\n}"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "@Override\npublic OrderDto update(final Integer orderId, final OrderDto orderDto) {\n    log.info(\"*** OrderDto, service; update order with orderId *\");\n    return OrderMappingHelper.map(this.orderRepository.save(OrderMappingHelper.map(this.findById(orderId))));\n}"
+  },
+  {
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final Integer orderId) {\n    log.info(\"*** Void, service; delete order by id *\");\n    this.orderRepository.delete(OrderMappingHelper.map(this.findById(orderId)));\n}"
+  },
+  {
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cCartDto\u003e\u003e findAll() {\n    log.info(\"*** CartDto List, controller; fetch all categories *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.cartService.findAll()));\n}"
+  },
+  {
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{cartId}\")\npublic ResponseEntity\u003cCartDto\u003e findById(@PathVariable(\"cartId\") @NotBlank(message \u003d \"Input must not be blank\") @Valid final String cartId) {\n    log.info(\"*** CartDto, resource; fetch cart by id *\");\n    return ResponseEntity.ok(this.cartService.findById(Integer.parseInt(cartId)));\n}"
+  },
+  {
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cCartDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not be NULL!\") @Valid final CartDto cartDto) {\n    log.info(\"*** CartDto, resource; save cart *\");\n    return ResponseEntity.ok(this.cartService.save(cartDto));\n}"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cCartDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final CartDto cartDto) {\n    log.info(\"*** CartDto, resource; update cart *\");\n    return ResponseEntity.ok(this.cartService.update(cartDto));\n}"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "@PutMapping(\"/{cartId}\")\npublic ResponseEntity\u003cCartDto\u003e update(@PathVariable(\"cartId\") @NotBlank(message \u003d \"Input must not be blank\") @Valid final String cartId, @RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final CartDto cartDto) {\n    log.info(\"*** CartDto, resource; update cart with cartId *\");\n    return ResponseEntity.ok(this.cartService.update(Integer.parseInt(cartId), cartDto));\n}"
+  },
+  {
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{cartId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"cartId\") final String cartId) {\n    log.info(\"*** Boolean, resource; delete cart by id *\");\n    this.cartService.deleteById(Integer.parseInt(cartId));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "method_name": "main",
+    "method_declaration": "public static void main(String[] args) {\n    SpringApplication.run(OrderServiceApplication.class, args);\n}"
+  },
+  {
+    "method_name": "msg",
+    "method_declaration": "@GetMapping\npublic String msg() {\n    return \"Order controller responding!!\";\n}"
+  },
+  {
+    "method_name": "findAll",
+    "method_declaration": "List\u003cOrderDto\u003e findAll();"
+  },
+  {
+    "method_name": "findById",
+    "method_declaration": "OrderDto findById(final Integer orderId);"
+  },
+  {
+    "method_name": "save",
+    "method_declaration": "OrderDto save(final OrderDto orderDto);"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "OrderDto update(final OrderDto orderDto);"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "OrderDto update(final Integer orderId, final OrderDto orderDto);"
+  },
+  {
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final Integer orderId);"
+  },
+  {
+    "method_name": "objectMapperBean",
+    "method_declaration": "@Bean\npublic ObjectMapper objectMapperBean() {\n    return new JsonMapper().enable(SerializationFeature.INDENT_OUTPUT);\n}"
+  },
+  {
+    "method_name": "map",
+    "method_declaration": "public static CartDto map(final Cart cart) {\n    return CartDto.builder().cartId(cart.getCartId()).userId(cart.getUserId()).userDto(UserDto.builder().userId(cart.getUserId()).build()).build();\n}"
+  },
+  {
+    "method_name": "map",
+    "method_declaration": "public static Cart map(final CartDto cartDto) {\n    return Cart.builder().cartId(cartDto.getCartId()).userId(cartDto.getUserId()).build();\n}"
+  },
+  {
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cCartDto\u003e findAll() {\n    log.info(\"*** CartDto List, service; fetch all carts *\");\n    return this.cartRepository.findAll().stream().map(CartMappingHelper::map).map(c -\u003e {\n        c.setUserDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.USER_SERVICE_API_URL + \"/\" + c.getUserDto().getUserId(), UserDto.class));\n        return c;\n    }).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic CartDto findById(final Integer cartId) {\n    log.info(\"*** CartDto, service; fetch cart by id *\");\n    return this.cartRepository.findById(cartId).map(CartMappingHelper::map).map(c -\u003e {\n        c.setUserDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.USER_SERVICE_API_URL + \"/\" + c.getUserDto().getUserId(), UserDto.class));\n        return c;\n    }).orElseThrow(() -\u003e new CartNotFoundException(String.format(\"Cart with id: %d not found\", cartId)));\n}"
+  },
+  {
+    "method_name": "save",
+    "method_declaration": "@Override\npublic CartDto save(final CartDto cartDto) {\n    log.info(\"*** CartDto, service; save cart *\");\n    return CartMappingHelper.map(this.cartRepository.save(CartMappingHelper.map(cartDto)));\n}"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "@Override\npublic CartDto update(final CartDto cartDto) {\n    log.info(\"*** CartDto, service; update cart *\");\n    return CartMappingHelper.map(this.cartRepository.save(CartMappingHelper.map(cartDto)));\n}"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "@Override\npublic CartDto update(final Integer cartId, final CartDto cartDto) {\n    log.info(\"*** CartDto, service; update cart with cartId *\");\n    return CartMappingHelper.map(this.cartRepository.save(CartMappingHelper.map(this.findById(cartId))));\n}"
+  },
+  {
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final Integer cartId) {\n    log.info(\"*** Void, service; delete cart by id *\");\n    this.cartRepository.deleteById(cartId);\n}"
+  },
+  {
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cOrderDto\u003e\u003e findAll() {\n    log.info(\"*** OrderDto List, controller; fetch all orders *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.orderService.findAll()));\n}"
+  },
+  {
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{orderId}\")\npublic ResponseEntity\u003cOrderDto\u003e findById(@PathVariable(\"orderId\") @NotBlank(message \u003d \"Input must not be blank\") @Valid final String orderId) {\n    log.info(\"*** OrderDto, resource; fetch order by id *\");\n    return ResponseEntity.ok(this.orderService.findById(Integer.parseInt(orderId)));\n}"
+  },
+  {
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cOrderDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final OrderDto orderDto) {\n    log.info(\"*** OrderDto, resource; save order *\");\n    return ResponseEntity.ok(this.orderService.save(orderDto));\n}"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cOrderDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final OrderDto orderDto) {\n    log.info(\"*** OrderDto, resource; update order *\");\n    return ResponseEntity.ok(this.orderService.update(orderDto));\n}"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "@PutMapping(\"/{orderId}\")\npublic ResponseEntity\u003cOrderDto\u003e update(@PathVariable(\"orderId\") @NotBlank(message \u003d \"Input must not be blank\") @Valid final String orderId, @RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final OrderDto orderDto) {\n    log.info(\"*** OrderDto, resource; update order with orderId *\");\n    return ResponseEntity.ok(this.orderService.update(Integer.parseInt(orderId), orderDto));\n}"
+  },
+  {
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{orderId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"orderId\") final String orderId) {\n    log.info(\"*** Boolean, resource; delete order by id *\");\n    this.orderService.deleteById(Integer.parseInt(orderId));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "method_name": "restTemplateBean",
+    "method_declaration": "@LoadBalanced\n@Bean\npublic RestTemplate restTemplateBean() {\n    return new RestTemplate();\n}"
+  },
+  {
+    "method_name": "handleValidationException",
+    "method_declaration": "@ExceptionHandler(value \u003d { MethodArgumentNotValidException.class, HttpMessageNotReadableException.class })\npublic \u003cT extends BindException\u003e ResponseEntity\u003cExceptionMsg\u003e handleValidationException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle validation exception*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"*\" + e.getBindingResult().getFieldError().getDefaultMessage() + \"!**\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  },
+  {
+    "method_name": "handleApiRequestException",
+    "method_declaration": "@ExceptionHandler(value \u003d { CartNotFoundException.class, OrderNotFoundException.class, IllegalStateException.class })\npublic \u003cT extends RuntimeException\u003e ResponseEntity\u003cExceptionMsg\u003e handleApiRequestException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle API request*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"#### \" + e.getMessage() + \"! ####\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  },
+  {
+    "method_name": "findAll",
+    "method_declaration": "List\u003cCartDto\u003e findAll();"
+  },
+  {
+    "method_name": "findById",
+    "method_declaration": "CartDto findById(final Integer cartId);"
+  },
+  {
+    "method_name": "save",
+    "method_declaration": "CartDto save(final CartDto cartDto);"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "CartDto update(final CartDto cartDto);"
+  },
+  {
+    "method_name": "update",
+    "method_declaration": "CartDto update(final Integer cartId, final CartDto cartDto);"
+  },
+  {
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final Integer cartId);"
+  },
+  {
+    "method_name": "map",
+    "method_declaration": "public static OrderDto map(final Order order) {\n    return OrderDto.builder().orderId(order.getOrderId()).orderDate(order.getOrderDate()).orderDesc(order.getOrderDesc()).orderFee(order.getOrderFee()).cartDto(CartDto.builder().cartId(order.getCart().getCartId()).build()).build();\n}"
+  },
+  {
+    "method_name": "map",
+    "method_declaration": "public static Order map(final OrderDto orderDto) {\n    return Order.builder().orderId(orderDto.getOrderId()).orderDate(orderDto.getOrderDate()).orderDesc(orderDto.getOrderDesc()).orderFee(orderDto.getOrderFee()).cart(Cart.builder().cartId(orderDto.getCartDto().getCartId()).build()).build();\n}"
+  }
+]
