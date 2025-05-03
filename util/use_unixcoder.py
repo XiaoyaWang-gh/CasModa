@@ -1,6 +1,9 @@
 '''
+本程序需要到XiaoXin py311环境下执行
+util\localunixcoder 下的文件可以从此处下载：https://huggingface.co/microsoft/unixcoder-base/tree/main
 python -m use_unixcoder
 '''
+import json
 from typing import List
 import os
 import sys
@@ -366,7 +369,7 @@ def main():
 
 
 def encode_ecommerce():
-    dir_path = r'/Users/bytedance/code/casmodatest/CasModa/txt_repo/testbody/demo_pool/ecommerce'
+    dir_path = r'D:/Codes/CasModa/txt_repo/testbody/demo_pool/ecommerce'
 
     dest_file = os.path.join(dir_path, "fm_tc_tensor.txt")
     fm_input_file = os.path.join(dir_path, "focal_method.txt")
@@ -378,18 +381,46 @@ def encode_ecommerce():
             tc_list = tc_f.readlines()
     assert len(fm_list) == len(tc_list)
 
-    for i in range(len(fm_list)):
-        cnt = i+1
-        fm = fm_list[i].strip()
-        tc = tc_list[i].strip()
-        ut = encode_by_unixcoder(fm+"  "+tc)  # testbody
-        # turn Tensor to list
-        ut_str = str(ut.flatten().tolist())
-        f.write(ut_str+"\n")
-        print(f"这是第{cnt}个，还差{len(fm_list) - cnt}个未编码🔆")
+    with open(dest_file, "a", encoding="utf-8") as f:
+        for i in range(len(fm_list)):
+            cnt = i+1
+            fm = fm_list[i].strip()
+            tc = tc_list[i].strip()
+            ut = encode_by_unixcoder(fm+"  "+tc)  # testbody
+            # turn Tensor to list
+            ut_str = str(ut.flatten().tolist())
+            f.write(ut_str+"\n")
+            print(f"这是第{cnt}个，还差{len(fm_list) - cnt}个未编码🔆")
 
+
+def encode_ecommerce_queryset():
+    root_path = r"D:/Codes/CasModa/txt_repo/testbody/query_set/ecommerce"
+    for root, dirs, files in os.walk(root_path):
+        if "methodMap.json" in files:
+            file_path = os.path.join(root, "methodMap.json")
+            output_path = os.path.join(root, "methodWTensor.json")
+            
+            # 读取原始文件
+            with open(file_path, 'r', encoding='utf-8') as f:
+                methods = json.load(f)
+            
+            # 处理每个方法
+            for method in methods:
+                code = method["method_declaration"]
+                try:
+                    # 编码方法声明
+                    tensor = encode_by_unixcoder(code)
+                    method["unixcoder_tensor"] = str(tensor.flatten().tolist())
+                except Exception as e:
+                    print(f"Error encoding method {method['method_name']}: {str(e)}")
+                    method["unixcoder_tensor"] = None
+            
+            # 写入新文件
+            with open(output_path, 'w', encoding='utf-8') as f:
+                json.dump(methods, f, indent=2)
+            
+            print(f"Processed and saved: {output_path}")
 
 
 if __name__ == "__main__":
-    encode_by_unixcoder("test")
-    # encode_ecommerce()
+    encode_ecommerce_queryset()
