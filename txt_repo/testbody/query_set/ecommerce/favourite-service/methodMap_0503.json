@@ -1,0 +1,122 @@
+[
+  {
+    "class_name": "FavouriteServiceApplication",
+    "method_name": "main",
+    "method_declaration": "public static void main(String[] args) {\n    SpringApplication.run(FavouriteServiceApplication.class, args);\n}"
+  },
+  {
+    "class_name": "FavouriteMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static FavouriteDto map(final Favourite favourite) {\n    return FavouriteDto.builder().userId(favourite.getUserId()).productId(favourite.getProductId()).likeDate(favourite.getLikeDate()).userDto(UserDto.builder().userId(favourite.getUserId()).build()).productDto(ProductDto.builder().productId(favourite.getProductId()).build()).build();\n}"
+  },
+  {
+    "class_name": "FavouriteMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static Favourite map(final FavouriteDto favouriteDto) {\n    return Favourite.builder().userId(favouriteDto.getUserId()).productId(favouriteDto.getProductId()).likeDate(favouriteDto.getLikeDate()).build();\n}"
+  },
+  {
+    "class_name": "MapperConfig",
+    "method_name": "objectMapperBean",
+    "method_declaration": "@Bean\npublic ObjectMapper objectMapperBean() {\n    return new JsonMapper().enable(SerializationFeature.INDENT_OUTPUT);\n}"
+  },
+  {
+    "class_name": "FavouriteServiceImpl",
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cFavouriteDto\u003e findAll() {\n    log.info(\"*** FavouriteDto List, service; fetch all favourites *\");\n    return this.favouriteRepository.findAll().stream().map(FavouriteMappingHelper::map).map(f -\u003e {\n        f.setUserDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.USER_SERVICE_API_URL + \"/\" + f.getUserId(), UserDto.class));\n        f.setProductDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.PRODUCT_SERVICE_API_URL + \"/\" + f.getProductId(), ProductDto.class));\n        return f;\n    }).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "class_name": "FavouriteServiceImpl",
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic FavouriteDto findById(final FavouriteId favouriteId) {\n    log.info(\"*** FavouriteDto, service; fetch favourite by id *\");\n    return this.favouriteRepository.findById(favouriteId).map(FavouriteMappingHelper::map).map(f -\u003e {\n        f.setUserDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.USER_SERVICE_API_URL + \"/\" + f.getUserId(), UserDto.class));\n        f.setProductDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.PRODUCT_SERVICE_API_URL + \"/\" + f.getProductId(), ProductDto.class));\n        return f;\n    }).orElseThrow(() -\u003e new FavouriteNotFoundException(String.format(\"Favourite with id: [%s] not found!\", favouriteId)));\n}"
+  },
+  {
+    "class_name": "FavouriteServiceImpl",
+    "method_name": "save",
+    "method_declaration": "@Override\npublic FavouriteDto save(final FavouriteDto favouriteDto) {\n    return FavouriteMappingHelper.map(this.favouriteRepository.save(FavouriteMappingHelper.map(favouriteDto)));\n}"
+  },
+  {
+    "class_name": "FavouriteServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic FavouriteDto update(final FavouriteDto favouriteDto) {\n    return FavouriteMappingHelper.map(this.favouriteRepository.save(FavouriteMappingHelper.map(favouriteDto)));\n}"
+  },
+  {
+    "class_name": "FavouriteServiceImpl",
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final FavouriteId favouriteId) {\n    this.favouriteRepository.deleteById(favouriteId);\n}"
+  },
+  {
+    "class_name": "FavouriteService",
+    "method_name": "findAll",
+    "method_declaration": "List\u003cFavouriteDto\u003e findAll();"
+  },
+  {
+    "class_name": "FavouriteService",
+    "method_name": "findById",
+    "method_declaration": "FavouriteDto findById(final FavouriteId favouriteId);"
+  },
+  {
+    "class_name": "FavouriteService",
+    "method_name": "save",
+    "method_declaration": "FavouriteDto save(final FavouriteDto favouriteDto);"
+  },
+  {
+    "class_name": "FavouriteService",
+    "method_name": "update",
+    "method_declaration": "FavouriteDto update(final FavouriteDto favouriteDto);"
+  },
+  {
+    "class_name": "FavouriteService",
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final FavouriteId favouriteId);"
+  },
+  {
+    "class_name": "ClientConfig",
+    "method_name": "restTemplateBean",
+    "method_declaration": "@LoadBalanced\n@Bean\npublic RestTemplate restTemplateBean() {\n    return new RestTemplate();\n}"
+  },
+  {
+    "class_name": "FavouriteResource",
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cFavouriteDto\u003e\u003e findAll() {\n    log.info(\"*** FavouriteDto List, controller; fetch all favourites *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.favouriteService.findAll()));\n}"
+  },
+  {
+    "class_name": "FavouriteResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{userId}/{productId}/{likeDate}\")\npublic ResponseEntity\u003cFavouriteDto\u003e findById(@PathVariable(\"userId\") final String userId, @PathVariable(\"productId\") final String productId, @PathVariable(\"likeDate\") final String likeDate) {\n    log.info(\"*** FavouriteDto, resource; fetch favourite by id *\");\n    return ResponseEntity.ok(this.favouriteService.findById(new FavouriteId(Integer.parseInt(userId), Integer.parseInt(productId), LocalDateTime.parse(likeDate, DateTimeFormatter.ofPattern(AppConstant.LOCAL_DATE_TIME_FORMAT)))));\n}"
+  },
+  {
+    "class_name": "FavouriteResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/find\")\npublic ResponseEntity\u003cFavouriteDto\u003e findById(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final FavouriteId favouriteId) {\n    log.info(\"*** FavouriteDto, resource; fetch favourite by id *\");\n    return ResponseEntity.ok(this.favouriteService.findById(favouriteId));\n}"
+  },
+  {
+    "class_name": "FavouriteResource",
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cFavouriteDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final FavouriteDto favouriteDto) {\n    log.info(\"*** FavouriteDto, resource; save favourite *\");\n    return ResponseEntity.ok(this.favouriteService.save(favouriteDto));\n}"
+  },
+  {
+    "class_name": "FavouriteResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cFavouriteDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final FavouriteDto favouriteDto) {\n    log.info(\"*** FavouriteDto, resource; update favourite *\");\n    return ResponseEntity.ok(this.favouriteService.update(favouriteDto));\n}"
+  },
+  {
+    "class_name": "FavouriteResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{userId}/{productId}/{likeDate}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"userId\") final String userId, @PathVariable(\"productId\") final String productId, @PathVariable(\"likeDate\") final String likeDate) {\n    log.info(\"*** Boolean, resource; delete favourite by id *\");\n    this.favouriteService.deleteById(new FavouriteId(Integer.parseInt(userId), Integer.parseInt(productId), LocalDateTime.parse(likeDate, DateTimeFormatter.ofPattern(AppConstant.LOCAL_DATE_TIME_FORMAT))));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "FavouriteResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/delete\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final FavouriteId favouriteId) {\n    log.info(\"*** Boolean, resource; delete favourite by id *\");\n    this.favouriteService.deleteById(favouriteId);\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleValidationException",
+    "method_declaration": "@ExceptionHandler(value \u003d { MethodArgumentNotValidException.class, HttpMessageNotReadableException.class })\npublic \u003cT extends BindException\u003e ResponseEntity\u003cExceptionMsg\u003e handleValidationException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle validation exception*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"*\" + e.getBindingResult().getFieldError().getDefaultMessage() + \"!**\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleApiRequestException",
+    "method_declaration": "@ExceptionHandler(value \u003d { FavouriteNotFoundException.class })\npublic \u003cT extends RuntimeException\u003e ResponseEntity\u003cExceptionMsg\u003e handleApiRequestException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle API request*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"#### \" + e.getMessage() + \"! ####\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  }
+]

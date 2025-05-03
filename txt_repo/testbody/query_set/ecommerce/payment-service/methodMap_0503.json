@@ -1,0 +1,117 @@
+[
+  {
+    "class_name": "PaymentMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static PaymentDto map(final Payment payment) {\n    return PaymentDto.builder().paymentId(payment.getPaymentId()).isPayed(payment.getIsPayed()).paymentStatus(payment.getPaymentStatus()).orderDto(OrderDto.builder().orderId(payment.getOrderId()).build()).build();\n}"
+  },
+  {
+    "class_name": "PaymentMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static Payment map(final PaymentDto paymentDto) {\n    return Payment.builder().paymentId(paymentDto.getPaymentId()).orderId(paymentDto.getOrderDto().getOrderId()).isPayed(paymentDto.getIsPayed()).paymentStatus(paymentDto.getPaymentStatus()).build();\n}"
+  },
+  {
+    "class_name": "PaymentServiceImpl",
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cPaymentDto\u003e findAll() {\n    log.info(\"*** PaymentDto List, service; fetch all payments *\");\n    return this.paymentRepository.findAll().stream().map(PaymentMappingHelper::map).map(p -\u003e {\n        p.setOrderDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.ORDER_SERVICE_API_URL + \"/\" + p.getOrderDto().getOrderId(), OrderDto.class));\n        return p;\n    }).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "class_name": "PaymentServiceImpl",
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic PaymentDto findById(final Integer paymentId) {\n    log.info(\"*** PaymentDto, service; fetch payment by id *\");\n    return this.paymentRepository.findById(paymentId).map(PaymentMappingHelper::map).map(p -\u003e {\n        p.setOrderDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.ORDER_SERVICE_API_URL + \"/\" + p.getOrderDto().getOrderId(), OrderDto.class));\n        return p;\n    }).orElseThrow(() -\u003e new PaymentNotFoundException(String.format(\"Payment with id: %d not found\", paymentId)));\n}"
+  },
+  {
+    "class_name": "PaymentServiceImpl",
+    "method_name": "save",
+    "method_declaration": "@Override\npublic PaymentDto save(final PaymentDto paymentDto) {\n    log.info(\"*** PaymentDto, service; save payment *\");\n    return PaymentMappingHelper.map(this.paymentRepository.save(PaymentMappingHelper.map(paymentDto)));\n}"
+  },
+  {
+    "class_name": "PaymentServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic PaymentDto update(final PaymentDto paymentDto) {\n    log.info(\"*** PaymentDto, service; update payment *\");\n    return PaymentMappingHelper.map(this.paymentRepository.save(PaymentMappingHelper.map(paymentDto)));\n}"
+  },
+  {
+    "class_name": "PaymentServiceImpl",
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final Integer paymentId) {\n    log.info(\"*** Void, service; delete payment by id *\");\n    this.paymentRepository.deleteById(paymentId);\n}"
+  },
+  {
+    "class_name": "MapperConfig",
+    "method_name": "objectMapperBean",
+    "method_declaration": "@Bean\npublic ObjectMapper objectMapperBean() {\n    return new JsonMapper().enable(SerializationFeature.INDENT_OUTPUT);\n}"
+  },
+  {
+    "class_name": "PaymentResource",
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cPaymentDto\u003e\u003e findAll() {\n    log.info(\"*** PaymentDto List, controller; fetch all payments *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.paymentService.findAll()));\n}"
+  },
+  {
+    "class_name": "PaymentResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{paymentId}\")\npublic ResponseEntity\u003cPaymentDto\u003e findById(@PathVariable(\"paymentId\") @NotBlank(message \u003d \"Input must not be blank\") @Valid final String paymentId) {\n    log.info(\"*** PaymentDto, resource; fetch payment by id *\");\n    return ResponseEntity.ok(this.paymentService.findById(Integer.parseInt(paymentId)));\n}"
+  },
+  {
+    "class_name": "PaymentResource",
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cPaymentDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final PaymentDto paymentDto) {\n    log.info(\"*** PaymentDto, resource; save payment *\");\n    return ResponseEntity.ok(this.paymentService.save(paymentDto));\n}"
+  },
+  {
+    "class_name": "PaymentResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cPaymentDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final PaymentDto paymentDto) {\n    log.info(\"*** PaymentDto, resource; update payment *\");\n    return ResponseEntity.ok(this.paymentService.update(paymentDto));\n}"
+  },
+  {
+    "class_name": "PaymentResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{paymentId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"paymentId\") final String paymentId) {\n    log.info(\"*** Boolean, resource; delete payment by id *\");\n    this.paymentService.deleteById(Integer.parseInt(paymentId));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "PaymentService",
+    "method_name": "findAll",
+    "method_declaration": "List\u003cPaymentDto\u003e findAll();"
+  },
+  {
+    "class_name": "PaymentService",
+    "method_name": "findById",
+    "method_declaration": "PaymentDto findById(final Integer paymentId);"
+  },
+  {
+    "class_name": "PaymentService",
+    "method_name": "save",
+    "method_declaration": "PaymentDto save(final PaymentDto paymentDto);"
+  },
+  {
+    "class_name": "PaymentService",
+    "method_name": "update",
+    "method_declaration": "PaymentDto update(final PaymentDto paymentDto);"
+  },
+  {
+    "class_name": "PaymentService",
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final Integer paymentId);"
+  },
+  {
+    "class_name": "ClientConfig",
+    "method_name": "restTemplateBean",
+    "method_declaration": "@LoadBalanced\n@Bean\npublic RestTemplate restTemplateBean() {\n    return new RestTemplate();\n}"
+  },
+  {
+    "class_name": "PaymentServiceApplication",
+    "method_name": "main",
+    "method_declaration": "public static void main(String[] args) {\n    SpringApplication.run(PaymentServiceApplication.class, args);\n}"
+  },
+  {
+    "class_name": "PaymentController",
+    "method_name": "msg",
+    "method_declaration": "@GetMapping\npublic String msg() {\n    return \"Payment controller responding!!\";\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleValidationException",
+    "method_declaration": "@ExceptionHandler(value \u003d { MethodArgumentNotValidException.class, HttpMessageNotReadableException.class })\npublic \u003cT extends BindException\u003e ResponseEntity\u003cExceptionMsg\u003e handleValidationException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle validation exception*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"*\" + e.getBindingResult().getFieldError().getDefaultMessage() + \"!**\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleApiRequestException",
+    "method_declaration": "@ExceptionHandler(value \u003d { IllegalStateException.class, PaymentNotFoundException.class })\npublic \u003cT extends RuntimeException\u003e ResponseEntity\u003cExceptionMsg\u003e handleApiRequestException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle API request*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"#### \" + e.getMessage() + \"! ####\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  }
+]

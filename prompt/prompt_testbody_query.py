@@ -3,7 +3,8 @@ from mytemplate import testcase_template as tt
 
 instruction_dict = {
     "vanilla": "generate test case in the following java code:\n",
-    "updated": "Your task is to generate a test case. Firstly, use CLASS_CONSTRUCTOR to get CLASS_NAME, then call TEST_METHOD_NAME. Secondly, generate a test assertion to replace the <OraclePlaceHolder> in UNIT_TEST. Only variables that appear in UNIT_TEST can be used. Use java without comments."
+    "updated": "Your task is to generate a test case. Firstly, use CLASS_CONSTRUCTOR to get CLASS_NAME, then call TEST_METHOD_NAME. Secondly, generate a test assertion to replace the <OraclePlaceHolder> in UNIT_TEST. Only variables that appear in UNIT_TEST can be used. Use java without comments.",
+    "250503-ver":""
 }
 
 
@@ -13,7 +14,7 @@ class TestcasePrompt(Prompt):
         self.query = query
 
     def construct_prompt(self) -> str:
-        final_testcase_prompt = instruction_dict["updated"]
+        final_testcase_prompt = instruction_dict["250503-ver"]
         # traverse the demonstrations and call the embed_demo_template
         for i in range(len(self.demonstrations)):
             final_testcase_prompt += tt.embed_demo_template(

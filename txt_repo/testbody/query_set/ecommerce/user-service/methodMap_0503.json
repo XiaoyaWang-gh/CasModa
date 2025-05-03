@@ -1,0 +1,467 @@
+[
+  {
+    "class_name": "UserMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static UserDto map(final User user) {\n    return UserDto.builder().userId(user.getUserId()).firstName(user.getFirstName()).lastName(user.getLastName()).imageUrl(user.getImageUrl()).email(user.getEmail()).phone(user.getPhone()).credentialDto(CredentialDto.builder().credentialId(user.getCredential().getCredentialId()).username(user.getCredential().getUsername()).password(user.getCredential().getPassword()).roleBasedAuthority(user.getCredential().getRoleBasedAuthority()).isEnabled(user.getCredential().getIsEnabled()).isAccountNonExpired(user.getCredential().getIsAccountNonExpired()).isAccountNonLocked(user.getCredential().getIsAccountNonLocked()).isCredentialsNonExpired(user.getCredential().getIsCredentialsNonExpired()).build()).build();\n}"
+  },
+  {
+    "class_name": "UserMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static User map(final UserDto userDto) {\n    return User.builder().userId(userDto.getUserId()).firstName(userDto.getFirstName()).lastName(userDto.getLastName()).imageUrl(userDto.getImageUrl()).email(userDto.getEmail()).phone(userDto.getPhone()).credential(Credential.builder().credentialId(userDto.getCredentialDto().getCredentialId()).username(userDto.getCredentialDto().getUsername()).password(userDto.getCredentialDto().getPassword()).roleBasedAuthority(userDto.getCredentialDto().getRoleBasedAuthority()).isEnabled(userDto.getCredentialDto().getIsEnabled()).isAccountNonExpired(userDto.getCredentialDto().getIsAccountNonExpired()).isAccountNonLocked(userDto.getCredentialDto().getIsAccountNonLocked()).isCredentialsNonExpired(userDto.getCredentialDto().getIsCredentialsNonExpired()).build()).build();\n}"
+  },
+  {
+    "class_name": "CredentialServiceImpl",
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cCredentialDto\u003e findAll() {\n    log.info(\"*** CredentialDto List, service; fetch all credentials *\");\n    return this.credentialRepository.findAll().stream().map(CredentialMappingHelper::map).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "class_name": "CredentialServiceImpl",
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic CredentialDto findById(final Integer credentialId) {\n    log.info(\"*** CredentialDto, service; fetch credential by ids *\");\n    return this.credentialRepository.findById(credentialId).map(CredentialMappingHelper::map).orElseThrow(() -\u003e new CredentialNotFoundException(String.format(\"#### Credential with id: %d not found! ####\", credentialId)));\n}"
+  },
+  {
+    "class_name": "CredentialServiceImpl",
+    "method_name": "save",
+    "method_declaration": "@Override\npublic CredentialDto save(final CredentialDto credentialDto) {\n    log.info(\"*** CredentialDto, service; save credential *\");\n    return CredentialMappingHelper.map(this.credentialRepository.save(CredentialMappingHelper.map(credentialDto)));\n}"
+  },
+  {
+    "class_name": "CredentialServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic CredentialDto update(final CredentialDto credentialDto) {\n    log.info(\"*** CredentialDto, service; update credential *\");\n    return CredentialMappingHelper.map(this.credentialRepository.save(CredentialMappingHelper.map(credentialDto)));\n}"
+  },
+  {
+    "class_name": "CredentialServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic CredentialDto update(final Integer credentialId, final CredentialDto credentialDto) {\n    log.info(\"*** CredentialDto, service; update credential with credentialId *\");\n    return CredentialMappingHelper.map(this.credentialRepository.save(CredentialMappingHelper.map(this.findById(credentialId))));\n}"
+  },
+  {
+    "class_name": "CredentialServiceImpl",
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final Integer credentialId) {\n    log.info(\"*** Void, service; delete credential by id *\");\n    this.credentialRepository.deleteById(credentialId);\n}"
+  },
+  {
+    "class_name": "CredentialServiceImpl",
+    "method_name": "findByUsername",
+    "method_declaration": "@Override\npublic CredentialDto findByUsername(final String username) {\n    return CredentialMappingHelper.map(this.credentialRepository.findByUsername(username).orElseThrow(() -\u003e new UserObjectNotFoundException(String.format(\"#### Credential with username: %s not found! ####\", username))));\n}"
+  },
+  {
+    "class_name": "UserService",
+    "method_name": "findAll",
+    "method_declaration": "List\u003cUserDto\u003e findAll();"
+  },
+  {
+    "class_name": "UserService",
+    "method_name": "findById",
+    "method_declaration": "UserDto findById(final Integer userId);"
+  },
+  {
+    "class_name": "UserService",
+    "method_name": "save",
+    "method_declaration": "UserDto save(final UserDto userDto);"
+  },
+  {
+    "class_name": "UserService",
+    "method_name": "update",
+    "method_declaration": "UserDto update(final UserDto userDto);"
+  },
+  {
+    "class_name": "UserService",
+    "method_name": "update",
+    "method_declaration": "UserDto update(final Integer userId, final UserDto userDto);"
+  },
+  {
+    "class_name": "UserService",
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final Integer userId);"
+  },
+  {
+    "class_name": "UserService",
+    "method_name": "findByUsername",
+    "method_declaration": "UserDto findByUsername(final String username);"
+  },
+  {
+    "class_name": "AddressMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static AddressDto map(final Address address) {\n    return AddressDto.builder().addressId(address.getAddressId()).fullAddress(address.getFullAddress()).postalCode(address.getPostalCode()).city(address.getCity()).userDto(UserDto.builder().userId(address.getUser().getUserId()).firstName(address.getUser().getFirstName()).lastName(address.getUser().getLastName()).imageUrl(address.getUser().getImageUrl()).email(address.getUser().getEmail()).phone(address.getUser().getPhone()).build()).build();\n}"
+  },
+  {
+    "class_name": "AddressMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static Address map(final AddressDto addressDto) {\n    return Address.builder().addressId(addressDto.getAddressId()).fullAddress(addressDto.getFullAddress()).postalCode(addressDto.getPostalCode()).city(addressDto.getCity()).user(User.builder().userId(addressDto.getUserDto().getUserId()).firstName(addressDto.getUserDto().getFirstName()).lastName(addressDto.getUserDto().getLastName()).imageUrl(addressDto.getUserDto().getImageUrl()).email(addressDto.getUserDto().getEmail()).phone(addressDto.getUserDto().getPhone()).build()).build();\n}"
+  },
+  {
+    "class_name": "VerificationTokenResource",
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cVerificationTokenDto\u003e\u003e findAll() {\n    log.info(\"*** VerificationTokenDto List, controller; fetch all verificationTokens *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.verificationTokenService.findAll()));\n}"
+  },
+  {
+    "class_name": "VerificationTokenResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{verificationTokenId}\")\npublic ResponseEntity\u003cVerificationTokenDto\u003e findById(@PathVariable(\"verificationTokenId\") @NotBlank(message \u003d \"Input must not blank\") @Valid final String verificationTokenId) {\n    log.info(\"*** VerificationTokenDto, resource; fetch verificationToken by id *\");\n    return ResponseEntity.ok(this.verificationTokenService.findById(Integer.parseInt(verificationTokenId.strip())));\n}"
+  },
+  {
+    "class_name": "VerificationTokenResource",
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cVerificationTokenDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final VerificationTokenDto verificationTokenDto) {\n    log.info(\"*** VerificationTokenDto, resource; save verificationToken *\");\n    return ResponseEntity.ok(this.verificationTokenService.save(verificationTokenDto));\n}"
+  },
+  {
+    "class_name": "VerificationTokenResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cVerificationTokenDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final VerificationTokenDto verificationTokenDto) {\n    log.info(\"*** VerificationTokenDto, resource; update verificationToken *\");\n    return ResponseEntity.ok(this.verificationTokenService.update(verificationTokenDto));\n}"
+  },
+  {
+    "class_name": "VerificationTokenResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping(\"/{verificationTokenId}\")\npublic ResponseEntity\u003cVerificationTokenDto\u003e update(@PathVariable(\"verificationTokenId\") @NotBlank(message \u003d \"Input must not blank\") final String verificationTokenId, @RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final VerificationTokenDto verificationTokenDto) {\n    log.info(\"*** VerificationTokenDto, resource; update verificationToken with verificationTokenId *\");\n    return ResponseEntity.ok(this.verificationTokenService.update(Integer.parseInt(verificationTokenId.strip()), verificationTokenDto));\n}"
+  },
+  {
+    "class_name": "VerificationTokenResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{verificationTokenId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"verificationTokenId\") @NotBlank(message \u003d \"Input must not blank\") final String verificationTokenId) {\n    log.info(\"*** Boolean, resource; delete verificationToken by id *\");\n    this.verificationTokenService.deleteById(Integer.parseInt(verificationTokenId));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "MapperConfig",
+    "method_name": "objectMapperBean",
+    "method_declaration": "@Bean\npublic ObjectMapper objectMapperBean() {\n    return new JsonMapper().enable(SerializationFeature.INDENT_OUTPUT);\n}"
+  },
+  {
+    "class_name": "VerificationTokenMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static VerificationTokenDto map(final VerificationToken verificationToken) {\n    return VerificationTokenDto.builder().verificationTokenId(verificationToken.getVerificationTokenId()).token(verificationToken.getToken()).expireDate(verificationToken.getExpireDate()).credentialDto(CredentialDto.builder().credentialId(verificationToken.getCredential().getCredentialId()).username(verificationToken.getCredential().getUsername()).password(verificationToken.getCredential().getPassword()).roleBasedAuthority(verificationToken.getCredential().getRoleBasedAuthority()).isEnabled(verificationToken.getCredential().getIsEnabled()).isAccountNonExpired(verificationToken.getCredential().getIsAccountNonExpired()).isAccountNonLocked(verificationToken.getCredential().getIsAccountNonLocked()).isCredentialsNonExpired(verificationToken.getCredential().getIsCredentialsNonExpired()).build()).build();\n}"
+  },
+  {
+    "class_name": "VerificationTokenMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static VerificationToken map(final VerificationTokenDto verificationTokenDto) {\n    return VerificationToken.builder().verificationTokenId(verificationTokenDto.getVerificationTokenId()).token(verificationTokenDto.getToken()).expireDate(verificationTokenDto.getExpireDate()).credential(Credential.builder().credentialId(verificationTokenDto.getCredentialDto().getCredentialId()).username(verificationTokenDto.getCredentialDto().getUsername()).password(verificationTokenDto.getCredentialDto().getPassword()).roleBasedAuthority(verificationTokenDto.getCredentialDto().getRoleBasedAuthority()).isEnabled(verificationTokenDto.getCredentialDto().getIsEnabled()).isAccountNonExpired(verificationTokenDto.getCredentialDto().getIsAccountNonExpired()).isAccountNonLocked(verificationTokenDto.getCredentialDto().getIsAccountNonLocked()).isCredentialsNonExpired(verificationTokenDto.getCredentialDto().getIsCredentialsNonExpired()).build()).build();\n}"
+  },
+  {
+    "class_name": "UserResource",
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cUserDto\u003e\u003e findAll() {\n    log.info(\"*** UserDto List, controller; fetch all users *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.userService.findAll()));\n}"
+  },
+  {
+    "class_name": "UserResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{userId}\")\npublic ResponseEntity\u003cUserDto\u003e findById(@PathVariable(\"userId\") @NotBlank(message \u003d \"Input must not blank\") @Valid final String userId) {\n    log.info(\"*** UserDto, resource; fetch user by id *\");\n    return ResponseEntity.ok(this.userService.findById(Integer.parseInt(userId.strip())));\n}"
+  },
+  {
+    "class_name": "UserResource",
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cUserDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final UserDto userDto) {\n    log.info(\"*** UserDto, resource; save user *\");\n    return ResponseEntity.ok(this.userService.save(userDto));\n}"
+  },
+  {
+    "class_name": "UserResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cUserDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final UserDto userDto) {\n    log.info(\"*** UserDto, resource; update user *\");\n    return ResponseEntity.ok(this.userService.update(userDto));\n}"
+  },
+  {
+    "class_name": "UserResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping(\"/{userId}\")\npublic ResponseEntity\u003cUserDto\u003e update(@PathVariable(\"userId\") @NotBlank(message \u003d \"Input must not blank\") final String userId, @RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final UserDto userDto) {\n    log.info(\"*** UserDto, resource; update user with userId *\");\n    return ResponseEntity.ok(this.userService.update(Integer.parseInt(userId.strip()), userDto));\n}"
+  },
+  {
+    "class_name": "UserResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{userId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"userId\") @NotBlank(message \u003d \"Input must not blank\") @Valid final String userId) {\n    log.info(\"*** Boolean, resource; delete user by id *\");\n    this.userService.deleteById(Integer.parseInt(userId));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "UserResource",
+    "method_name": "findByUsername",
+    "method_declaration": "@GetMapping(\"/username/{username}\")\npublic ResponseEntity\u003cUserDto\u003e findByUsername(@PathVariable(\"username\") @NotBlank(message \u003d \"Input must not blank\") @Valid final String username) {\n    return ResponseEntity.ok(this.userService.findByUsername(username));\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleValidationException",
+    "method_declaration": "@ExceptionHandler(value \u003d { MethodArgumentNotValidException.class, HttpMessageNotReadableException.class })\npublic \u003cT extends BindException\u003e ResponseEntity\u003cExceptionMsg\u003e handleValidationException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle validation exception*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"*\" + e.getBindingResult().getFieldError().getDefaultMessage() + \"!**\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleApiRequestException",
+    "method_declaration": "@ExceptionHandler(value \u003d { UserObjectNotFoundException.class, CredentialNotFoundException.class, VerificationTokenNotFoundException.class, AddressNotFoundException.class })\npublic \u003cT extends RuntimeException\u003e ResponseEntity\u003cExceptionMsg\u003e handleApiRequestException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle API request*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"#### \" + e.getMessage() + \"! ####\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  },
+  {
+    "class_name": "UserRepository",
+    "method_name": "findByCredentialUsername",
+    "method_declaration": "Optional\u003cUser\u003e findByCredentialUsername(final String username);"
+  },
+  {
+    "class_name": "CredentialService",
+    "method_name": "findAll",
+    "method_declaration": "List\u003cCredentialDto\u003e findAll();"
+  },
+  {
+    "class_name": "CredentialService",
+    "method_name": "findById",
+    "method_declaration": "CredentialDto findById(final Integer credentialId);"
+  },
+  {
+    "class_name": "CredentialService",
+    "method_name": "save",
+    "method_declaration": "CredentialDto save(final CredentialDto credentialDto);"
+  },
+  {
+    "class_name": "CredentialService",
+    "method_name": "update",
+    "method_declaration": "CredentialDto update(final CredentialDto credentialDto);"
+  },
+  {
+    "class_name": "CredentialService",
+    "method_name": "update",
+    "method_declaration": "CredentialDto update(final Integer credentialId, final CredentialDto credentialDto);"
+  },
+  {
+    "class_name": "CredentialService",
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final Integer credentialId);"
+  },
+  {
+    "class_name": "CredentialService",
+    "method_name": "findByUsername",
+    "method_declaration": "CredentialDto findByUsername(final String username);"
+  },
+  {
+    "class_name": "CredentialMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static CredentialDto map(final Credential credential) {\n    return CredentialDto.builder().credentialId(credential.getCredentialId()).username(credential.getUsername()).password(credential.getPassword()).roleBasedAuthority(credential.getRoleBasedAuthority()).isEnabled(credential.getIsEnabled()).isAccountNonExpired(credential.getIsAccountNonExpired()).isAccountNonLocked(credential.getIsAccountNonLocked()).isCredentialsNonExpired(credential.getIsCredentialsNonExpired()).userDto(UserDto.builder().userId(credential.getUser().getUserId()).firstName(credential.getUser().getFirstName()).lastName(credential.getUser().getLastName()).imageUrl(credential.getUser().getImageUrl()).email(credential.getUser().getEmail()).phone(credential.getUser().getPhone()).build()).build();\n}"
+  },
+  {
+    "class_name": "CredentialMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static Credential map(final CredentialDto credentialDto) {\n    return Credential.builder().credentialId(credentialDto.getCredentialId()).username(credentialDto.getUsername()).password(credentialDto.getPassword()).roleBasedAuthority(credentialDto.getRoleBasedAuthority()).isEnabled(credentialDto.getIsEnabled()).isAccountNonExpired(credentialDto.getIsAccountNonExpired()).isAccountNonLocked(credentialDto.getIsAccountNonLocked()).isCredentialsNonExpired(credentialDto.getIsCredentialsNonExpired()).user(User.builder().userId(credentialDto.getUserDto().getUserId()).firstName(credentialDto.getUserDto().getFirstName()).lastName(credentialDto.getUserDto().getLastName()).imageUrl(credentialDto.getUserDto().getImageUrl()).email(credentialDto.getUserDto().getEmail()).phone(credentialDto.getUserDto().getPhone()).build()).build();\n}"
+  },
+  {
+    "class_name": "CredentialRepository",
+    "method_name": "findByUsername",
+    "method_declaration": "Optional\u003cCredential\u003e findByUsername(final String username);"
+  },
+  {
+    "class_name": "UserServiceApplication",
+    "method_name": "main",
+    "method_declaration": "public static void main(String[] args) {\n    SpringApplication.run(UserServiceApplication.class, args);\n}"
+  },
+  {
+    "class_name": "AddressService",
+    "method_name": "findAll",
+    "method_declaration": "List\u003cAddressDto\u003e findAll();"
+  },
+  {
+    "class_name": "AddressService",
+    "method_name": "findById",
+    "method_declaration": "AddressDto findById(final Integer addressId);"
+  },
+  {
+    "class_name": "AddressService",
+    "method_name": "save",
+    "method_declaration": "AddressDto save(final AddressDto addressDto);"
+  },
+  {
+    "class_name": "AddressService",
+    "method_name": "update",
+    "method_declaration": "AddressDto update(final AddressDto addressDto);"
+  },
+  {
+    "class_name": "AddressService",
+    "method_name": "update",
+    "method_declaration": "AddressDto update(final Integer addressId, final AddressDto addressDto);"
+  },
+  {
+    "class_name": "AddressService",
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final Integer addressId);"
+  },
+  {
+    "class_name": "AddressResource",
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cAddressDto\u003e\u003e findAll() {\n    log.info(\"*** AddressDto List, controller; fetch all addresss *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.addressService.findAll()));\n}"
+  },
+  {
+    "class_name": "AddressResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{addressId}\")\npublic ResponseEntity\u003cAddressDto\u003e findById(@PathVariable(\"addressId\") @NotBlank(message \u003d \"Input must not blank\") @Valid final String addressId) {\n    log.info(\"*** AddressDto, resource; fetch address by id *\");\n    return ResponseEntity.ok(this.addressService.findById(Integer.parseInt(addressId.strip())));\n}"
+  },
+  {
+    "class_name": "AddressResource",
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cAddressDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final AddressDto addressDto) {\n    log.info(\"*** AddressDto, resource; save address *\");\n    return ResponseEntity.ok(this.addressService.save(addressDto));\n}"
+  },
+  {
+    "class_name": "AddressResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cAddressDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final AddressDto addressDto) {\n    log.info(\"*** AddressDto, resource; update address *\");\n    return ResponseEntity.ok(this.addressService.update(addressDto));\n}"
+  },
+  {
+    "class_name": "AddressResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping(\"/{addressId}\")\npublic ResponseEntity\u003cAddressDto\u003e update(@PathVariable(\"addressId\") @NotBlank(message \u003d \"Input must not blank\") final String addressId, @RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final AddressDto addressDto) {\n    log.info(\"*** AddressDto, resource; update address with addressId *\");\n    return ResponseEntity.ok(this.addressService.update(Integer.parseInt(addressId.strip()), addressDto));\n}"
+  },
+  {
+    "class_name": "AddressResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{addressId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"addressId\") @NotBlank(message \u003d \"Input must not blank\") @Valid final String addressId) {\n    log.info(\"*** Boolean, resource; delete address by id *\");\n    this.addressService.deleteById(Integer.parseInt(addressId));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "VerificationTokenServiceImpl",
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cVerificationTokenDto\u003e findAll() {\n    log.info(\"*** VerificationTokenDto List, service; fetch all verificationTokens *\");\n    return this.verificationTokenRepository.findAll().stream().map(VerificationTokenMappingHelper::map).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "class_name": "VerificationTokenServiceImpl",
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic VerificationTokenDto findById(final Integer verificationTokenId) {\n    log.info(\"*** VerificationTokenDto, service; fetch verificationToken by ids *\");\n    return this.verificationTokenRepository.findById(verificationTokenId).map(VerificationTokenMappingHelper::map).orElseThrow(() -\u003e new VerificationTokenNotFoundException(String.format(\"#### VerificationToken with id: %d not found! ####\", verificationTokenId)));\n}"
+  },
+  {
+    "class_name": "VerificationTokenServiceImpl",
+    "method_name": "save",
+    "method_declaration": "@Override\npublic VerificationTokenDto save(final VerificationTokenDto verificationTokenDto) {\n    log.info(\"*** VerificationTokenDto, service; save verificationToken *\");\n    return VerificationTokenMappingHelper.map(this.verificationTokenRepository.save(VerificationTokenMappingHelper.map(verificationTokenDto)));\n}"
+  },
+  {
+    "class_name": "VerificationTokenServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic VerificationTokenDto update(final VerificationTokenDto verificationTokenDto) {\n    log.info(\"*** VerificationTokenDto, service; update verificationToken *\");\n    return VerificationTokenMappingHelper.map(this.verificationTokenRepository.save(VerificationTokenMappingHelper.map(verificationTokenDto)));\n}"
+  },
+  {
+    "class_name": "VerificationTokenServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic VerificationTokenDto update(final Integer verificationTokenId, final VerificationTokenDto verificationTokenDto) {\n    log.info(\"*** VerificationTokenDto, service; update verificationToken with verificationTokenId *\");\n    return VerificationTokenMappingHelper.map(this.verificationTokenRepository.save(VerificationTokenMappingHelper.map(this.findById(verificationTokenId))));\n}"
+  },
+  {
+    "class_name": "VerificationTokenServiceImpl",
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final Integer verificationTokenId) {\n    log.info(\"*** Void, service; delete verificationToken by id *\");\n    this.verificationTokenRepository.deleteById(verificationTokenId);\n}"
+  },
+  {
+    "class_name": "CredentialResource",
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cCredentialDto\u003e\u003e findAll() {\n    log.info(\"*** CredentialDto List, controller; fetch all credentials *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.credentialService.findAll()));\n}"
+  },
+  {
+    "class_name": "CredentialResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{credentialId}\")\npublic ResponseEntity\u003cCredentialDto\u003e findById(@PathVariable(\"credentialId\") @NotBlank(message \u003d \"Input must not blank\") @Valid final String credentialId) {\n    log.info(\"*** CredentialDto, resource; fetch credential by id *\");\n    return ResponseEntity.ok(this.credentialService.findById(Integer.parseInt(credentialId.strip())));\n}"
+  },
+  {
+    "class_name": "CredentialResource",
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cCredentialDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final CredentialDto credentialDto) {\n    log.info(\"*** CredentialDto, resource; save credential *\");\n    return ResponseEntity.ok(this.credentialService.save(credentialDto));\n}"
+  },
+  {
+    "class_name": "CredentialResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cCredentialDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final CredentialDto credentialDto) {\n    log.info(\"*** CredentialDto, resource; update credential *\");\n    return ResponseEntity.ok(this.credentialService.update(credentialDto));\n}"
+  },
+  {
+    "class_name": "CredentialResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping(\"/{credentialId}\")\npublic ResponseEntity\u003cCredentialDto\u003e update(@PathVariable(\"credentialId\") @NotBlank(message \u003d \"Input must not blank\") final String credentialId, @RequestBody @NotNull(message \u003d \"Input must not NULL\") @Valid final CredentialDto credentialDto) {\n    log.info(\"*** CredentialDto, resource; update credential with credentialId *\");\n    return ResponseEntity.ok(this.credentialService.update(Integer.parseInt(credentialId.strip()), credentialDto));\n}"
+  },
+  {
+    "class_name": "CredentialResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{credentialId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"credentialId\") @NotBlank(message \u003d \"Input must not blank\") @Valid final String credentialId) {\n    log.info(\"*** Boolean, resource; delete credential by id *\");\n    this.credentialService.deleteById(Integer.parseInt(credentialId));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "CredentialResource",
+    "method_name": "findByUsername",
+    "method_declaration": "@GetMapping(\"/username/{username}\")\npublic ResponseEntity\u003cCredentialDto\u003e findByUsername(@PathVariable(\"username\") @NotBlank(message \u003d \"Input must not blank\") @Valid final String username) {\n    log.info(\"*** CredentialDto, resource; update credential with credentialId *\");\n    return ResponseEntity.ok(this.credentialService.findByUsername(username));\n}"
+  },
+  {
+    "class_name": "ClientConfig",
+    "method_name": "restTemplateBean",
+    "method_declaration": "@LoadBalanced\n@Bean\npublic RestTemplate restTemplateBean() {\n    return new RestTemplate();\n}"
+  },
+  {
+    "class_name": "AddressServiceImpl",
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cAddressDto\u003e findAll() {\n    log.info(\"*** AddressDto List, service; fetch all addresss *\");\n    return this.addressRepository.findAll().stream().map(AddressMappingHelper::map).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "class_name": "AddressServiceImpl",
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic AddressDto findById(final Integer addressId) {\n    log.info(\"*** AddressDto, service; fetch address by id *\");\n    return this.addressRepository.findById(addressId).map(AddressMappingHelper::map).orElseThrow(() -\u003e new AddressNotFoundException(String.format(\"#### Address with id: %d not found! ####\", addressId)));\n}"
+  },
+  {
+    "class_name": "AddressServiceImpl",
+    "method_name": "save",
+    "method_declaration": "@Override\npublic AddressDto save(final AddressDto addressDto) {\n    log.info(\"*** AddressDto, service; save address *\");\n    return AddressMappingHelper.map(this.addressRepository.save(AddressMappingHelper.map(addressDto)));\n}"
+  },
+  {
+    "class_name": "AddressServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic AddressDto update(final AddressDto addressDto) {\n    log.info(\"*** AddressDto, service; update address *\");\n    return AddressMappingHelper.map(this.addressRepository.save(AddressMappingHelper.map(addressDto)));\n}"
+  },
+  {
+    "class_name": "AddressServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic AddressDto update(final Integer addressId, final AddressDto addressDto) {\n    log.info(\"*** AddressDto, service; update address with addressId *\");\n    return AddressMappingHelper.map(this.addressRepository.save(AddressMappingHelper.map(this.findById(addressId))));\n}"
+  },
+  {
+    "class_name": "AddressServiceImpl",
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final Integer addressId) {\n    log.info(\"*** Void, service; delete address by id *\");\n    this.addressRepository.deleteById(addressId);\n}"
+  },
+  {
+    "class_name": "VerificationTokenService",
+    "method_name": "findAll",
+    "method_declaration": "List\u003cVerificationTokenDto\u003e findAll();"
+  },
+  {
+    "class_name": "VerificationTokenService",
+    "method_name": "findById",
+    "method_declaration": "VerificationTokenDto findById(final Integer verificationTokenId);"
+  },
+  {
+    "class_name": "VerificationTokenService",
+    "method_name": "save",
+    "method_declaration": "VerificationTokenDto save(final VerificationTokenDto verificationTokenDto);"
+  },
+  {
+    "class_name": "VerificationTokenService",
+    "method_name": "update",
+    "method_declaration": "VerificationTokenDto update(final VerificationTokenDto verificationTokenDto);"
+  },
+  {
+    "class_name": "VerificationTokenService",
+    "method_name": "update",
+    "method_declaration": "VerificationTokenDto update(final Integer verificationTokenId, final VerificationTokenDto verificationTokenDto);"
+  },
+  {
+    "class_name": "VerificationTokenService",
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final Integer verificationTokenId);"
+  },
+  {
+    "class_name": "UserServiceImpl",
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cUserDto\u003e findAll() {\n    log.info(\"*** UserDto List, service; fetch all users *\");\n    return this.userRepository.findAll().stream().map(UserMappingHelper::map).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "class_name": "UserServiceImpl",
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic UserDto findById(final Integer userId) {\n    log.info(\"*** UserDto, service; fetch user by id *\");\n    return this.userRepository.findById(userId).map(UserMappingHelper::map).orElseThrow(() -\u003e new UserObjectNotFoundException(String.format(\"User with id: %d not found\", userId)));\n}"
+  },
+  {
+    "class_name": "UserServiceImpl",
+    "method_name": "save",
+    "method_declaration": "@Override\npublic UserDto save(final UserDto userDto) {\n    log.info(\"*** UserDto, service; save user *\");\n    return UserMappingHelper.map(this.userRepository.save(UserMappingHelper.map(userDto)));\n}"
+  },
+  {
+    "class_name": "UserServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic UserDto update(final UserDto userDto) {\n    log.info(\"*** UserDto, service; update user *\");\n    return UserMappingHelper.map(this.userRepository.save(UserMappingHelper.map(userDto)));\n}"
+  },
+  {
+    "class_name": "UserServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic UserDto update(final Integer userId, final UserDto userDto) {\n    log.info(\"*** UserDto, service; update user with userId *\");\n    return UserMappingHelper.map(this.userRepository.save(UserMappingHelper.map(this.findById(userId))));\n}"
+  },
+  {
+    "class_name": "UserServiceImpl",
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final Integer userId) {\n    log.info(\"*** Void, service; delete user by id *\");\n    this.userRepository.deleteById(userId);\n}"
+  },
+  {
+    "class_name": "UserServiceImpl",
+    "method_name": "findByUsername",
+    "method_declaration": "@Override\npublic UserDto findByUsername(final String username) {\n    log.info(\"*** UserDto, service; fetch user with username *\");\n    return UserMappingHelper.map(this.userRepository.findByCredentialUsername(username).orElseThrow(() -\u003e new UserObjectNotFoundException(String.format(\"User with username: %s not found\", username))));\n}"
+  }
+]

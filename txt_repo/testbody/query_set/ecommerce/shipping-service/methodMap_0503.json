@@ -1,0 +1,127 @@
+[
+  {
+    "class_name": "OrderItemResource",
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cOrderItemDto\u003e\u003e findAll() {\n    log.info(\"*** OrderItemDto List, controller; fetch all orderItems *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.orderItemService.findAll()));\n}"
+  },
+  {
+    "class_name": "OrderItemResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{orderId}/{productId}\")\npublic ResponseEntity\u003cOrderItemDto\u003e findById(@PathVariable(\"orderId\") final String orderId, @PathVariable(\"productId\") final String productId) {\n    log.info(\"*** OrderItemDto, resource; fetch orderItem by id *\");\n    return ResponseEntity.ok(this.orderItemService.findById(new OrderItemId(Integer.parseInt(orderId), Integer.parseInt(productId))));\n}"
+  },
+  {
+    "class_name": "OrderItemResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/find\")\npublic ResponseEntity\u003cOrderItemDto\u003e findById(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final OrderItemId orderItemId) {\n    log.info(\"*** OrderItemDto, resource; fetch orderItem by id *\");\n    return ResponseEntity.ok(this.orderItemService.findById(orderItemId));\n}"
+  },
+  {
+    "class_name": "OrderItemResource",
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cOrderItemDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final OrderItemDto orderItemDto) {\n    log.info(\"*** OrderItemDto, resource; save orderItem *\");\n    return ResponseEntity.ok(this.orderItemService.save(orderItemDto));\n}"
+  },
+  {
+    "class_name": "OrderItemResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cOrderItemDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final OrderItemDto orderItemDto) {\n    log.info(\"*** OrderItemDto, resource; update orderItem *\");\n    return ResponseEntity.ok(this.orderItemService.update(orderItemDto));\n}"
+  },
+  {
+    "class_name": "OrderItemResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{orderId}/{productId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"orderId\") final String orderId, @PathVariable(\"productId\") final String productId) {\n    log.info(\"*** Boolean, resource; delete orderItem by id *\");\n    this.orderItemService.deleteById(new OrderItemId(Integer.parseInt(orderId), Integer.parseInt(productId)));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "OrderItemResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/delete\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final OrderItemId orderItemId) {\n    log.info(\"*** Boolean, resource; delete orderItem by id *\");\n    this.orderItemService.deleteById(orderItemId);\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "ShippingServiceApplication",
+    "method_name": "main",
+    "method_declaration": "public static void main(String[] args) {\n    SpringApplication.run(ShippingServiceApplication.class, args);\n}"
+  },
+  {
+    "class_name": "ShippingController",
+    "method_name": "msg",
+    "method_declaration": "@GetMapping\npublic String msg() {\n    return \"shipping controller responding!!\";\n}"
+  },
+  {
+    "class_name": "OrderItemMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static OrderItemDto map(final OrderItem orderItem) {\n    return OrderItemDto.builder().productId(orderItem.getProductId()).orderId(orderItem.getOrderId()).orderedQuantity(orderItem.getOrderedQuantity()).productDto(ProductDto.builder().productId(orderItem.getProductId()).build()).orderDto(OrderDto.builder().orderId(orderItem.getOrderId()).build()).build();\n}"
+  },
+  {
+    "class_name": "OrderItemMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static OrderItem map(final OrderItemDto orderItemDto) {\n    return OrderItem.builder().productId(orderItemDto.getProductId()).orderId(orderItemDto.getOrderId()).orderedQuantity(orderItemDto.getOrderedQuantity()).build();\n}"
+  },
+  {
+    "class_name": "MapperConfig",
+    "method_name": "objectMapperBean",
+    "method_declaration": "@Bean\npublic ObjectMapper objectMapperBean() {\n    return new JsonMapper().enable(SerializationFeature.INDENT_OUTPUT);\n}"
+  },
+  {
+    "class_name": "OrderItemService",
+    "method_name": "findAll",
+    "method_declaration": "List\u003cOrderItemDto\u003e findAll();"
+  },
+  {
+    "class_name": "OrderItemService",
+    "method_name": "findById",
+    "method_declaration": "OrderItemDto findById(final OrderItemId orderItemId);"
+  },
+  {
+    "class_name": "OrderItemService",
+    "method_name": "save",
+    "method_declaration": "OrderItemDto save(final OrderItemDto orderItemDto);"
+  },
+  {
+    "class_name": "OrderItemService",
+    "method_name": "update",
+    "method_declaration": "OrderItemDto update(final OrderItemDto orderItemDto);"
+  },
+  {
+    "class_name": "OrderItemService",
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final OrderItemId orderItemId);"
+  },
+  {
+    "class_name": "OrderItemServiceImpl",
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cOrderItemDto\u003e findAll() {\n    log.info(\"*** OrderItemDto List, service; fetch all orderItems *\");\n    return this.orderItemRepository.findAll().stream().map(OrderItemMappingHelper::map).map(o -\u003e {\n        o.setProductDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.PRODUCT_SERVICE_API_URL + \"/\" + o.getProductDto().getProductId(), ProductDto.class));\n        o.setOrderDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.ORDER_SERVICE_API_URL + \"/\" + o.getOrderDto().getOrderId(), OrderDto.class));\n        return o;\n    }).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "class_name": "OrderItemServiceImpl",
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic OrderItemDto findById(final OrderItemId orderItemId) {\n    log.info(\"*** OrderItemDto, service; fetch orderItem by id *\");\n    return this.orderItemRepository.findById(null).map(OrderItemMappingHelper::map).map(o -\u003e {\n        o.setProductDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.PRODUCT_SERVICE_API_URL + \"/\" + o.getProductDto().getProductId(), ProductDto.class));\n        o.setOrderDto(this.restTemplate.getForObject(AppConstant.DiscoveredDomainsApi.ORDER_SERVICE_API_URL + \"/\" + o.getOrderDto().getOrderId(), OrderDto.class));\n        return o;\n    }).orElseThrow(() -\u003e new OrderItemNotFoundException(String.format(\"OrderItem with id: %s not found\", orderItemId)));\n}"
+  },
+  {
+    "class_name": "OrderItemServiceImpl",
+    "method_name": "save",
+    "method_declaration": "@Override\npublic OrderItemDto save(final OrderItemDto orderItemDto) {\n    log.info(\"*** OrderItemDto, service; save orderItem *\");\n    return OrderItemMappingHelper.map(this.orderItemRepository.save(OrderItemMappingHelper.map(orderItemDto)));\n}"
+  },
+  {
+    "class_name": "OrderItemServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic OrderItemDto update(final OrderItemDto orderItemDto) {\n    log.info(\"*** OrderItemDto, service; update orderItem *\");\n    return OrderItemMappingHelper.map(this.orderItemRepository.save(OrderItemMappingHelper.map(orderItemDto)));\n}"
+  },
+  {
+    "class_name": "OrderItemServiceImpl",
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final OrderItemId orderItemId) {\n    log.info(\"*** Void, service; delete orderItem by id *\");\n    this.orderItemRepository.deleteById(orderItemId);\n}"
+  },
+  {
+    "class_name": "ClientConfig",
+    "method_name": "restTemplateBean",
+    "method_declaration": "@LoadBalanced\n@Bean\npublic RestTemplate restTemplateBean() {\n    return new RestTemplate();\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleValidationException",
+    "method_declaration": "@ExceptionHandler(value \u003d { MethodArgumentNotValidException.class, HttpMessageNotReadableException.class })\npublic \u003cT extends BindException\u003e ResponseEntity\u003cExceptionMsg\u003e handleValidationException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle validation exception*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"*\" + e.getBindingResult().getFieldError().getDefaultMessage() + \"!**\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleApiRequestException",
+    "method_declaration": "@ExceptionHandler(value \u003d { IllegalStateException.class })\npublic \u003cT extends RuntimeException\u003e ResponseEntity\u003cExceptionMsg\u003e handleApiRequestException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle API request*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"#### \" + e.getMessage() + \"! ####\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  }
+]

@@ -1,0 +1,227 @@
+[
+  {
+    "class_name": "ProductService",
+    "method_name": "findAll",
+    "method_declaration": "List\u003cProductDto\u003e findAll();"
+  },
+  {
+    "class_name": "ProductService",
+    "method_name": "findById",
+    "method_declaration": "ProductDto findById(final Integer productId);"
+  },
+  {
+    "class_name": "ProductService",
+    "method_name": "save",
+    "method_declaration": "ProductDto save(final ProductDto productDto);"
+  },
+  {
+    "class_name": "ProductService",
+    "method_name": "update",
+    "method_declaration": "ProductDto update(final ProductDto productDto);"
+  },
+  {
+    "class_name": "ProductService",
+    "method_name": "update",
+    "method_declaration": "ProductDto update(final Integer productId, final ProductDto productDto);"
+  },
+  {
+    "class_name": "ProductService",
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final Integer productId);"
+  },
+  {
+    "class_name": "MapperConfig",
+    "method_name": "objectMapperBean",
+    "method_declaration": "@Bean\npublic ObjectMapper objectMapperBean() {\n    return new JsonMapper().enable(SerializationFeature.INDENT_OUTPUT);\n}"
+  },
+  {
+    "class_name": "ProductServiceImpl",
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cProductDto\u003e findAll() {\n    log.info(\"*** ProductDto List, service; fetch all products *\");\n    return this.productRepository.findAll().stream().map(ProductMappingHelper::map).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "class_name": "ProductServiceImpl",
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic ProductDto findById(final Integer productId) {\n    log.info(\"*** ProductDto, service; fetch product by id *\");\n    return this.productRepository.findById(productId).map(ProductMappingHelper::map).orElseThrow(() -\u003e new ProductNotFoundException(String.format(\"Product with id: %d not found\", productId)));\n}"
+  },
+  {
+    "class_name": "ProductServiceImpl",
+    "method_name": "save",
+    "method_declaration": "@Override\npublic ProductDto save(final ProductDto productDto) {\n    log.info(\"*** ProductDto, service; save product *\");\n    return ProductMappingHelper.map(this.productRepository.save(ProductMappingHelper.map(productDto)));\n}"
+  },
+  {
+    "class_name": "ProductServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic ProductDto update(final ProductDto productDto) {\n    log.info(\"*** ProductDto, service; update product *\");\n    return ProductMappingHelper.map(this.productRepository.save(ProductMappingHelper.map(productDto)));\n}"
+  },
+  {
+    "class_name": "ProductServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic ProductDto update(final Integer productId, final ProductDto productDto) {\n    log.info(\"*** ProductDto, service; update product with productId *\");\n    return ProductMappingHelper.map(this.productRepository.save(ProductMappingHelper.map(this.findById(productId))));\n}"
+  },
+  {
+    "class_name": "ProductServiceImpl",
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final Integer productId) {\n    log.info(\"*** Void, service; delete product by id *\");\n    this.productRepository.delete(ProductMappingHelper.map(this.findById(productId)));\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleValidationException",
+    "method_declaration": "@ExceptionHandler(value \u003d { MethodArgumentNotValidException.class, HttpMessageNotReadableException.class })\npublic \u003cT extends BindException\u003e ResponseEntity\u003cExceptionMsg\u003e handleValidationException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle validation exception*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"*\" + e.getBindingResult().getFieldError().getDefaultMessage() + \"!**\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  },
+  {
+    "class_name": "ApiExceptionHandler",
+    "method_name": "handleApiRequestException",
+    "method_declaration": "@ExceptionHandler(value \u003d { CategoryNotFoundException.class, ProductNotFoundException.class })\npublic \u003cT extends RuntimeException\u003e ResponseEntity\u003cExceptionMsg\u003e handleApiRequestException(final T e) {\n    log.info(\"**ApiExceptionHandler controller, handle API request*\\n\");\n    final var badRequest \u003d HttpStatus.BAD_REQUEST;\n    return new ResponseEntity\u003c\u003e(ExceptionMsg.builder().msg(\"#### \" + e.getMessage() + \"! ####\").httpStatus(badRequest).timestamp(ZonedDateTime.now(ZoneId.systemDefault())).build(), badRequest);\n}"
+  },
+  {
+    "class_name": "CategoryMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static CategoryDto map(final Category category) {\n    final var parentCategory \u003d Optional.ofNullable(category.getParentCategory()).orElseGet(() -\u003e new Category());\n    return CategoryDto.builder().categoryId(category.getCategoryId()).categoryTitle(category.getCategoryTitle()).imageUrl(category.getImageUrl()).parentCategoryDto(CategoryDto.builder().categoryId(parentCategory.getCategoryId()).categoryTitle(parentCategory.getCategoryTitle()).imageUrl(parentCategory.getImageUrl()).build()).build();\n}"
+  },
+  {
+    "class_name": "CategoryMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static Category map(final CategoryDto categoryDto) {\n    final var parentCategoryDto \u003d Optional.ofNullable(categoryDto.getParentCategoryDto()).orElseGet(() -\u003e new CategoryDto());\n    return Category.builder().categoryId(categoryDto.getCategoryId()).categoryTitle(categoryDto.getCategoryTitle()).imageUrl(categoryDto.getImageUrl()).parentCategory(Category.builder().categoryId(parentCategoryDto.getCategoryId()).categoryTitle(parentCategoryDto.getCategoryTitle()).imageUrl(parentCategoryDto.getImageUrl()).build()).build();\n}"
+  },
+  {
+    "class_name": "ProductMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static ProductDto map(final Product product) {\n    return ProductDto.builder().productId(product.getProductId()).productTitle(product.getProductTitle()).imageUrl(product.getImageUrl()).sku(product.getSku()).priceUnit(product.getPriceUnit()).quantity(product.getQuantity()).categoryDto(CategoryDto.builder().categoryId(product.getCategory().getCategoryId()).categoryTitle(product.getCategory().getCategoryTitle()).imageUrl(product.getCategory().getImageUrl()).build()).build();\n}"
+  },
+  {
+    "class_name": "ProductMappingHelper",
+    "method_name": "map",
+    "method_declaration": "public static Product map(final ProductDto productDto) {\n    return Product.builder().productId(productDto.getProductId()).productTitle(productDto.getProductTitle()).imageUrl(productDto.getImageUrl()).sku(productDto.getSku()).priceUnit(productDto.getPriceUnit()).quantity(productDto.getQuantity()).category(Category.builder().categoryId(productDto.getCategoryDto().getCategoryId()).categoryTitle(productDto.getCategoryDto().getCategoryTitle()).imageUrl(productDto.getCategoryDto().getImageUrl()).build()).build();\n}"
+  },
+  {
+    "class_name": "ProductServiceApplication",
+    "method_name": "main",
+    "method_declaration": "public static void main(String[] args) {\n    SpringApplication.run(ProductServiceApplication.class, args);\n}"
+  },
+  {
+    "class_name": "CategoryService",
+    "method_name": "findAll",
+    "method_declaration": "List\u003cCategoryDto\u003e findAll();"
+  },
+  {
+    "class_name": "CategoryService",
+    "method_name": "findById",
+    "method_declaration": "CategoryDto findById(final Integer categoryId);"
+  },
+  {
+    "class_name": "CategoryService",
+    "method_name": "save",
+    "method_declaration": "CategoryDto save(final CategoryDto categoryDto);"
+  },
+  {
+    "class_name": "CategoryService",
+    "method_name": "update",
+    "method_declaration": "CategoryDto update(final CategoryDto categoryDto);"
+  },
+  {
+    "class_name": "CategoryService",
+    "method_name": "update",
+    "method_declaration": "CategoryDto update(final Integer categoryId, final CategoryDto categoryDto);"
+  },
+  {
+    "class_name": "CategoryService",
+    "method_name": "deleteById",
+    "method_declaration": "void deleteById(final Integer categoryId);"
+  },
+  {
+    "class_name": "CategoryResource",
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cCategoryDto\u003e\u003e findAll() {\n    log.info(\"*** CategoryDto List, controller; fetch all categories *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.categoryService.findAll()));\n}"
+  },
+  {
+    "class_name": "CategoryResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{categoryId}\")\npublic ResponseEntity\u003cCategoryDto\u003e findById(@PathVariable(\"categoryId\") @NotBlank(message \u003d \"Input must not be blank\") @Valid final String categoryId) {\n    log.info(\"*** CategoryDto, resource; fetch category by id *\");\n    return ResponseEntity.ok(this.categoryService.findById(Integer.parseInt(categoryId)));\n}"
+  },
+  {
+    "class_name": "CategoryResource",
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cCategoryDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final CategoryDto categoryDto) {\n    log.info(\"*** CategoryDto, resource; save category *\");\n    return ResponseEntity.ok(this.categoryService.save(categoryDto));\n}"
+  },
+  {
+    "class_name": "CategoryResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cCategoryDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final CategoryDto categoryDto) {\n    log.info(\"*** CategoryDto, resource; update category *\");\n    return ResponseEntity.ok(this.categoryService.update(categoryDto));\n}"
+  },
+  {
+    "class_name": "CategoryResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping(\"/{categoryId}\")\npublic ResponseEntity\u003cCategoryDto\u003e update(@PathVariable(\"categoryId\") @NotBlank(message \u003d \"Input must not be blank\") @Valid final String categoryId, @RequestBody @NotNull(message \u003d \"Input must not be NULL\") @Valid final CategoryDto categoryDto) {\n    log.info(\"*** CategoryDto, resource; update category with categoryId *\");\n    return ResponseEntity.ok(this.categoryService.update(Integer.parseInt(categoryId), categoryDto));\n}"
+  },
+  {
+    "class_name": "CategoryResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{categoryId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"categoryId\") final String categoryId) {\n    log.info(\"*** Boolean, resource; delete category by id *\");\n    this.categoryService.deleteById(Integer.parseInt(categoryId));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "ProductResource",
+    "method_name": "findAll",
+    "method_declaration": "@GetMapping\npublic ResponseEntity\u003cDtoCollectionResponse\u003cProductDto\u003e\u003e findAll() {\n    log.info(\"*** ProductDto List, controller; fetch all categories *\");\n    return ResponseEntity.ok(new DtoCollectionResponse\u003c\u003e(this.productService.findAll()));\n}"
+  },
+  {
+    "class_name": "ProductResource",
+    "method_name": "findById",
+    "method_declaration": "@GetMapping(\"/{productId}\")\npublic ResponseEntity\u003cProductDto\u003e findById(@PathVariable(\"productId\") @NotBlank(message \u003d \"Input must not be blank!\") @Valid final String productId) {\n    log.info(\"*** ProductDto, resource; fetch product by id *\");\n    return ResponseEntity.ok(this.productService.findById(Integer.parseInt(productId)));\n}"
+  },
+  {
+    "class_name": "ProductResource",
+    "method_name": "save",
+    "method_declaration": "@PostMapping\npublic ResponseEntity\u003cProductDto\u003e save(@RequestBody @NotNull(message \u003d \"Input must not be NULL!\") @Valid final ProductDto productDto) {\n    log.info(\"*** ProductDto, resource; save product *\");\n    return ResponseEntity.ok(this.productService.save(productDto));\n}"
+  },
+  {
+    "class_name": "ProductResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping\npublic ResponseEntity\u003cProductDto\u003e update(@RequestBody @NotNull(message \u003d \"Input must not be NULL!\") @Valid final ProductDto productDto) {\n    log.info(\"*** ProductDto, resource; update product *\");\n    return ResponseEntity.ok(this.productService.update(productDto));\n}"
+  },
+  {
+    "class_name": "ProductResource",
+    "method_name": "update",
+    "method_declaration": "@PutMapping(\"/{productId}\")\npublic ResponseEntity\u003cProductDto\u003e update(@PathVariable(\"productId\") @NotBlank(message \u003d \"Input must not be blank!\") @Valid final String productId, @RequestBody @NotNull(message \u003d \"Input must not be NULL!\") @Valid final ProductDto productDto) {\n    log.info(\"*** ProductDto, resource; update product with productId *\");\n    return ResponseEntity.ok(this.productService.update(Integer.parseInt(productId), productDto));\n}"
+  },
+  {
+    "class_name": "ProductResource",
+    "method_name": "deleteById",
+    "method_declaration": "@DeleteMapping(\"/{productId}\")\npublic ResponseEntity\u003cBoolean\u003e deleteById(@PathVariable(\"productId\") final String productId) {\n    log.info(\"*** Boolean, resource; delete product by id *\");\n    this.productService.deleteById(Integer.parseInt(productId));\n    return ResponseEntity.ok(true);\n}"
+  },
+  {
+    "class_name": "CategoryServiceImpl",
+    "method_name": "findAll",
+    "method_declaration": "@Override\npublic List\u003cCategoryDto\u003e findAll() {\n    log.info(\"*** CategoryDto List, service; fetch all categorys *\");\n    return this.categoryRepository.findAll().stream().map(CategoryMappingHelper::map).distinct().collect(Collectors.toUnmodifiableList());\n}"
+  },
+  {
+    "class_name": "CategoryServiceImpl",
+    "method_name": "findById",
+    "method_declaration": "@Override\npublic CategoryDto findById(final Integer categoryId) {\n    log.info(\"*** CategoryDto, service; fetch category by id *\");\n    return this.categoryRepository.findById(categoryId).map(CategoryMappingHelper::map).orElseThrow(() -\u003e new CategoryNotFoundException(String.format(\"Category with id: %d not found\", categoryId)));\n}"
+  },
+  {
+    "class_name": "CategoryServiceImpl",
+    "method_name": "save",
+    "method_declaration": "@Override\npublic CategoryDto save(final CategoryDto categoryDto) {\n    log.info(\"*** CategoryDto, service; save category *\");\n    return CategoryMappingHelper.map(this.categoryRepository.save(CategoryMappingHelper.map(categoryDto)));\n}"
+  },
+  {
+    "class_name": "CategoryServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic CategoryDto update(final CategoryDto categoryDto) {\n    log.info(\"*** CategoryDto, service; update category *\");\n    return CategoryMappingHelper.map(this.categoryRepository.save(CategoryMappingHelper.map(categoryDto)));\n}"
+  },
+  {
+    "class_name": "CategoryServiceImpl",
+    "method_name": "update",
+    "method_declaration": "@Override\npublic CategoryDto update(final Integer categoryId, final CategoryDto categoryDto) {\n    log.info(\"*** CategoryDto, service; update category with categoryId *\");\n    return CategoryMappingHelper.map(this.categoryRepository.save(CategoryMappingHelper.map(this.findById(categoryId))));\n}"
+  },
+  {
+    "class_name": "CategoryServiceImpl",
+    "method_name": "deleteById",
+    "method_declaration": "@Override\npublic void deleteById(final Integer categoryId) {\n    log.info(\"*** Void, service; delete category by id *\");\n    this.categoryRepository.deleteById(categoryId);\n}"
+  },
+  {
+    "class_name": "ClientConfig",
+    "method_name": "restTemplateBean",
+    "method_declaration": "@LoadBalanced\n@Bean\npublic RestTemplate restTemplateBean() {\n    return new RestTemplate();\n}"
+  }
+]
