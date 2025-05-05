@@ -51,13 +51,21 @@ class Prefix_datapoint:
 
 
 class Testcase_datapoint:
-    def __init__(self, classname: str, constructor: str, focalname_paralist: str, test_name: str, test_body: str, unix_tensor: Tensor):
+    def __init__(self, classname: str, constructor: str, focalname_paralist: str, focal_func:str, test_name: str, test_body: str, unix_tensor: Tensor):
         self.classname = classname
         self.constructor = constructor
         self.focalname_paralist = focalname_paralist
+        self.focal_func = focal_func
         self.test_name = test_name
         self.test_body = test_body
         self.unix_tensor = unix_tensor
+
+
+class Ecommerce_query_jsonpoint:
+    def __init__(self, simple_json: str, rich_json: str):
+        self.simple_json = simple_json
+        self.rich_json = rich_json
+
 
 class Failed_To_Be_Repair_datapoint:
     def __init__(self, classname: str, focalname_paralist: str, failed_stderr: str, test_unit: str):

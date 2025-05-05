@@ -1,0 +1,68 @@
+Java Unit Testing Best Practices (Using JUnit5 + Mockito)
+
+Core Principles
+1. Single Responsibility: Each test method verifies one logical point.
+2. Independence & Repeatability: Use Mockito to isolate external dependencies and ensure environment-agnostic tests.
+3. Speed: Avoid real I/O operations; replace them with mocked objects.
+
+Key Practices
+1. Naming Convention: Method names should clearly describe the expected behavior and conditions (e.g., `shouldReturnXWhenY`):
+   ```java
+   @Test
+   void shouldReturnUserWhenIdValid() { ... }
+   ```
+2. Mocking Dependencies:
+   • Use `@Mock` to create mock objects.
+
+   • Enable Mockito support with `@ExtendWith(MockitoExtension.class)`:
+
+   ```java
+   @ExtendWith(MockitoExtension.class)
+   class UserServiceTest {
+       @Mock DatabaseClient dbClient;
+       @InjectMocks UserService userService;
+   }
+   ```
+3. Behavior Verification:
+   • Define mock behavior with `when().thenReturn()`.
+
+   • Verify interactions using `verify()`:
+
+   ```java
+   @Test
+   void shouldCallDatabaseOnSave() {
+       userService.saveUser(new User("Alice"));
+       verify(dbClient).save(any(User.class)); // Verify method invocation
+   }
+   ```
+4. Exception Testing: Use `assertThrows` to validate exception logic:
+   ```java
+   @Test
+   void shouldThrowExceptionWhenDivideByZero() {
+       assertThrows(ArithmeticException.class, () -> calculator.divide(5, 0));
+   }
+   ```
+
+Template Example
+```java
+@ExtendWith(MockitoExtension.class)
+class OrderServiceTest {
+    @Mock PaymentGateway paymentGateway;
+    @InjectMocks OrderService orderService;
+
+    @Test
+    void shouldProcessOrderWhenPaymentValid() {
+        // Arrange: Define mock behavior
+        when(paymentGateway.process(anyDouble())).thenReturn(true);
+
+        // Act: Execute the method
+        boolean result = orderService.checkout(100.0);
+
+        // Assert: Verify outcomes
+        assertTrue(result);
+        verify(paymentGateway).process(100.0); // Verify precise interaction
+    }
+}
+```
+
+Summary: Follow the AAA pattern (Arrange-Act-Assert), use Mockito to control dependencies, and leverage JUnit5 features (parameterized tests, extensions) to create maintainable tests focused on one clear goal per method.

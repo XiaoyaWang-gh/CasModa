@@ -1,0 +1,58 @@
+Java单元测试最佳实践（基于 JUnit5 + Mockito）
+
+核心原则
+1. 单一职责：每个测试方法仅验证一个逻辑点
+2. 独立可重复：用Mockito隔离外部依赖，确保测试不依赖环境
+3. 快速执行：避免真实I/O操作，用Mock对象替代
+
+关键实践
+1. 命名规范：方法名明确行为与条件（`shouldReturnXWhenY`）
+   ```java
+   @Test
+   void shouldReturnUserWhenIdValid() { ... }
+   ```
+2. Mock依赖：用`@Mock`创建模拟对象，`@ExtendWith(MockitoExtension.class)`启用Mock支持
+   ```java
+   @ExtendWith(MockitoExtension.class)
+   class UserServiceTest {
+       @Mock DatabaseClient dbClient;
+       @InjectMocks UserService userService;
+   }
+   ```
+3. 行为验证：使用`when().thenReturn()`定义模拟行为，`verify()`验证调用
+   ```java
+   @Test
+   void shouldCallDatabaseOnSave() {
+       userService.saveUser(new User("Alice"));
+       verify(dbClient).save(any(User.class)); // 验证方法调用
+   }
+   ```
+4. 异常测试：用`assertThrows`验证异常逻辑
+   ```java
+   @Test
+   void shouldThrowExceptionWhenDivideByZero() {
+       assertThrows(ArithmeticException.class, () -> calculator.divide(5, 0));
+   }
+   ```
+
+示例代码模板
+```java
+@ExtendWith(MockitoExtension.class)
+class OrderServiceTest {
+    @Mock PaymentGateway paymentGateway;
+    @InjectMocks OrderService orderService;
+
+    @Test
+    void shouldProcessOrderWhenPaymentValid() {
+        // 定义Mock行为
+        when(paymentGateway.process(anyDouble())).thenReturn(true);
+
+        boolean result = orderService.checkout(100.0);
+
+        assertTrue(result);
+        verify(paymentGateway).process(100.0); // 验证调用细节
+    }
+}
+```
+
+总结：遵循 AAA模式（Arrange-Act-Assert），用Mockito精准控制依赖行为，通过JUnit5的现代特性（参数化测试、扩展模型）提升测试可维护性，确保每个测试聚焦一个明确目标。
