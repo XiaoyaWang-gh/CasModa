@@ -1,0 +1,49 @@
+package com.selimhorri.app.service.impl;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+import com.selimhorri.app.dto.CredentialDto;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.selimhorri.app.dto.VerificationTokenDto;
+import com.selimhorri.app.exception.wrapper.VerificationTokenNotFoundException;
+import com.selimhorri.app.helper.VerificationTokenMappingHelper;
+import com.selimhorri.app.repository.VerificationTokenRepository;
+import java.time.LocalDate;
+
+@ExtendWith(MockitoExtension.class)
+class VerificationTokenServiceImpl<ID>Test {
+
+    @Mock
+    private VerificationTokenRepository verificationTokenRepository;
+
+    @InjectMocks
+    private VerificationTokenServiceImpl verificationTokenService;
+
+    private VerificationTokenDto verificationTokenDto;
+
+    private Integer validTokenId = 1;
+
+    private Integer invalidTokenId = 999;
+
+    @BeforeEach
+    void setUp() {
+        verificationTokenDto = VerificationTokenDto.builder().verificationTokenId(validTokenId).token("testToken").expireDate(// 修正为LocalDate类型
+        LocalDate.now().plusDays(1)).credentialDto(// 新增凭证DTO初始化
+        CredentialDto.builder().build()).build();
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

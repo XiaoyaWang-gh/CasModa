@@ -1,0 +1,39 @@
+package com.selimhorri.app.service.impl;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.selimhorri.app.dto.CategoryDto;
+import com.selimhorri.app.exception.wrapper.CategoryNotFoundException;
+import com.selimhorri.app.helper.CategoryMappingHelper;
+import com.selimhorri.app.repository.CategoryRepository;
+import com.selimhorri.app.service.impl.CategoryServiceImpl;
+
+@ExtendWith(MockitoExtension.class)
+class CategoryServiceImpl<ID>Test {
+
+    @Mock
+    private CategoryRepository categoryRepository;
+
+    @InjectMocks
+    private CategoryServiceImpl categoryService;
+
+    private CategoryDto categoryDto;
+
+    @BeforeEach
+    void setUp() {
+        categoryDto = CategoryDto.builder().categoryId(1).categoryTitle("Electronics").imageUrl("electronics.png").build();
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

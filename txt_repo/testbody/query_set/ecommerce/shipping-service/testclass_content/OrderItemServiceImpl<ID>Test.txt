@@ -1,0 +1,63 @@
+package com.selimhorri.app.service.impl;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.client.RestTemplate;
+import com.selimhorri.app.constant.AppConstant;
+import com.selimhorri.app.domain.id.OrderItemId;
+import com.selimhorri.app.dto.OrderDto;
+import com.selimhorri.app.dto.OrderItemDto;
+import com.selimhorri.app.dto.ProductDto;
+import com.selimhorri.app.exception.wrapper.OrderItemNotFoundException;
+import com.selimhorri.app.helper.OrderItemMappingHelper;
+import com.selimhorri.app.repository.OrderItemRepository;
+
+@ExtendWith(MockitoExtension.class)
+class OrderItemServiceImpl<ID>Test {
+
+    @Mock
+    private OrderItemRepository orderItemRepository;
+
+    @Mock
+    private RestTemplate restTemplate;
+
+    @InjectMocks
+    private OrderItemServiceImpl orderItemService;
+
+    private OrderItemDto orderItemDto;
+
+    private OrderItemId orderItemId;
+
+    @BeforeEach
+    void setUp() {
+        this.orderItemId = new OrderItemId(1, 1);
+        // 创建ProductDto
+        ProductDto productDto = ProductDto.builder().productId(1).productTitle("Test Product").priceUnit(// 对应priceUnit字段
+        10.0).imageUrl(// 对应imageUrl字段
+        "Test Image").quantity(// 对应quantity字段
+        1).build();
+        // 创建OrderDto
+        OrderDto orderDto = new OrderDto();
+        orderDto.setOrderId(1);
+        // 创建OrderItemDto
+        this.orderItemDto = OrderItemDto.builder().productId(// 设置productId字段
+        1).orderId(// 设置orderId字段
+        1).orderedQuantity(// 设置orderedQuantity字段
+        1).productDto(// 设置productDto字段
+        productDto).orderDto(// 设置orderDto字段
+        orderDto).build();
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

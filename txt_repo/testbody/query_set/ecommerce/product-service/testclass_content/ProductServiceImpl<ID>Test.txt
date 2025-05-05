@@ -1,0 +1,42 @@
+package com.selimhorri.app.service.impl;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.selimhorri.app.dto.ProductDto;
+import com.selimhorri.app.exception.wrapper.ProductNotFoundException;
+import com.selimhorri.app.helper.ProductMappingHelper;
+import com.selimhorri.app.repository.ProductRepository;
+
+@ExtendWith(MockitoExtension.class)
+class ProductServiceImpl<ID>Test {
+
+    @Mock
+    private ProductRepository productRepository;
+
+    @InjectMocks
+    private ProductServiceImpl productService;
+
+    private ProductDto productDto;
+
+    @BeforeEach
+    void setUp() {
+        productDto = ProductDto.builder().productId(1).productTitle("iPhone 13").imageUrl("iphone13.png").sku(// 新增sku字段
+        "IP13-64GB-BLK").priceUnit(// 修改price -> priceUnit
+        999.99).quantity(// 新增quantity字段
+        10).// categoryDto字段根据测试需求可选添加
+        build();
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

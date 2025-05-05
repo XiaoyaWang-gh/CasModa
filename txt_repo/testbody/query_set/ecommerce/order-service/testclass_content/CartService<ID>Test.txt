@@ -1,0 +1,49 @@
+package com.selimhorri.app.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.util.List;
+import java.util.Optional;
+import com.selimhorri.app.constant.AppConstant;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.selimhorri.app.domain.Cart;
+import com.selimhorri.app.dto.CartDto;
+import com.selimhorri.app.dto.UserDto;
+import com.selimhorri.app.exception.wrapper.CartNotFoundException;
+import com.selimhorri.app.helper.CartMappingHelper;
+import com.selimhorri.app.repository.CartRepository;
+import com.selimhorri.app.service.impl.CartServiceImpl;
+import org.springframework.web.client.RestTemplate;
+
+@ExtendWith(MockitoExtension.class)
+class CartService<ID>Test {
+
+    @Mock
+    private CartRepository cartRepository;
+
+    @Mock
+    private RestTemplate restTemplate;
+
+    @InjectMocks
+    private CartServiceImpl cartService;
+
+    private Cart cart;
+
+    private CartDto cartDto;
+
+    @BeforeEach
+    void setUp() {
+        this.cart = Cart.builder().cartId(1).userId(1).build();
+        this.cartDto = CartDto.builder().cartId(1).userId(1).userDto(new UserDto()).build();
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

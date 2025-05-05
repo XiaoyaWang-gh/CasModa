@@ -1,0 +1,43 @@
+package com.selimhorri.app.service;
+
+import static org.mockito.Mockito.when;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.selimhorri.app.domain.Order;
+import com.selimhorri.app.dto.OrderDto;
+import com.selimhorri.app.exception.wrapper.OrderNotFoundException;
+import com.selimhorri.app.helper.OrderMappingHelper;
+import com.selimhorri.app.repository.OrderRepository;
+import com.selimhorri.app.service.impl.OrderServiceImpl;
+
+@ExtendWith(MockitoExtension.class)
+class OrderService<ID>Test {
+
+    @InjectMocks
+    private OrderServiceImpl orderService;
+
+    @Mock
+    private OrderRepository orderRepository;
+
+    private Order order;
+
+    private OrderDto orderDto;
+
+    @BeforeEach
+    void setUp() {
+        this.order = Order.builder().orderId(1).orderDate(LocalDate.now().atStartOfDay()).orderDesc("Test Order").orderFee(100.0).build();
+        this.orderDto = OrderMappingHelper.map(this.order);
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

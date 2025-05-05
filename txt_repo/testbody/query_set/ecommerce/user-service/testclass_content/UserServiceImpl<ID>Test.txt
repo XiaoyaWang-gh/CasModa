@@ -1,0 +1,49 @@
+package com.selimhorri.app.service.impl;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.selimhorri.app.dto.UserDto;
+import com.selimhorri.app.exception.wrapper.UserObjectNotFoundException;
+import com.selimhorri.app.helper.UserMappingHelper;
+import com.selimhorri.app.repository.UserRepository;
+
+@ExtendWith(MockitoExtension.class)
+class UserServiceImpl<ID>Test {
+
+    @Mock
+    private UserRepository userRepository;
+
+    @InjectMocks
+    private UserServiceImpl userService;
+
+    private UserDto userDto;
+
+    private Integer validUserId = 1;
+
+    private Integer invalidUserId = 999;
+
+    private String validUsername = "testUser";
+
+    private String invalidUsername = "unknownUser";
+
+    @BeforeEach
+    void setUp() {
+        userDto = UserDto.builder().userId(validUserId).firstName("Test").lastName("User").email("test@example.com").phone("1234567890").build();
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

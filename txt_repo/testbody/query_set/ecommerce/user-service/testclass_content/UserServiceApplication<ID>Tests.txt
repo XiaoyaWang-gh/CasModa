@@ -1,0 +1,12 @@
+package com.selimhorri.app;
+
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class UserServiceApplication<ID>Tests {
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

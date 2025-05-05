@@ -1,0 +1,48 @@
+package com.selimhorri.app.exception;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import com.selimhorri.app.exception.payload.ExceptionMsg;
+import com.selimhorri.app.exception.wrapper.CategoryNotFoundException;
+import com.selimhorri.app.exception.wrapper.ProductNotFoundException;
+
+@ExtendWith(MockitoExtension.class)
+class ApiExceptionHandler<ID>Test {
+
+    @InjectMocks
+    private ApiExceptionHandler apiExceptionHandler;
+
+    private MethodArgumentNotValidException methodArgException;
+
+    private HttpMessageNotReadableException httpMessageException;
+
+    private BindException bindException;
+
+    @BeforeEach
+    void setUp() {
+        methodArgException = mock(MethodArgumentNotValidException.class);
+        FieldError fieldError = new FieldError("object", "field", "default message");
+        when(methodArgException.getBindingResult().getFieldError()).thenReturn(fieldError);
+        httpMessageException = mock(HttpMessageNotReadableException.class);
+        bindException = mock(BindException.class);
+        when(bindException.getBindingResult().getFieldError()).thenReturn(fieldError);
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

@@ -1,0 +1,19 @@
+package com.selimhorri.app.exception.payload;
+
+import static org.junit.jupiter.api.Assertions.*;
+import java.time.ZonedDateTime;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.selimhorri.app.constant.AppConstant;
+
+class ExceptionMsg<ID>Test {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

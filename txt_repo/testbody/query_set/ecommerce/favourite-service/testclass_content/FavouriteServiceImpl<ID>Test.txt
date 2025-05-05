@@ -1,0 +1,54 @@
+package com.selimhorri.app.service.impl;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.client.RestTemplate;
+import com.selimhorri.app.constant.AppConstant;
+import com.selimhorri.app.domain.Favourite;
+import com.selimhorri.app.domain.id.FavouriteId;
+import com.selimhorri.app.dto.FavouriteDto;
+import com.selimhorri.app.dto.ProductDto;
+import com.selimhorri.app.dto.UserDto;
+import com.selimhorri.app.exception.wrapper.FavouriteNotFoundException;
+import com.selimhorri.app.helper.FavouriteMappingHelper;
+import com.selimhorri.app.repository.FavouriteRepository;
+
+@ExtendWith(MockitoExtension.class)
+class FavouriteServiceImpl<ID>Test {
+
+    @Mock
+    private FavouriteRepository favouriteRepository;
+
+    @Mock
+    private RestTemplate restTemplate;
+
+    @InjectMocks
+    private FavouriteServiceImpl favouriteService;
+
+    private Favourite favourite;
+
+    private FavouriteDto favouriteDto;
+
+    private FavouriteId favouriteId;
+
+    @BeforeEach
+    void setUp() {
+        this.favouriteId = new FavouriteId(1, 1, LocalDateTime.now());
+        this.favourite = Favourite.builder().userId(1).productId(1).likeDate(LocalDateTime.now()).build();
+        this.favouriteDto = FavouriteDto.builder().userId(1).productId(1).likeDate(LocalDateTime.now()).userDto(new UserDto()).productDto(new ProductDto()).build();
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

@@ -1,0 +1,16 @@
+package com.selimhorri.app;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+@SpringBootTest
+// 使用test profile
+@ActiveProfiles("test")
+class PaymentServiceApplication<ID>Tests {
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

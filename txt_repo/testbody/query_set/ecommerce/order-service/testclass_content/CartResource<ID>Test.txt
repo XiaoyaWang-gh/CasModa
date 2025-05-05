@@ -1,0 +1,39 @@
+package com.selimhorri.app.resource;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
+import com.selimhorri.app.dto.CartDto;
+import com.selimhorri.app.dto.response.collection.DtoCollectionResponse;
+import com.selimhorri.app.service.CartService;
+
+@ExtendWith(MockitoExtension.class)
+class CartResource<ID>Test {
+
+    @Mock
+    private CartService cartService;
+
+    @InjectMocks
+    private CartResource cartResource;
+
+    private CartDto cartDto;
+
+    @BeforeEach
+    void setUp() {
+        cartDto = CartDto.builder().cartId(1).userId(1).orderDtos(// 根据测试需要可以设置为空集合
+        null).userDto(// 可以按需创建UserDto对象
+        null).build();
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}

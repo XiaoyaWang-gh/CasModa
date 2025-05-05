@@ -1,0 +1,46 @@
+package com.selimhorri.app.service.impl;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import java.util.List;
+import java.util.Optional;
+import com.selimhorri.app.domain.Address;
+import com.selimhorri.app.dto.UserDto;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.selimhorri.app.dto.AddressDto;
+import com.selimhorri.app.exception.wrapper.AddressNotFoundException;
+import com.selimhorri.app.helper.AddressMappingHelper;
+import com.selimhorri.app.repository.AddressRepository;
+
+@ExtendWith(MockitoExtension.class)
+class AddressServiceImpl<ID>Test {
+
+    @Mock
+    private AddressRepository addressRepository;
+
+    @InjectMocks
+    private AddressServiceImpl addressService;
+
+    private AddressDto addressDto;
+
+    private Integer validAddressId = 1;
+
+    private Integer invalidAddressId = 999;
+
+    @BeforeEach
+    void setUp() {
+        addressDto = AddressDto.builder().addressId(validAddressId).fullAddress("Test Address").postalCode("12345").city("Test City").// 修正字段名称并移除不存在的country
+        userDto(// 匹配@JsonProperty("user")
+        UserDto.builder().userId(1).build()).build();
+    }
+
+	@Test
+	<TestMethodPlaceHolder>
+
+
+}
