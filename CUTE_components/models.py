@@ -1,5 +1,6 @@
 import os
 import sys
+import torch
 from enum import Enum
 from torch import Tensor
 
@@ -69,6 +70,12 @@ class Ecommerce_query_jsonpoint:
         self.rich_ctx_json = rich_ctx_json
         self.unix_tensor = unix_tensor
 
+class Ecommerce_demopoint:
+    def __init__(self, focal_func: str, test_case: str, unix_tensor: Tensor):
+        self.focal_func = focal_func
+        self.test_case = test_case
+        self.unix_tensor = unix_tensor
+
 
 class Failed_To_Be_Repair_datapoint:
     def __init__(self, classname: str, focalname_paralist: str, failed_stderr: str, test_unit: str):
@@ -108,3 +115,9 @@ class Result_datapoint:
         res_str = str(self.id)+", "+str(self.test_unit_compile_time)+", "+str(
             self.test_unit_execute_time)+", "+self.test_unit_status.value+"\n"
         return res_str
+
+
+def str_to_tensor(tensor_str):
+    import ast
+    value_list = ast.literal_eval(tensor_str)
+    return torch.tensor(value_list).view(1, 768)

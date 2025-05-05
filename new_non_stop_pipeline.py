@@ -1,8 +1,9 @@
 import json
-import os
-from typing import Dict, Any
+import torch
+from typing import Dict, Any, List
 
-from CUTE_components.models import Ecommerce_query_jsonpoint
+from CUTE_components.models import Ecommerce_query_jsonpoint, str_to_tensor, Ecommerce_demopoint
+from util.use_unixcoder import testcase_diversity_retriever
 
 
 def get_json_ctx(pro_name, service_name)->Dict[str, Any]:
@@ -39,12 +40,34 @@ def get_ecommerce_queryset(pro_name, service_name, ctx_dict):
             class_name=record_item['class_name'],
             func_name=record_item['method_name'],
             focal_func=record_item['method_declaration'],
-            unix_tensor=record_item['unixcoder_tensor'],
+            unix_tensor=str_to_tensor(record_item['unixcoder_tensor']),
             rich_ctx_json=ctx_dict.get(record_item['class_name']+"-"+record_item['method_name'])
         )
         query_set.append(query_point)
 
     return query_set
+
+def get_ecommerce_demopool()-> List[Ecommerce_demopoint]:
+    dir_path = "/Users/bytedance/code/casmodatest/CasModa/txt_repo/testbody/demo_pool/ecommerce"
+    with open(f"{dir_path}/focal_method.txt", 'r') as f:
+        focal_method_data = f.readlines()
+    with open(f"{dir_path}/test_case.txt", 'r') as f:
+        test_case_data = f.readlines()
+    with open(f"{dir_path}/fm_tc_tensor.txt", 'r') as f:
+        fm_tc_tensor_data = f.readlines()
+
+    assert len(focal_method_data) == len(test_case_data) == len(fm_tc_tensor_data)
+
+    demo_pool = []
+    for i in range(len(focal_method_data)):
+        demo_point = Ecommerce_demopoint(
+            focal_func=focal_method_data[i].strip(),
+            test_case=test_case_data[i].strip(),
+            unix_tensor=str_to_tensor(fm_tc_tensor_data[i].strip())
+        )
+        demo_pool.append(demo_point)
+
+    return demo_pool
 
 def main():
     pro = "ecommerce"
@@ -53,6 +76,13 @@ def main():
 
     query_set = get_ecommerce_queryset(pro, serv, ctx_dict)
     print(len(query_set))
+
+    ec_demo_pool = get_ecommerce_demopool()
+    print(len(ec_demo_pool))
+
+    for query_point in query_set:
+        candidate_demos, _ = testcase_diversity_retriever(query_point, ec_demo_pool, 10)
+        break
 
 if __name__ == "__main__":
     main()
