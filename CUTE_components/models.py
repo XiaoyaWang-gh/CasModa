@@ -62,9 +62,12 @@ class Testcase_datapoint:
 
 
 class Ecommerce_query_jsonpoint:
-    def __init__(self, simple_json: str, rich_json: str):
-        self.simple_json = simple_json
-        self.rich_json = rich_json
+    def __init__(self, class_name: str, func_name: str, focal_func: str, rich_ctx_json: str, unix_tensor: Tensor):
+        self.class_name = class_name
+        self.func_name = func_name
+        self.focal_func = focal_func
+        self.rich_ctx_json = rich_ctx_json
+        self.unix_tensor = unix_tensor
 
 
 class Failed_To_Be_Repair_datapoint:

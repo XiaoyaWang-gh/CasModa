@@ -1,3 +1,5 @@
+import os
+
 from .prompt_father import Prompt
 from mytemplate import testcase_template as tt
 
@@ -34,3 +36,22 @@ class TestcasePrompt(Prompt):
                 self.demonstrations[i])
         final_testcase_prompt += tt.embed_ecommerce_query_template(self.query)
 
+
+    def get_class_content(service_name, class_name)->str:
+        root_path = f"/Users/bytedance/code/casmodatest/CasModa/txt_repo/testbody/query_set/ecommerce/{service_name}/testclass_content"
+        # 可能的文件名模式
+        possible_files = [
+            f"{class_name}<ID>Test.txt",
+            f"{class_name}<ID>Tests.txt"
+        ]
+
+        # 遍历目录查找匹配的文件
+        for dirpath, _, filenames in os.walk(root_path):
+            for filename in filenames:
+                if filename in possible_files:
+                    file_path = os.path.join(dirpath, filename)
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        return f.read()
+
+        # 如果没有找到匹配的文件，返回空字符串或其他默认值
+        return ""
